@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Cliente</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header class="encabezado">
+    <h1>Registro de Cliente</h1>
+    <img src="../img/logo.png" alt="Logo CFE" class="logo">
+  </header>
+
+  <main class="form-container">
+    <form id="formRegistroCliente">
+
+      <h3>Nombre completo</h3>
+      <input type="text" id="nombre" placeholder="Nombre" required>
+      <input type="text" id="apellidoPaterno" placeholder="Apellido paterno" required>
+      <input type="text" id="apellidoMaterno" placeholder="Apellido materno" required>
+
+      <h3>Dirección</h3>
+      <input type="text" id="calle" placeholder="Calle" required>
+      <input type="text" id="ciudad" placeholder="Ciudad" required>
+      <input type="text" id="cp" placeholder="Código Postal" required>
+
+      <label for="estado">Estado:</label>
+      <select id="estado" required>
+        <option value="">--Selecciona un estado--</option>
+        <option>Aguascalientes</option>
+        <option>Baja California</option>
+        <option>Baja California Sur</option>
+        <option>Campeche</option>
+        <option>Chiapas</option>
+        <option>Chihuahua</option>
+        <option>Ciudad de México</option>
+        <option>Coahuila</option>
+        <option>Colima</option>
+        <option>Durango</option>
+        <option>Estado de México</option>
+        <option>Guanajuato</option>
+        <option>Guerrero</option>
+        <option>Hidalgo</option>
+        <option>Jalisco</option>
+        <option>Michoacán</option>
+        <option>Morelos</option>
+        <option>Nayarit</option>
+        <option>Nuevo León</option>
+        <option>Oaxaca</option>
+        <option>Puebla</option>
+        <option>Querétaro</option>
+        <option>Quintana Roo</option>
+        <option>San Luis Potosí</option>
+        <option>Sinaloa</option>
+        <option>Sonora</option>
+        <option>Tabasco</option>
+        <option>Tamaulipas</option>
+        <option>Tlaxcala</option>
+        <option>Veracruz</option>
+        <option>Yucatán</option>
+        <option>Zacatecas</option>
+      </select>
+
+      <label for="curp">CURP:</label>
+      <input type="text" id="curp" required>
+
+      <label for="correo">Correo electrónico:</label>
+      <input type="email" id="correo" required>
+
+      <label for="password">Contraseña:</label>
+      <input type="password" id="password" required>
+
+      <label for="confirmar">Confirma tu contraseña:</label>
+      <input type="password" id="confirmar" required>
+
+      <h3>Fecha de nacimiento</h3>
+      <input type="number" id="dia" min="1" max="31" placeholder="Día" required>
+      <input type="number" id="mes" min="1" max="12" placeholder="Mes" required>
+      <input type="number" id="anio" min="1900" max="2025" placeholder="Año" required>
+
+      <button type="submit" class="btn">Registrarse</button>
+    </form>
+
+    <div id="mensaje" class="mensaje"></div>
+  </main>
+
+  <script>
+    document.getElementById("formRegistroCliente").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const apellidoPaterno = document.getElementById("apellidoPaterno").value.trim();
+      const apellidoMaterno = document.getElementById("apellidoMaterno").value.trim();
+      const calle = document.getElementById("calle").value.trim();
+      const ciudad = document.getElementById("ciudad").value.trim();
+      const cp = document.getElementById("cp").value.trim();
+      const estado = document.getElementById("estado").value;
+      const curp = document.getElementById("curp").value.trim();
+      const correo = document.getElementById("correo").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmar = document.getElementById("confirmar").value;
+      const dia = document.getElementById("dia").value;
+      const mes = document.getElementById("mes").value;
+      const anio = document.getElementById("anio").value;
+
+      if (password !== confirmar) {
+        document.getElementById("mensaje").textContent = "Las contraseñas no coinciden.";
+        return;
+      }
+
+      const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+
+      const existe = clientes.some(c => c.correo === correo);
+      if (existe) {
+        document.getElementById("mensaje").textContent = "Este correo ya está registrado.";
+        return;
+      }
+
+      const nuevoCliente = {
+        nombreCompleto: `${nombre} ${apellidoPaterno} ${apellidoMaterno}`,
+        direccion: {
+          calle,
+          ciudad,
+          cp,
+          estado
+        },
+        curp,
+        correo,
+        password,
+        fechaNacimiento: `${dia.padStart(2, '0')}/${mes.padStart(2, '0')}/${anio}`
+      };
+
+      clientes.push(nuevoCliente);
+      localStorage.setItem("clientes", JSON.stringify(clientes));
+
+      document.getElementById("mensaje").textContent = "Registro exitoso. Ahora puedes iniciar sesión.";
+      this.reset();
+    });
+  </script>
+</body>
+</html>

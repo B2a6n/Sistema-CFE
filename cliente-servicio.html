@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Solicitud de Servicio</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="encabezado">
+    <h1>Solicitud de Servicio</h1>
+  </header>
+
+  <main class="form-container">
+    <form id="formSolicitud">
+
+      <!-- Número de cliente -->
+      <label for="numCliente"><strong>Número de Cliente:</strong></label>
+      <input type="text" id="numCliente" required>
+
+      <!-- Tipo de servicio -->
+      <label for="tipoServicio"><strong>Tipo de Servicio:</strong></label>
+      <select id="tipoServicio" required>
+        <option value="">-- Selecciona un servicio --</option>
+        <option>Conexión nueva</option>
+        <option>Revisión de voltaje</option>
+        <option>Revisión de medidor</option>
+        <option>Reporte de falla</option>
+        <option>Cancelación de contrato</option>
+        <option>Otro</option>
+      </select>
+
+      <!-- Dirección del servicio -->
+      <label for="direccion"><strong>Dirección del Servicio:</strong></label>
+      <textarea id="direccion" rows="3" placeholder="Solo si es distinta a la registrada"></textarea>
+
+      <!-- Documento adjunto -->
+      <label for="documento"><strong>Adjuntar Documentos INE, Recibo (PDF/JPG):</strong></label>
+      <input type="file" id="documento" accept=".pdf,.jpg,.jpeg,.png" required>
+
+      <!-- Comentarios -->
+      <label for="comentarios"><strong>Comentarios Adicionales (opcional):</strong></label>
+      <textarea id="comentarios" rows="3"></textarea>
+
+      <!-- Enviar -->
+      <button type="submit" class="btn">Enviar Solicitud</button>
+    </form>
+
+    <div id="mensaje" class="mensaje"></div>
+  </main>
+
+  <script>
+    const cliente = JSON.parse(sessionStorage.getItem("clienteActivo"));
+    if (!cliente) {
+      alert("Debes iniciar sesión.");
+      window.location.href = "cliente-login.html";
+    }
+
+    document.getElementById("formSolicitud").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const numCliente = document.getElementById("numCliente").value.trim();
+      const tipoServicio = document.getElementById("tipoServicio").value;
+      const direccion = document.getElementById("direccion").value.trim();
+      const archivo = document.getElementById("documento").files[0];
+      const comentarios = document.getElementById("comentarios").value.trim();
+
+      if (!archivo) {
+        document.getElementById("mensaje").textContent = "Debes adjuntar un documento.";
+        return;
+      }
+
+      const solicitudes = JSON.parse(localStorage.getItem("solicitudes")) || [];
+
+      const nuevaSolicitud = {
+        folio: `CFE-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+        numCliente,
+        tipoServicio,
+        direccionServicio: direccion || cliente.direccion?.calle || "Usa dirección registrada",
+        documento: archivo.name,
+        comentarios,
+        fecha: new Date().toLocaleString()
+      };
+
+      solicitudes.push(nuevaSolicitud);
+      localStorage.setItem("solicitudes", JSON.stringify(solicitudes));
+
+      document.getElementById("mensaje").textContent = "✅ Solicitud enviada exitosamente.";
+      this.reset();
+    });
+  </script>
+</body>
+</html>
