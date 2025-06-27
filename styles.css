@@ -1,0 +1,105 @@
+/* === Estilos globales === */
+body {
+    background-image: url('../img/login.jpg'); /* Ajusta si tu ruta es diferente */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 10% center; /* Mueve la imagen hacia la izquierda */
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* === Contenedor del formulario de login === */
+.login-container {
+  margin-left: 60px;
+  background-color: rgba(244, 247, 242, 0.97);
+  padding: 2em;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+  text-align: left;
+}
+
+/* Título */
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+/* Etiquetas */
+.login-container label {
+  display: block;
+  margin-top: 1em;
+  font-weight: bold;
+}
+
+/* Campos de entrada */
+.login-container input {
+  width: 100%;
+  padding: 0.6em;
+  margin-top: 0.3em;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* === Botón principal === */
+.btn {
+  width: 100%;
+  margin-top: 1.5em;
+  padding: 0.8em;
+  background-color: #007d3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #005c2c;
+}
+
+/* === Link para crear cuenta === */
+.crear-cuenta {
+  text-align: center;
+  margin-top: 1em;
+}
+
+.crear-cuenta a {
+  color: #007d3c;
+  text-decoration: none;
+}
+
+.crear-cuenta a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  color: #ede6e6;
+  font-size: 0.9em;
+  padding: 0.5em 0;
+  border-top: none; /* Asegura que no haya línea */
+  box-shadow: none; /* Elimina cualquier sombra */
+}
+
+/* === Mensaje de error === */
+.mensaje-error {
+  color: red;
+  text-align: center;
+  margin-top: 1em;
+  font-weight: bold;
+}
