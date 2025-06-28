@@ -1,105 +1,107 @@
-/* === Estilos globales === */
 body {
-    background-image: url('../img/login.jpg'); /* Ajusta si tu ruta es diferente */
-    background-size: contain;
+    background-image: url('../img/fondolog.jpg'); /* Ruta ajustada */
+    background-size: 80%; /* Reducción del tamaño del fondo */
     background-repeat: no-repeat;
-    background-position: 10% center; /* Mueve la imagen hacia la izquierda */
+    background-position: center center;
     background-color: #000000;
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     min-height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    justify-content: space-between;
+    position: relative;
 }
 
-/* === Contenedor del formulario de login === */
+/* Logo en esquina superior izquierda */
+.logo-cfe {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 100px;
+    height: auto;
+}
+
+/* Contenedor del login centrado */
 .login-container {
-  margin-left: 60px;
-  background-color: rgba(244, 247, 242, 0.97);
-  padding: 2em;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
-  text-align: left;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    color: white;
+    max-width: 400px;
+    width: 90%;
+    margin: auto;
+    font-family: Arial;
 }
 
-/* Título */
+/* Títulos */
 .login-container h2 {
-  text-align: center;
-  margin-bottom: 1em;
+    margin-bottom: 20px;
+    color: white;
 }
 
-/* Etiquetas */
-.login-container label {
-  display: block;
-  margin-top: 1em;
-  font-weight: bold;
+/* Inputs */
+.login-container input[type="text"],
+.login-container input[type="password"],
+.login-container input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #111;
+    color: #fff;
+    font-size: 14px;
 }
 
-/* Campos de entrada */
-.login-container input {
-  width: 100%;
-  padding: 0.6em;
-  margin-top: 0.3em;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+/* Botón */
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #008000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-/* === Botón principal === */
-.btn {
-  width: 100%;
-  margin-top: 1.5em;
-  padding: 0.8em;
-  background-color: #007d3c;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.login-container button:hover {
+    background-color: #006400;
 }
 
-.btn:hover {
-  background-color: #005c2c;
+/* Link de crear cuenta */
+.login-container a {
+    display: block;
+    margin-top: 15px;
+    color: #00cc66;
+    text-decoration: none;
+    font-size: 14px;
 }
 
-/* === Link para crear cuenta === */
-.crear-cuenta {
-  text-align: center;
-  margin-top: 1em;
+.login-container a:hover {
+    text-decoration: underline;
 }
 
-.crear-cuenta a {
-  color: #007d3c;
-  text-decoration: none;
-}
-
-.crear-cuenta a:hover {
-  text-decoration: underline;
-}
-
+/* Footer hasta el fondo */
 footer {
-  position: absolute;
-  bottom: 10px;
-  width: 100%;
-  text-align: center;
-  background: transparent;
-  color: #ede6e6;
-  font-size: 0.9em;
-  padding: 0.5em 0;
-  border-top: none; /* Asegura que no haya línea */
-  box-shadow: none; /* Elimina cualquier sombra */
+    text-align: center;
+    padding: 15px;
+    color: white;
+    font-size: 13px;
 }
 
-/* === Mensaje de error === */
-.mensaje-error {
-  color: red;
-  text-align: center;
-  margin-top: 1em;
-  font-weight: bold;
+/* Etiquetas alineadas a la izquierda */
+.login-container label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
 }
