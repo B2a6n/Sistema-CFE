@@ -7,13 +7,12 @@
 </head>
 <body class="registro-cliente">
   <header class="encabezado">
-    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe">
+    <img src="../img/logo.png" alt="Logo CFE" class="logo-cfe">
   </header>
 
   <main class="form-container">
     <h1>Registro de Cliente</h1>
     <form id="formRegistroCliente">
-
       <h3>Nombre completo</h3>
       <input type="text" id="nombre" placeholder="Nombre" required>
       <input type="text" id="apellidoPaterno" placeholder="Apellido paterno" required>
@@ -82,11 +81,15 @@
     </form>
 
     <div id="mensaje" class="mensaje"></div>
-    <div class="volver-inicio">
-  <a href="../index.html" class="btn-regresar">← Regresar</a>
-</div>
 
+    <div class="volver-inicio">
+      <a href="../index.html" class="btn-regresar">← Regresar al inicio</a>
+    </div>
   </main>
+
+  <footer>
+    <p>© 2025 Sistema CFE | Todos los derechos reservados</p>
+  </footer>
 
   <script>
     document.getElementById("formRegistroCliente").addEventListener("submit", function(e) {
@@ -113,8 +116,8 @@
       }
 
       const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-
       const existe = clientes.some(c => c.correo === correo);
+
       if (existe) {
         document.getElementById("mensaje").textContent = "Este correo ya está registrado.";
         return;
@@ -137,13 +140,13 @@
       clientes.push(nuevoCliente);
       localStorage.setItem("clientes", JSON.stringify(clientes));
 
-      document.getElementById("mensaje").textContent = "Registro exitoso. Ahora puedes iniciar sesión.";
+      document.getElementById("mensaje").textContent = "✅ Registro exitoso. Redirigiendo...";
       this.reset();
+
+      setTimeout(() => {
+        window.location.href = "../index.html"; // Redirige al login
+      }, 2500);
     });
   </script>
-  <footer>
-  &copy; 2025 Sistema CFE | Todos los derechos reservados
-</footer>
-
 </body>
 </html>
