@@ -5,13 +5,13 @@
   <title>Registro de Cliente</title>
   <link rel="stylesheet" href="../css/styles.css">
 </head>
-<body>
+<body class="registro-cliente">
   <header class="encabezado">
-    <h1>Registro de Cliente</h1>
-    <img src="../img/logo.png" alt="Logo CFE" class="logo">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe">
   </header>
 
   <main class="form-container">
+    <h1>Registro de Cliente</h1>
     <form id="formRegistroCliente">
 
       <h3>Nombre completo</h3>
@@ -82,6 +82,10 @@
     </form>
 
     <div id="mensaje" class="mensaje"></div>
+    <div class="volver-inicio">
+  <a href="../index.html" class="btn-regresar">← Regresar</a>
+</div>
+
   </main>
 
   <script>
@@ -137,5 +141,9 @@
       this.reset();
     });
   </script>
+  <footer>
+  &copy; 2025 Sistema CFE | Todos los derechos reservados
+</footer>
+
 </body>
 </html>
