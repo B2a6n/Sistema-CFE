@@ -1,6 +1,7 @@
+/* Fondo general */
 body {
-    background-image: url('../img/fondolog.jpg'); /* Ruta ajustada */
-    background-size: 80%; /* Reducción del tamaño del fondo */
+    background-image: url('../img/fondolog.jpg');
+    background-size: 80%;
     background-repeat: no-repeat;
     background-position: center center;
     background-color: #000000;
@@ -14,16 +15,21 @@ body {
     position: relative;
 }
 
-/* Logo en esquina superior izquierda */
-.logo-cfe {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 100px;
-    height: auto;
+/* Fondo removido específicamente para la página de registro */
+body.registro-cliente {
+    background-image: none;
+    background-color: #000000;
 }
 
-/* Contenedor del login centrado */
+/* Logo en esquina superior izquierda */
+.logo-cfe {
+    width: 100px;
+    height: auto;
+    margin: 0; /* Asegúrate de que no haya margen que empuje hacia abajo */
+}
+
+
+/* Contenedor login */
 .login-container {
     background-color: rgba(0, 0, 0, 0.9);
     padding: 30px 40px;
@@ -37,13 +43,13 @@ body {
     font-family: Arial;
 }
 
-/* Títulos */
+/* Título */
 .login-container h2 {
     margin-bottom: 20px;
     color: white;
 }
 
-/* Inputs */
+/* Inputs login */
 .login-container input[type="text"],
 .login-container input[type="password"],
 .login-container input[type="email"] {
@@ -57,7 +63,7 @@ body {
     font-size: 14px;
 }
 
-/* Botón */
+/* Botón login */
 .login-container button {
     width: 100%;
     padding: 12px;
@@ -75,7 +81,7 @@ body {
     background-color: #006400;
 }
 
-/* Link de crear cuenta */
+/* Link crear cuenta */
 .login-container a {
     display: block;
     margin-top: 15px;
@@ -88,7 +94,7 @@ body {
     text-decoration: underline;
 }
 
-/* Footer hasta el fondo */
+/* Footer */
 footer {
     text-align: center;
     padding: 15px;
@@ -96,12 +102,88 @@ footer {
     font-size: 13px;
 }
 
-/* Etiquetas alineadas a la izquierda */
-.login-container label {
-    display: block;
-    text-align: left;
-    margin-bottom: 5px;
+/* Estilos para el formulario de registro */
+.form-container {
+    max-width: 600px;
+    width: 90%;
+    margin: 40px auto;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    color: white;
+}
+
+.form-container h1,
+.form-container h3 {
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #111;
+    color: #fff;
+}
+
+.form-container button.btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #008000;
+    color: white;
+    border: none;
+    border-radius: 5px;
     font-weight: bold;
     font-size: 14px;
+    cursor: pointer;
+}
+
+.form-container button.btn:hover {
+    background-color: #006400;
+}
+
+#mensaje {
+    text-align: center;
+    margin-top: 15px;
+    color: #00cc66;
+}
+/* Encabezado blanco solo para la página de registro */
+body.registro-cliente .encabezado {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    min-height: 80px; /* Ajustado: altura más compacta */
+}
+.encabezado {
+    background-color: white;
+    padding: 0; /* Elimina espacio extra */
+    display: flex;
+    align-items: center; /* Centra verticalmente si el logo es más alto */
+    height: auto; /* Ajusta automáticamente la altura */
+}
+.volver-inicio {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-regresar {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #555;
     color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-regresar:hover {
+    background-color: #333;
 }
