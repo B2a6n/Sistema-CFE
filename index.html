@@ -21,6 +21,8 @@
       <button type="submit" class="btn">Ingresar</button>
     </form>
 
+    <div id="mensajeLogin" class="mensaje"></div>
+
     <div class="crear-cuenta">
       <a href="cliente-registro.html">Crear nueva cuenta</a>
     </div>
@@ -30,6 +32,25 @@
     &copy; 2025 Sistema CFE | Todos los derechos reservados
   </footer>
 
-  <script src="js/main.js"></script>
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const contrato = document.getElementById("contrato").value.trim();
+      const contrasena = document.getElementById("contrasena").value;
+
+      const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+
+      const cliente = clientes.find(c => c.correo === contrato);
+
+      if (cliente && cliente.password === contrasena) {
+        localStorage.setItem("clienteActivo", JSON.stringify(cliente));
+        window.location.href = "cliente-inicio.html";
+      } else {
+        document.getElementById("mensajeLogin").textContent = "Correo o contraseña incorrectos.";
+      }
+    });
+  </script>
 </body>
 </html>
+
