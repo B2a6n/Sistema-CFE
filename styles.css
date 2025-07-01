@@ -21,58 +21,75 @@ body.registro-cliente {
     background-color: #000000;
 }
 
-/* Encabezado blanco para registro */
-body.registro-cliente .encabezado {
-    background-color: #ffffff;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    min-height: 80px;
-}
-
 /* Logo */
 .logo-cfe {
     width: 100px;
     height: auto;
-    margin: 0;
 }
 
-/* Contenedor de login */
-.login-container {
-    background-color: rgba(0, 0, 0, 0.9);
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
-    text-align: center;
-    color: white;
-    max-width: 400px;
+/* Encabezado blanco con menú */
+.encabezado {
+    background-color: white;
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Menú cliente */
+.menu-cliente {
+    display: flex;
+    gap: 40px;
+}
+
+.menu-cliente a {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: #00cc66;
+    transition: color 0.3s ease;
+}
+
+.menu-cliente a:hover {
+    color: #009944;
+}
+
+/* Contenedor de formularios y secciones */
+.form-container {
+    max-width: 800px;
     width: 90%;
-    margin: auto;
-    font-family: Arial;
-}
-
-/* Título login */
-.login-container h2 {
-    margin-bottom: 20px;
+    margin: 40px auto;
+    background-color: #2d2d2d;
+    padding: 30px;
+    border-radius: 10px;
     color: white;
 }
 
-/* Inputs login */
-.login-container input[type="text"],
-.login-container input[type="password"],
-.login-container input[type="email"] {
+.form-container h1,
+.form-container h2,
+.form-container h3 {
+    text-align: left;
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* Inputs y Selects */
+.form-container input,
+.form-container select,
+.form-container textarea {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
     border: none;
     border-radius: 5px;
+    font-size: 14px;
     background-color: #111;
     color: #fff;
-    font-size: 14px;
 }
 
-/* Botón login */
-.login-container button {
+/* Botones */
+.form-container .btn,
+.login-container .btn {
     width: 100%;
     padding: 12px;
     background-color: #008000;
@@ -85,20 +102,46 @@ body.registro-cliente .encabezado {
     transition: background-color 0.3s ease;
 }
 
-.login-container button:hover {
+.form-container .btn:hover,
+.login-container .btn:hover {
     background-color: #006400;
 }
 
-/* Link crear cuenta */
-.login-container a {
-    display: block;
-    margin-top: 15px;
+/* Login específico */
+.login-container {
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    color: white;
+    max-width: 400px;
+    width: 90%;
+    margin: auto;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background-color: #111;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+/* Crear cuenta link */
+.crear-cuenta a {
     color: #00cc66;
     text-decoration: none;
     font-size: 14px;
 }
 
-.login-container a:hover {
+.crear-cuenta a:hover {
     text-decoration: underline;
 }
 
@@ -110,88 +153,9 @@ footer {
     font-size: 13px;
 }
 
-/* Estilo principal del contenedor del formulario */
-.form-container {
-    max-width: 600px;
-    width: 90%;
-    margin: 40px auto;
-    background-color: #2c2c2c; /* Gris oscuro tipo tarjeta */
-    padding: 30px;
-    border-radius: 12px;
-    color: white;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-}
-
-/* Títulos del formulario */
-.form-container h1,
-.form-container h3 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Campos del formulario */
-.form-container input,
-.form-container select {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #555;
-    border-radius: 5px;
-    font-size: 14px;
-    background-color: #111;
-    color: #fff;
-}
-
-/* Alinear todo el texto y etiquetas a la izquierda */
-.form-container label,
-.form-container h3 {
-    text-align: left;
-    display: block;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-/* Botón del formulario */
-.form-container button.btn {
-    width: 100%;
-    padding: 12px;
-    background-color: #008000;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.form-container button.btn:hover {
-    background-color: #006400;
-}
-
-/* Mensaje de éxito o error */
+/* Estilo para mensaje de éxito */
 #mensaje {
     text-align: center;
     margin-top: 15px;
     color: #00cc66;
-}
-
-/* Botón de regreso */
-.volver-inicio {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.btn-regresar {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #555;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.btn-regresar:hover {
-    background-color: #333;
 }
