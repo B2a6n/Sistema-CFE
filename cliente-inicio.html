@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel del Cliente - CFE</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="registro-cliente">
+  <div class="encabezado">
+    <img src="img/logoC.jpg" alt="Logo CFE" class="logo-cfe" />
+    <div class="menu-cliente">
+      <a href="#" onclick="mostrarSeccion('info')">Información</a>
+      <a href="#" onclick="mostrarSeccion('modificar')">Modificar Datos</a>
+      <a href="#" onclick="mostrarSeccion('falla')">Reporte de Falla</a>
+      <a href="index.html">Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <div class="form-container" id="contenido">
+    <h2>Bienvenido, <span id="nombreUsuario">Usuario</span></h2>
+    <div id="seccion-info">
+      <h3>Información del Usuario</h3>
+      <p><strong>Nombre:</strong> Juan Pérez</p>
+      <p><strong>Correo:</strong> juan.perez@email.com</p>
+      <p><strong>Contrato:</strong> 123456789</p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Sistema CFE | Todos los derechos reservados
+  </footer>
+
+  <script>
+    function mostrarSeccion(seccion) {
+      const contenedor = document.getElementById("contenido");
+      if (seccion === 'info') {
+        contenedor.innerHTML = `
+          <h2>Bienvenido, <span id="nombreUsuario">Usuario</span></h2>
+          <div id="seccion-info">
+            <h3>Información del Usuario</h3>
+            <p><strong>Nombre:</strong> Juan Pérez</p>
+            <p><strong>Correo:</strong> juan.perez@email.com</p>
+            <p><strong>Contrato:</strong> 123456789</p>
+          </div>`;
+      }
+
+      if (seccion === 'modificar') {
+        contenedor.innerHTML = `
+          <h3>Modificar Datos</h3>
+          <form>
+            <input type="text" placeholder="Nuevo nombre" />
+            <input type="email" placeholder="Nuevo correo" />
+            <input type="password" placeholder="Nueva contraseña" />
+            <button class="btn">Guardar Cambios</button>
+          </form>`;
+      }
+
+      if (seccion === 'falla') {
+        contenedor.innerHTML = `
+          <h3>Reporte de Falla</h3>
+          <form>
+            <label for="tipoFalla">Tipo de falla:</label>
+            <select id="tipoFalla">
+              <option>-- Selecciona una opción --</option>
+              <option>Sin servicio eléctrico</option>
+              <option>Medidor dañado</option>
+              <option>Problema de facturación</option>
+              <option>Otro</option>
+            </select>
+            <textarea placeholder="Descripción del problema"></textarea>
+            <button class="btn">Enviar Reporte</button>
+          </form>`;
+      }
+    }
+  </script>
+</body>
+</html>
