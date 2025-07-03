@@ -17,9 +17,9 @@ body {
 
 /* Fondo removido específicamente para la página de registro */
 body.registro-cliente {
-    background-image: none;
-    background-color: #000000;
+    background: transparent;
 }
+
 
 /* Logo */
 .logo-cfe {
@@ -86,6 +86,12 @@ body.registro-cliente {
     background-color: #111;
     color: #fff;
 }
+.form-container {
+  background-color: rgba(0, 0, 0, 0.85); /* <= fondo oscuro pero translúcido */
+  z-index: 1;
+  position: relative;
+}
+
 
 /* Botones */
 .form-container .btn,
@@ -117,7 +123,11 @@ body.registro-cliente {
     color: white;
     max-width: 400px;
     width: 90%;
-    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 30%; /* Mueve a la izquierda */
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }
 
 .login-container h2 {
@@ -158,4 +168,27 @@ footer {
     text-align: center;
     margin-top: 15px;
     color: #00cc66;
+}
+
+.fondo-luz-animada {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #00ff88 0%, transparent 70%);
+    animation: moverLuz 8s ease-in-out infinite alternate;
+    z-index: 0;
+    opacity: 0.1;
+    pointer-events: none; /* importante para no bloquear interacciones */
+}
+
+/* Animación de luz */
+@keyframes moverLuz {
+    0% {
+        background-position: 30% 30%;
+    }
+    100% {
+        background-position: 70% 70%;
+    }
 }
