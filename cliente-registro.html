@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Registro de Cliente</title>
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="css/styles.css">
   <style>
     #background {
       position: fixed;
@@ -34,12 +34,12 @@
   <div id="background"></div>
 
   <header class="encabezado">
-    <img src="../img/logo.png" alt="Logo CFE" class="logo-cfe">
+    <img src="/cfe/img/logo.png" alt="Logo CFE" class="logo-cfe">
   </header>
 
   <main class="form-container">
     <h1>Registro de Cliente</h1>
-    <form id="formRegistroCliente">
+    <form id="formRegistroCliente" method="POST" action="php/registro.php">
       <h3>Nombre completo</h3>
       <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
       <input type="text" id="apellidoPaterno" name="apellidoPaterno" placeholder="Apellido paterno" required>
@@ -115,7 +115,7 @@
     <div id="mensaje" class="mensaje"></div>
 
     <div class="volver-inicio">
-      <a href="../index.html" class="btn-regresar">← Regresar al inicio</a>
+      <a href="/cfe/index.html" class="btn-regresar">← Regresar al inicio</a>
     </div>
   </main>
 
