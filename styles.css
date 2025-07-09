@@ -1,4 +1,7 @@
-/* Fondo general */
+
+/* =======================
+   ESTILOS GENERALES
+========================== */
 body {
     background-image: url('../img/fondolog.jpg');
     background-size: 80%;
@@ -15,65 +18,50 @@ body {
     position: relative;
 }
 
-/* Fondo removido específicamente para la página de registro */
 body.registro-cliente {
     background: transparent;
 }
 
-
-/* Logo */
-.logo-cfe {
-    width: 100px;
-    height: auto;
-}
-
-/* Encabezado blanco con menú */
+/* =======================
+   ENCABEZADO Y LOGO
+========================== */
 .encabezado {
     background-color: white;
     padding: 10px 30px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    border-bottom: 2px solid #ccc;
+    position: relative;
+    z-index: 3;
 }
 
-/* Menú cliente */
-.menu-cliente {
-    display: flex;
-    gap: 40px;
+.logo-cfe {
+    width: 100px;
+    height: auto;
 }
 
-.menu-cliente a {
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 20px;
-    color: #00cc66;
-    transition: color 0.3s ease;
-}
-
-.menu-cliente a:hover {
-    color: #009944;
-}
-
-/* Contenedor de formularios y secciones */
+/* =======================
+   FORMULARIOS
+========================== */
 .form-container {
     max-width: 800px;
     width: 90%;
     margin: 40px auto;
-    background-color: #2d2d2d;
+    background-color: rgba(0, 0, 0, 0.85);
     padding: 30px;
     border-radius: 10px;
     color: white;
+    z-index: 1;
+    position: relative;
 }
 
 .form-container h1,
 .form-container h2,
 .form-container h3 {
     text-align: left;
-    color: white;
     margin-bottom: 20px;
 }
 
-/* Inputs y Selects */
 .form-container input,
 .form-container select,
 .form-container textarea {
@@ -86,14 +74,7 @@ body.registro-cliente {
     background-color: #111;
     color: #fff;
 }
-.form-container {
-  background-color: rgba(0, 0, 0, 0.85); /* <= fondo oscuro pero translúcido */
-  z-index: 1;
-  position: relative;
-}
 
-
-/* Botones */
 .form-container .btn,
 .login-container .btn {
     width: 100%;
@@ -113,7 +94,9 @@ body.registro-cliente {
     background-color: #006400;
 }
 
-/* Login específico */
+/* =======================
+   LOGIN
+========================== */
 .login-container {
     background-color: rgba(0, 0, 0, 0.9);
     padding: 30px 40px;
@@ -125,7 +108,7 @@ body.registro-cliente {
     width: 90%;
     position: absolute;
     top: 50%;
-    left: 30%; /* Mueve a la izquierda */
+    left: 30%;
     transform: translate(-50%, -50%);
     z-index: 1;
 }
@@ -144,7 +127,6 @@ body.registro-cliente {
     border-radius: 5px;
 }
 
-/* Crear cuenta link */
 .crear-cuenta a {
     color: #00cc66;
     text-decoration: none;
@@ -155,7 +137,18 @@ body.registro-cliente {
     text-decoration: underline;
 }
 
-/* Footer */
+/* =======================
+   MENSAJE
+========================== */
+#mensaje {
+    text-align: center;
+    margin-top: 15px;
+    color: #00cc66;
+}
+
+/* =======================
+   FOOTER
+========================== */
 footer {
     text-align: center;
     padding: 15px;
@@ -163,12 +156,61 @@ footer {
     font-size: 13px;
 }
 
-/* Estilo para mensaje de éxito */
-#mensaje {
-    text-align: center;
-    margin-top: 15px;
-    color: #00cc66;
+/* =======================
+   PANEL USUARIO
+========================== */
+.info-usuario {
+  position: fixed;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  background: #2d2d2d;
+  padding: 30px;
+  border-radius: 25px;
+  width: 400px;
+  color: white;
+  z-index: 2;
+  box-shadow: 0 4px 15px rgba(250, 248, 248, 0.5);
 }
+
+.info-usuario h2 {
+    margin-top: 0;
+}
+
+/* =======================
+   MENÚ LATERAL CLIENTE
+========================== */
+.menu-opciones {
+    position: fixed;
+    top: 35%;
+    right: 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 2;
+}
+
+.menu-opciones a {
+    text-decoration: none;
+    background: #2d2d2d;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 30px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(250, 248, 248, 0.3);
+    transition: background 0.3s ease;
+}
+
+.menu-opciones a:hover {
+    background: #1a1a1a;
+}
+
+/* =======================
+   ANIMACIÓN FONDO
+========================== */
 .fondo-luz-animada {
     position: fixed;
     top: 0;
@@ -179,15 +221,180 @@ footer {
     animation: moverLuz 8s ease-in-out infinite alternate;
     z-index: 0;
     opacity: 0.1;
-    pointer-events: none; /* importante para no bloquear interacciones */
+    pointer-events: none;
 }
 
-/* Animación de luz */
 @keyframes moverLuz {
-    0% {
-        background-position: 30% 30%;
-    }
-    100% {
-        background-position: 70% 70%;
-    }
+    0% { background-position: 30% 30%; }
+    100% { background-position: 70% 70%; }
+}
+
+/* =======================
+   PARTICULAS BACKGROUND
+========================== */
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 0;
+}
+
+.formulario-reporte-container {
+    position: relative;
+    z-index: 2;
+    max-width: 500px;
+    margin: 100px auto;
+    background-color: rgba(51, 51, 51, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    font-family: Arial, sans-serif;
+}
+
+.formulario-reporte-container h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.formulario-reporte-container label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.formulario-reporte-container input,
+.formulario-reporte-container select,
+.formulario-reporte-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #111;
+    color: #fff;
+    font-size: 14px;
+}
+
+.formulario-reporte-container .btn {
+    margin-top: 25px;
+    width: 100%;
+    background-color: #00cc66;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.formulario-reporte-container .btn:hover {
+    background-color: #009944;
+}
+
+#mensaje-exito {
+    margin-top: 20px;
+    text-align: center;
+    color: #00ff99;
+    font-weight: bold;
+}
+
+
+/* Contenedor de paneles de consulta */
+.paneles-info-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 50px;
+  padding: 50px;
+  z-index: 2;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+/* Paneles individuales */
+.panel-info {
+  background-color: rgba(45, 45, 45, 0.95);
+  padding: 30px;
+  border-radius: 20px;
+  color: white;
+  width: 400px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  font-family: Arial, sans-serif;
+}
+
+.panel-info h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #00cc66;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.panel-info p {
+  margin: 8px 0;
+}
+
+/* Estilo para cada domicilio */
+.domicilio {
+  margin-bottom: 20px;
+}
+
+
+.info-general {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 80px auto;
+  z-index: 2;
+}
+
+.panel {
+  background: #2d2d2d;
+  padding: 30px;
+  border-radius: 20px;
+  color: white;
+  width: 400px;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
+}
+
+.panel h2 {
+  color: #00cc66;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.panel hr {
+  border: none;
+  border-top: 2px solid #ccc;
+  margin-bottom: 15px;
+}
+
+/* Botón regresar */
+.boton-regresar {
+  position: absolute;
+  top: 80px;
+  right: 40px;
+  z-index: 3;
+}
+
+.boton-regresar a {
+  background-color: #2d2d2d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  transition: background 0.3s ease;
+}
+
+.boton-regresar a:hover {
+  background-color: #1a1a1a;
 }
