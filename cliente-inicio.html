@@ -2,77 +2,73 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Panel del Cliente - CFE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cliente - Inicio</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="registro-cliente">
+  <!-- Fondo animado -->
+  <div id="particles-js"></div>
+
+  <!-- Encabezado con logo -->
   <div class="encabezado">
-    <img src="img/logoC.jpg" alt="Logo CFE" class="logo-cfe" />
-    <div class="menu-cliente">
-      <a href="#" onclick="mostrarSeccion('info')">Información</a>
-      <a href="#" onclick="mostrarSeccion('modificar')">Modificar Datos</a>
-      <a href="#" onclick="mostrarSeccion('falla')">Reporte de Falla</a>
-      <a href="index.html">Cerrar Sesión</a>
-    </div>
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
   </div>
 
-  <div class="form-container" id="contenido">
-    <h2>Bienvenido, <span id="nombreUsuario">Usuario</span></h2>
-    <div id="seccion-info">
-      <h3>Información del Usuario</h3>
-      <p><strong>Nombre:</strong> Juan Pérez</p>
-      <p><strong>Correo:</strong> juan.perez@email.com</p>
-      <p><strong>Contrato:</strong> 123456789</p>
-    </div>
+  <!-- Panel de información del usuario -->
+  <div class="info-usuario">
+    <h2>Bienvenido, Usuario</h2>
+    <p><strong>Nombre:</strong> Juan Pérez</p>
+    <p><strong>Correo:</strong> juan.perez@email.com</p>
+    <p><strong>Contrato:</strong> 123456789</p>
   </div>
 
-  <footer>
-    &copy; 2025 Sistema CFE | Todos los derechos reservados
-  </footer>
+  <!-- Botones de opciones -->
+  <div class="menu-opciones">
+    <a href="cliente-informacion.html"><span>📋</span> Información General</a>
+    <a href="cliente-modificar.html"><span>🛠️</span> Modificar Datos</a>
+    <a href="cliente-reporte.html"><span>⚡</span> Reporte de Fallas</a>
+    <a href="#" onclick="cerrarSesion()"><span>🏛️</span> Cerrar Sesión</a>
+  </div>
 
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
-    function mostrarSeccion(seccion) {
-      const contenedor = document.getElementById("contenido");
-      if (seccion === 'info') {
-        contenedor.innerHTML = `
-          <h2>Bienvenido, <span id="nombreUsuario">Usuario</span></h2>
-          <div id="seccion-info">
-            <h3>Información del Usuario</h3>
-            <p><strong>Nombre:</strong> Juan Pérez</p>
-            <p><strong>Correo:</strong> juan.perez@email.com</p>
-            <p><strong>Contrato:</strong> 123456789</p>
-          </div>`;
-      }
-
-      if (seccion === 'modificar') {
-        contenedor.innerHTML = `
-          <h3>Modificar Datos</h3>
-          <form>
-            <input type="text" placeholder="Nuevo nombre" />
-            <input type="email" placeholder="Nuevo correo" />
-            <input type="password" placeholder="Nueva contraseña" />
-            <button class="btn">Guardar Cambios</button>
-          </form>`;
-      }
-
-      if (seccion === 'falla') {
-        contenedor.innerHTML = `
-          <h3>Reporte de Falla</h3>
-          <form>
-            <label for="tipoFalla">Tipo de falla:</label>
-            <select id="tipoFalla">
-              <option>-- Selecciona una opción --</option>
-              <option>Sin servicio eléctrico</option>
-              <option>Medidor dañado</option>
-              <option>Problema de facturación</option>
-              <option>Otro</option>
-            </select>
-            <textarea placeholder="Descripción del problema"></textarea>
-            <button class="btn">Enviar Reporte</button>
-          </form>`;
-      }
-    }
+    
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ff00" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#00ff00",
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable: true, speed: 2 }
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "repulse" }
+        }
+      },
+      retina_detect: true
+    });
   </script>
+  <script>
+  function cerrarSesion() {
+    // Elimina datos almacenados (puedes personalizar según tu sistema)
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Redirige al login
+    window.location.href = "cliente-login.html";
+  }
+</script>
+
 </body>
 </html>
