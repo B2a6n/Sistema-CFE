@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Falla</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="encabezado">
+        <img src="img/logo_cfe.png" alt="Logo CFE" class="logo-cfe">
+    </div>
+
+    <div class="formulario-reporte-container">
+        <h2>Generar Reporte de Falla</h2>
+        <form id="form-reporte">
+            <label for="tipoFalla">Tipo de Falla:</label>
+            <select id="tipoFalla" name="tipoFalla" required>
+                <option value="">Seleccione</option>
+                <option value="apagón">Apagón</option>
+                <option value="cable">Cable caído</option>
+                <option value="medidor">Falla en medidor</option>
+                <option value="otros">Otros</option>
+            </select>
+
+            <label for="ubicacion">Ubicación de la Falla:</label>
+            <input type="text" id="ubicacion" name="ubicacion" placeholder="Calle, número, colonia..." required>
+
+            <label for="observaciones">Observaciones:</label>
+            <textarea id="observaciones" name="observaciones" rows="4" placeholder="Detalles adicionales..."></textarea>
+
+            <button type="submit" class="btn">Guardar Reporte</button>
+        </form>
+
+        <div id="mensaje-exito"></div>
+    </div>
+
+    <script src="js/particles.min.js"></script>
+    <script src="js/particles-config.js"></script>
+    <script>
+        // Validación y simulación de envío
+        document.getElementById('form-reporte').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const tipo = document.getElementById('tipoFalla').value;
+            const ubicacion = document.getElementById('ubicacion').value;
+
+            if (tipo && ubicacion) {
+                document.getElementById('mensaje-exito').innerText = '✅ Reporte guardado con éxito. Folio asignado: #' + Math.floor(Math.random() * 100000);
+                this.reset();
+            } else {
+                alert('Por favor complete los campos requeridos.');
+            }
+        });
+    </script>
+</body>
+</html>
