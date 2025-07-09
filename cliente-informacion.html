@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Información General</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="registro-cliente">
+  <!-- Fondo animado -->
+  <div id="particles-js"></div>
+
+  <!-- Encabezado con logo -->
+  <div class="encabezado">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
+  </div>
+
+  <!-- Botón regresar -->
+  <div class="boton-regresar">
+    <a href="cliente-inicio.html">⬅️ Regresar a Inicio</a>
+  </div>
+
+  <!-- Contenedor de paneles -->
+  <div class="info-general">
+    <!-- Panel del usuario -->
+    <div class="panel">
+      <h2>Información del Usuario</h2>
+      <hr />
+      <p><strong>Nombre:</strong> Juan</p>
+      <p><strong>Apellidos:</strong> Pérez Ramírez</p>
+      <p><strong>CURP:</strong> PEPR010101HDFRRN00</p>
+      <p><strong>Teléfono:</strong> 5522334455</p>
+      <p><strong>Correo:</strong> juan.perez@example.com</p>
+      <p><strong>Fecha de nacimiento:</strong> 2001-01-01</p>
+    </div>
+
+    <!-- Panel de domicilios -->
+    <div class="panel">
+      <h2>Domicilios Asociados</h2>
+      <hr />
+      <p><strong>Calle:</strong> Av. Reforma</p>
+      <p><strong>Número:</strong> 123</p>
+      <p><strong>Colonia:</strong> Centro</p>
+      <p><strong>CP:</strong> 06000</p>
+      <p><strong>Municipio:</strong> Cuauhtémoc</p>
+      <p><strong>Estado:</strong> CDMX</p>
+      <hr />
+      <p><strong>Calle:</strong> Insurgentes Sur</p>
+      <p><strong>Número:</strong> 456</p>
+      <p><strong>Colonia:</strong> Del Valle</p>
+      <p><strong>CP:</strong> 03100</p>
+      <p><strong>Municipio:</strong> Benito Juárez</p>
+      <p><strong>Estado:</strong> CDMX</p>
+    </div>
+  </div>
+
+  <!-- Fondo partículas -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ff00" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#00ff00",
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable: true, speed: 2 }
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "repulse" }
+        }
+      },
+      retina_detect: true
+    });
+  </script>
+</body>
+</html>
