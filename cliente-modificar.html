@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modificar Datos</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="registro-cliente">
+  <!-- Fondo animado -->
+  <div id="particles-js"></div>
+
+  <!-- Encabezado con logo -->
+  <div class="encabezado">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
+  </div>
+
+  <!-- Botón regresar -->
+  <div style="position: absolute; top: 90px; right: 40px; z-index: 2;">
+    <a href="cliente-inicio.html" style="
+      background-color: #2d2d2d;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(250, 248, 248, 0.3);
+      transition: background 0.3s ease;
+    ">← Regresar a Inicio</a>
+  </div>
+
+  <!-- Panel de modificación -->
+  <div class="form-container" style="background: #2d2d2d; margin-top: 140px;">
+    <h2 style="color: white;">Modificar Datos del Usuario</h2>
+
+    <!-- Correo electrónico -->
+    <label for="correo">Nuevo Correo Electrónico:</label>
+    <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" required />
+
+    <!-- Contraseña -->
+    <label for="password">Nueva Contraseña:</label>
+    <input type="password" id="password" name="password" placeholder="********" required />
+
+    <label for="confirm-password">Confirmar Nueva Contraseña:</label>
+    <input type="password" id="confirm-password" name="confirm-password" placeholder="********" required />
+
+    <!-- Teléfono -->
+    <label for="telefono">Número de Teléfono:</label>
+    <input type="tel" id="telefono" name="telefono" placeholder="Ej. 5522334455" required />
+
+    <!-- Botones de acción -->
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+      <button class="btn" style="flex: 1;">Guardar Cambios</button>
+      <button class="btn" style="flex: 1; background-color: #aa0000;">Eliminar Teléfono</button>
+    </div>
+  </div>
+
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ff00" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#00ff00",
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable: true, speed: 2 }
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "repulse" }
+        }
+      },
+      retina_detect: true
+    });
+  </script>
+</body>
+</html>
