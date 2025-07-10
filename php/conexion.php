@@ -1,14 +1,12 @@
 <?php
-$host = "localhost";
-$usuario = "root";
-$contrasena = ""; // cámbiala si usas contraseña en tu MySQL
-$base_datos = "sistema_servicios";
-$puerto = 3307; // cámbialo a 3306 si tu XAMPP/MAMP usa el puerto por defecto
+$host = "127.0.0.1:3307";
+$user = "root";
+$pass = "";                // pon tu contraseña si la configuraste
+$db   = "sistema_servicios";
 
-$conn = new mysqli($host, $usuario, $contrasena, $base_datos, $puerto);
-
-// Comprobar conexión
+$conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
-    die("❌ Error en la conexión: " . $conn->connect_error);
+    die("Conexión fallida: " . $conn->connect_error);
 }
+$conn->set_charset("utf8");
 ?>
