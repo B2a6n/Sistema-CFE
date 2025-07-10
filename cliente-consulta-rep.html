@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="registro-cliente">
+  <!-- Fondo animado -->
   <div id="particles-js"></div>
 
   <!-- Encabezado -->
@@ -21,67 +22,97 @@
   <div class="progreso-reporte" style="position: relative; z-index: 2; color: white;">
     <h2 style="text-align: center;">Seguimiento del Reporte</h2>
 
-    <div class="estado">
-      <h3>Reporte Creado</h3>
-      <small>📅 2025-07-08 🕒 10:00 AM</small>
-      <p>El reporte fue registrado correctamente en el sistema.</p>
-    </div>
+    <div class="estado" id="estado-envio">
+      <h3>Reporte Enviado</h3>
+      <small id="fecha-envio"></small>
+      <p>Tu reporte fue enviado correctamente y está esperando revisión.</p>
 
-    <div class="estado">
-      <h3>En Revisión</h3>
-      <small>📅 2025-07-08 🕒 12:00 PM</small>
-      <p>Un técnico ha comenzado la revisión del reporte.</p>
-    </div>
-
-    <div class="estado">
-      <h3>En Proceso</h3>
-      <small>📅 2025-07-09 🕒 9:00 AM</small>
-      <p>Se está realizando la validación y solución del problema.</p>
-    </div>
-
-    <div class="estado">
-      <h3>Finalizado</h3>
-      <small>📅 2025-07-09 🕒 3:30 PM</small>
-      <p>El servicio ha sido restablecido satisfactoriamente.</p>
+      <!-- Aviso permanente del estado -->
+      <div id="aviso-estatus"></div>
     </div>
 
     <hr style="border-color: #00ff00; margin: 30px 0;" />
 
     <h3 style="color: #00ff00;">Detalles del Reporte</h3>
-    <ul>
-      <li><strong>Tipo de Falla:</strong> Apagón general</li>
-      <li><strong>Ubicación:</strong> Calle Reforma #123, CDMX</li>
-      <li><strong>Descripción:</strong> Zona completa sin luz desde la madrugada.</li>
-      <li><strong>Estado actual:</strong> Finalizado</li>
-    </ul>
+    <ul id="detalle-reporte"></ul>
   </div>
 
-  <!-- Fondo animado -->
+  <!-- Partículas -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
     particlesJS("particles-js", {
-      particles: {
-        number: { value: 80 },
-        color: { value: "#00ff00" },
-        shape: { type: "circle" },
-        opacity: { value: 0.5 },
-        size: { value: 3 },
-        line_linked: {
-          enable: true,
-          distance: 150,
-          color: "#00ff00",
-          opacity: 0.4,
-          width: 1
-        },
-        move: { enable: true, speed: 2 }
-      },
-      interactivity: {
-        events: {
-          onhover: { enable: true, mode: "repulse" }
-        }
-      },
-      retina_detect: true
-    });
+      particles:{number:{value:80},color:{value:"#00ff00"},shape:{type:"circle"},
+      opacity:{value:0.5},size:{value:3},
+      line_linked:{enable:true,distance:150,color:"#00ff00",opacity:0.4,width:1},
+      move:{enable:true,speed:2}},
+      interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
+      retina_detect:true});
+  </script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const id = localStorage.getItem("id_reporte");
+    const detalle   = document.getElementById("detalle-reporte");
+    const fechaTxt  = document.getElementById("fecha-envio");
+    const avisoBox  = document.getElementById("aviso-estatus");
+
+    if (!id){
+      detalle.innerHTML = "<li>No hay folio guardado.</li>";
+      return;
+    }
+
+    try{
+      const r = await fetch(`php/consultar_reporte.php?id=${id}`);
+      const d = await r.json();
+
+      if (d.error){
+        detalle.innerHTML = `<li>Error: ${d.error}</li>`;
+        return;
+      }
+
+      // Imprimir datos iniciales
+      fechaTxt.textContent = `📅 ${d.fecha_reporte}`;
+      detalle.innerHTML = `
+        <li><strong>Tipo de Falla:</strong> ${d.tipo_falla}</li>
+        <li><strong>Ubicación:</strong> ${d.ubicacion}</li>
+        <li><strong>Observaciones:</strong> ${d.descripcion}</li>
+        <li><strong>Estado Actual:</strong> <span id="estado-actual">${d.estatus}</span></li>`;
+
+      // ---------- Aviso fijo ----------
+      avisoBox.textContent = `Estado actual: ${d.estatus}`;
+      setColor(avisoBox, d.estatus);
+
+      // ---------- Monitoreo ----------
+      const idReporte = id;
+      let ultimoEstatus = d.estatus;
+
+      setInterval(() => {
+        fetch(`php/estado_reporte.php?id=${idReporte}`)
+          .then(r => r.json())
+          .then(d2 => {
+            if (d2.error) return;
+            if (d2.estatus !== ultimoEstatus){
+              ultimoEstatus = d2.estatus;
+              document.getElementById("estado-actual").textContent = d2.estatus;
+              avisoBox.textContent = `Estado actual: ${d2.estatus}`;
+              setColor(avisoBox, d2.estatus);
+            }
+          })
+          .catch(()=>{});
+      }, 30000);              // cada 30 s
+
+    }catch(err){
+      detalle.innerHTML = `<li>Error de red: ${err}</li>`;
+    }
+  });
+
+  // Cambiar color según el estatus
+  function setColor(el, estatus){
+    let color = "#00ff00";                 // verde normal
+    if (estatus === "Pendiente")  color = "#ffaa00"; // ámbar
+    if (estatus === "Finalizado") color = "#00cc66"; // verde oscuro
+    el.style.background = color;
+  }
   </script>
 </body>
 </html>
