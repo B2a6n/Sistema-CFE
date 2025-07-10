@@ -17,9 +17,9 @@
 
   <!-- Panel de información del usuario -->
   <div class="info-usuario">
-    <h2>Bienvenido, Usuario</h2>
-    <p><strong>Nombre:</strong> Juan Pérez</p>
-    <p><strong>Correo:</strong> juan.perez@email.com</p>
+    <h2 id="titulo-bienvenida">Bienvenido, Usuario</h2>
+    <p><strong>Nombre:</strong> <span id="nombre-usuario">Juan Pérez</span></p>
+    <p><strong>Correo:</strong> <span id="correo-usuario">juan.perez@email.com</span></p>
     <p><strong>Contrato:</strong> 123456789</p>
   </div>
 
@@ -31,10 +31,8 @@
     <a href="#" onclick="cerrarSesion()"><span>🏛️</span> Cerrar Sesión</a>
   </div>
 
-  <!-- Particles.js -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
-    
     particlesJS("particles-js", {
       particles: {
         number: { value: 80 },
@@ -59,21 +57,21 @@
       retina_detect: true
     });
   </script>
+
   <script>
-  function cerrarSesion() {
-    // Elimina datos almacenados (puedes personalizar según tu sistema)
-    localStorage.clear();
-    sessionStorage.clear();
+    document.addEventListener("DOMContentLoaded", () => {
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      if (usuario) {
+        document.getElementById("titulo-bienvenida").textContent = `Bienvenido, ${usuario.nombre}`;
+        document.getElementById("nombre-usuario").textContent = `${usuario.nombre} ${usuario.apellidos}`;
+        document.getElementById("correo-usuario").textContent = usuario.correo;
+      }
+    });
 
-    // Redirige al login
-    window.location.href = "cliente-login.html";
-  }
-</script>
-<script>
-  function cerrarSesion() {
-    window.location.href = "index.html"; // o "login.html" según tu archivo real
-  }
-</script>
-
+    function cerrarSesion() {
+      localStorage.removeItem("usuario");
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
