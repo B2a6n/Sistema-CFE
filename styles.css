@@ -398,3 +398,181 @@ footer {
 .boton-regresar a:hover {
   background-color: #1a1a1a;
 }
+
+.top-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 10px 30px 0 0;
+  position: relative;
+  z-index: 2;
+}
+
+.boton-volver {
+  margin: 5px;
+  padding: 10px 20px;
+  background-color: #2e2e2e;
+  color: white;
+  text-decoration: none;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.boton-volver:hover {
+  background-color: #444;
+}
+/* ======= cliente-reporte.html ======= */
+
+.registro-cliente {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: #001d1d;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.encabezado {
+  background-color: white;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.logo-cfe {
+  height: 45px;
+}
+
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.top-buttons {
+  position: absolute;
+  top: 85px;
+  right: 30px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.boton-volver {
+  background-color: #1e1e1e;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.boton-volver:hover {
+  background-color: #2e2e2e;
+}
+
+.formulario-panel {
+  position: relative;
+  z-index: 2;
+  max-width: 400px;
+  margin: 140px auto;
+  background-color: #1e1e1e;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,255,0,0.2);
+  color: white;
+}
+
+.formulario-panel h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.formulario-panel label {
+  display: block;
+  margin: 15px 0 5px;
+}
+
+.formulario-panel input,
+.formulario-panel select,
+.formulario-panel textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #333;
+  color: white;
+  font-size: 1rem;
+}
+
+.formulario-panel textarea {
+  resize: none;
+  height: 80px;
+}
+
+.boton-verde {
+  background-color: #00cc66;
+  color: white;
+  padding: 12px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.boton-verde:hover {
+  background-color: #00994d;
+}
+/* ======= cliente-consulta-rep.html ======= */
+
+.progreso-reporte {
+.progreso-reporte {
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+}
+
+.estado {
+  border-left: 4px solid limegreen;
+  padding-left: 15px;
+  margin-bottom: 25px;
+}
+
+.estado h3 {
+  margin: 0;
+  color: #00ff00;
+}
+
+.estado small {
+  display: block;
+  color: #ccc;
+  margin-bottom: 5px;
+}
+
+.btn-regresar {
+  position: absolute;
+  top: 85px;
+  right: 30px;
+  background-color: #00ff00;
+  color: black;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-regresar:hover {
+  background-color: #00cc00;
+}
