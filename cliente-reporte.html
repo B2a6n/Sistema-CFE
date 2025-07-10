@@ -20,30 +20,31 @@
   <div class="top-buttons">
     <a href="cliente-inicio.html" class="boton-volver">🔙 Regresar a Inicio</a>
     <a href="cliente-consulta-rep.html" class="boton-volver">📋 Consultar Reporte de Falla</a>
-
   </div>
 
   <!-- Panel principal -->
   <div class="formulario-panel">
     <h2>Generar Reporte de Falla</h2>
 
-    <form>
+   <form id="form-reporte" action="php/guardar_reporte.php" method="POST">
       <label for="tipo">Tipo de Falla:</label>
-      <select id="tipo" name="tipo">
+      <select id="tipo" name="tipo" required>
         <option value="">Seleccione</option>
-        <option value="apagón">Apagón</option>
-        <option value="voltaje">Variación de voltaje</option>
-        <option value="corto">Corto circuito</option>
+        <option value="Apagón">Apagón</option>
+        <option value="Variación de voltaje">Variación de voltaje</option>
+        <option value="Corto circuito">Corto circuito</option>
       </select>
 
       <label for="ubicacion">Ubicación de la Falla:</label>
-      <input type="text" id="ubicacion" name="ubicacion" placeholder="Calle, número, colonia...">
+      <input type="text" id="ubicacion" name="ubicacion" placeholder="Calle, número, colonia..." required>
 
       <label for="observaciones">Observaciones:</label>
-      <textarea id="observaciones" name="observaciones" placeholder="Detalles adicionales..."></textarea>
+      <textarea id="observaciones" name="observaciones" placeholder="Detalles adicionales..." required></textarea>
 
       <button type="submit" class="boton-verde">Guardar Reporte</button>
     </form>
+
+    <p id="mensaje-exito" style="display: none;">✅ Reporte guardado correctamente.</p>
   </div>
 
   <!-- Particles.js -->
@@ -73,5 +74,40 @@
       retina_detect: true
     });
   </script>
-</body>
-</html>
+
+<!-- Script para guardar el reporte -->
+<<!-- Script para guardar el reporte vía fetch -->
+<script>
+document.getElementById("form-reporte").addEventListener("submit", async function(e){
+  e.preventDefault();      // evitamos envío tradicional
+
+  const tipo  = document.getElementById("tipo").value.trim();
+  const ubic  = document.getElementById("ubicacion").value.trim();
+  const obs   = document.getElementById("observaciones").value.trim();
+
+  if (!tipo || !ubic || !obs) {
+    alert("Completa todos los campos");
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append("tipo",          tipo);
+  fd.append("ubicacion",     ubic);
+  fd.append("observaciones", obs);
+
+  try {
+    const r = await fetch("php/guardar_reporte.php", { method:"POST", body:fd });
+    const d = await r.json();
+
+    if (d.ok) {
+      // Guardamos folio y redirigimos
+      localStorage.setItem("id_reporte", d.id_reporte);
+      location.href = "cliente-consulta-rep.html";
+    } else {
+      alert("Error: " + d.error);
+    }
+  } catch(err) {
+    alert("Fallo de red: " + err);
+  }
+});
+</script>
