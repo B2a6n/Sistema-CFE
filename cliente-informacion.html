@@ -5,6 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Información General</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .info-general {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      padding: 40px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .panel {
+      background-color: rgba(45, 45, 45, 0.95);
+      color: white;
+      padding: 30px;
+      border-radius: 20px;
+      width: 380px;
+      min-height: 280px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      font-family: Arial, sans-serif;
+    }
+
+    .panel h2 {
+      margin-top: 0;
+      color: #00cc66;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .panel p {
+      margin: 8px 0;
+    }
+
+    .boton-regresar a {
+      background-color: #2d2d2d;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+      transition: background 0.3s ease;
+    }
+
+    .boton-regresar a:hover {
+      background-color: #1a1a1a;
+    }
+
+    .boton-regresar {
+      position: absolute;
+      top: 85px;
+      right: 30px;
+      z-index: 3;
+    }
+  </style>
 </head>
 <body class="registro-cliente">
   <!-- Fondo animado -->
@@ -25,32 +81,23 @@
     <!-- Panel del usuario -->
     <div class="panel">
       <h2>Información del Usuario</h2>
-      <hr />
-      <p><strong>Nombre:</strong> Juan</p>
-      <p><strong>Apellidos:</strong> Pérez Ramírez</p>
-      <p><strong>CURP:</strong> PEPR010101HDFRRN00</p>
-      <p><strong>Teléfono:</strong> 5522334455</p>
-      <p><strong>Correo:</strong> juan.perez@example.com</p>
-      <p><strong>Fecha de nacimiento:</strong> 2001-01-01</p>
+      <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+      <p><strong>Apellidos:</strong> <span id="apellidos"></span></p>
+      <p><strong>CURP:</strong> <span id="curp"></span></p>
+      <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
+      <p><strong>Correo:</strong> <span id="correo"></span></p>
+      <p><strong>Fecha de nacimiento:</strong> <span id="fecha-nacimiento"></span></p>
     </div>
 
     <!-- Panel de domicilios -->
     <div class="panel">
-      <h2>Domicilios Asociados</h2>
-      <hr />
-      <p><strong>Calle:</strong> Av. Reforma</p>
-      <p><strong>Número:</strong> 123</p>
-      <p><strong>Colonia:</strong> Centro</p>
-      <p><strong>CP:</strong> 06000</p>
-      <p><strong>Municipio:</strong> Cuauhtémoc</p>
-      <p><strong>Estado:</strong> CDMX</p>
-      <hr />
-      <p><strong>Calle:</strong> Insurgentes Sur</p>
-      <p><strong>Número:</strong> 456</p>
-      <p><strong>Colonia:</strong> Del Valle</p>
-      <p><strong>CP:</strong> 03100</p>
-      <p><strong>Municipio:</strong> Benito Juárez</p>
-      <p><strong>Estado:</strong> CDMX</p>
+      <h2>Domicilio Registrado</h2>
+      <p><strong>Calle:</strong> <span id="calle"></span></p>
+      <p><strong>Número:</strong> <span id="numero"></span></p>
+      <p><strong>Colonia:</strong> <span id="colonia"></span></p>
+      <p><strong>Ciudad:</strong> <span id="ciudad"></span></p>
+      <p><strong>CP:</strong> <span id="cp"></span></p>
+      <p><strong>Estado:</strong> <span id="estado"></span></p>
     </div>
   </div>
 
@@ -79,6 +126,31 @@
         }
       },
       retina_detect: true
+    });
+  </script>
+
+  <!-- Script para mostrar datos desde localStorage -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      if (usuario) {
+        document.getElementById("nombre").textContent = usuario.nombre || "No disponible";
+        document.getElementById("apellidos").textContent = usuario.apellidos || "No disponible";
+        document.getElementById("curp").textContent = usuario.curp || "No disponible";
+        document.getElementById("telefono").textContent = usuario.telefono || "No disponible";
+        document.getElementById("correo").textContent = usuario.correo || "No disponible";
+        document.getElementById("fecha-nacimiento").textContent = usuario.fecha_nacimiento || "No disponible";
+
+        document.getElementById("calle").textContent = usuario.calle || "No disponible";
+        document.getElementById("numero").textContent = usuario.numero || "No disponible";
+        document.getElementById("colonia").textContent = usuario.colonia || "No disponible";
+        document.getElementById("ciudad").textContent = usuario.ciudad || "No disponible";
+        document.getElementById("cp").textContent = usuario.cp || "No disponible";
+        document.getElementById("estado").textContent = usuario.estado || "No disponible";
+      } else {
+        alert("No hay datos del usuario disponibles. Por favor, inicia sesión nuevamente.");
+        window.location.href = "index.html";
+      }
     });
   </script>
 </body>
