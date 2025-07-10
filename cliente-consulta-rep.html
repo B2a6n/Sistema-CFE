@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consulta de Reporte</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="registro-cliente">
+  <div id="particles-js"></div>
+
+  <!-- Encabezado -->
+  <div class="encabezado">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
+  </div>
+
+  <!-- Botón regresar -->
+  <a href="cliente-inicio.html" class="btn-regresar">Regresar a Inicio</a>
+
+  <!-- Seguimiento del reporte -->
+  <div class="progreso-reporte" style="position: relative; z-index: 2; color: white;">
+    <h2 style="text-align: center;">Seguimiento del Reporte</h2>
+
+    <div class="estado">
+      <h3>Reporte Creado</h3>
+      <small>📅 2025-07-08 🕒 10:00 AM</small>
+      <p>El reporte fue registrado correctamente en el sistema.</p>
+    </div>
+
+    <div class="estado">
+      <h3>En Revisión</h3>
+      <small>📅 2025-07-08 🕒 12:00 PM</small>
+      <p>Un técnico ha comenzado la revisión del reporte.</p>
+    </div>
+
+    <div class="estado">
+      <h3>En Proceso</h3>
+      <small>📅 2025-07-09 🕒 9:00 AM</small>
+      <p>Se está realizando la validación y solución del problema.</p>
+    </div>
+
+    <div class="estado">
+      <h3>Finalizado</h3>
+      <small>📅 2025-07-09 🕒 3:30 PM</small>
+      <p>El servicio ha sido restablecido satisfactoriamente.</p>
+    </div>
+
+    <hr style="border-color: #00ff00; margin: 30px 0;" />
+
+    <h3 style="color: #00ff00;">Detalles del Reporte</h3>
+    <ul>
+      <li><strong>Tipo de Falla:</strong> Apagón general</li>
+      <li><strong>Ubicación:</strong> Calle Reforma #123, CDMX</li>
+      <li><strong>Descripción:</strong> Zona completa sin luz desde la madrugada.</li>
+      <li><strong>Estado actual:</strong> Finalizado</li>
+    </ul>
+  </div>
+
+  <!-- Fondo animado -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ff00" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#00ff00",
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable: true, speed: 2 }
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "repulse" }
+        }
+      },
+      retina_detect: true
+    });
+  </script>
+</body>
+</html>
