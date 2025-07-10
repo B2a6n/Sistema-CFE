@@ -1,43 +1,39 @@
 <?php
+session_start();
 require 'conexion.php';
 
-// Verificar si se enviaron los campos necesarios
-if (isset($_POST['correo'], $_POST['password'])) {
-    $correo = trim($_POST['correo']);
-    $password = $_POST['password'];
+// ───── 1. CAPTURA DE DATOS ─────
+$correo     = $_POST['correo']     ?? '';
+$contrasena = $_POST['contrasena'] ?? '';
 
-    // Buscar usuario por correo
-    $stmt = $conn->prepare("SELECT u.id_usuario, u.nombre, u.apellidos, u.correo, s.numero_servicio, u.contrasena
-                             FROM usuarios u
-                             JOIN servicios s ON u.id_usuario = s.id_usuario
-                             WHERE u.correo = ? LIMIT 1");
-    $stmt->bind_param("s", $correo);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
+// ───── 2. VALIDAMOS EN BD ─────
+$sql = "SELECT u.id_usuario, u.nombre, u.apellidos,
+               s.id_servicio
+        FROM   usuarios u
+        JOIN   servicios s ON s.id_usuario = u.id_usuario
+        WHERE  u.correo = ? AND u.contrasena = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $correo, $contrasena);
+$stmt->execute();
+$res = $stmt->get_result();
 
-    if ($resultado->num_rows === 1) {
-        $usuario = $resultado->fetch_assoc();
+if ($row = $res->fetch_assoc()) {
+    // ───── 3. INICIAR SESIÓN ─────
+    $_SESSION['id_usuario']  = $row['id_usuario'];
+    $_SESSION['id_servicio'] = $row['id_servicio'];
 
-        // Verificar contraseña
-        if (password_verify($password, $usuario['contrasena'])) {
-            // Iniciar sesión y redirigir
-            session_start();
-            $_SESSION['id_usuario'] = $usuario['id_usuario'];
-            $_SESSION['nombre'] = $usuario['nombre'];
-            $_SESSION['numero_servicio'] = $usuario['numero_servicio'];
+    $stmt->close();
+    $conn->close();
 
-            echo "<script>window.location.href = '../cliente/cliente-inicio.html';</script>";
-            exit;
-        } else {
-            echo "<script>alert('❌ Contraseña incorrecta'); window.history.back();</script>";
-            exit;
-        }
-    } else {
-        echo "<script>alert('❌ Usuario no encontrado'); window.history.back();</script>";
-        exit;
-    }
+    // Éxito → al panel del cliente
+    header("Location: ../cliente-inicio.html");
+    exit;
 } else {
-    echo "<script>alert('❌ Faltan datos'); window.history.back();</script>";
+    $stmt->close();
+    $conn->close();
+
+    // Falla → de vuelta al login con query ?error
+    header("Location: ../index.html?error=1");
     exit;
 }
 ?>
