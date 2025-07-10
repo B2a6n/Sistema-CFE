@@ -1,57 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Reporte de Falla</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generar Reporte de Falla</title>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body>
-    <div id="particles-js"></div>
+<body class="registro-cliente">
 
-    <div class="encabezado">
-        <img src="img/logo_cfe.png" alt="Logo CFE" class="logo-cfe">
-    </div>
+  <!-- Fondo animado -->
+  <div id="particles-js"></div>
 
-    <div class="formulario-reporte-container">
-        <h2>Generar Reporte de Falla</h2>
-        <form id="form-reporte">
-            <label for="tipoFalla">Tipo de Falla:</label>
-            <select id="tipoFalla" name="tipoFalla" required>
-                <option value="">Seleccione</option>
-                <option value="apagón">Apagón</option>
-                <option value="cable">Cable caído</option>
-                <option value="medidor">Falla en medidor</option>
-                <option value="otros">Otros</option>
-            </select>
+  <!-- Línea superior con logo -->
+  <div class="encabezado">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe"/>
+  </div>
 
-            <label for="ubicacion">Ubicación de la Falla:</label>
-            <input type="text" id="ubicacion" name="ubicacion" placeholder="Calle, número, colonia..." required>
+  <!-- Botones de navegación -->
+  <div class="top-buttons">
+    <a href="cliente-inicio.html" class="boton-volver">🔙 Regresar a Inicio</a>
+    <a href="cliente-consulta-rep.html" class="boton-volver">📋 Consultar Reporte de Falla</a>
 
-            <label for="observaciones">Observaciones:</label>
-            <textarea id="observaciones" name="observaciones" rows="4" placeholder="Detalles adicionales..."></textarea>
+  </div>
 
-            <button type="submit" class="btn">Guardar Reporte</button>
-        </form>
+  <!-- Panel principal -->
+  <div class="formulario-panel">
+    <h2>Generar Reporte de Falla</h2>
 
-        <div id="mensaje-exito"></div>
-    </div>
+    <form>
+      <label for="tipo">Tipo de Falla:</label>
+      <select id="tipo" name="tipo">
+        <option value="">Seleccione</option>
+        <option value="apagón">Apagón</option>
+        <option value="voltaje">Variación de voltaje</option>
+        <option value="corto">Corto circuito</option>
+      </select>
 
-    <script src="js/particles.min.js"></script>
-    <script src="js/particles-config.js"></script>
-    <script>
-        // Validación y simulación de envío
-        document.getElementById('form-reporte').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const tipo = document.getElementById('tipoFalla').value;
-            const ubicacion = document.getElementById('ubicacion').value;
+      <label for="ubicacion">Ubicación de la Falla:</label>
+      <input type="text" id="ubicacion" name="ubicacion" placeholder="Calle, número, colonia...">
 
-            if (tipo && ubicacion) {
-                document.getElementById('mensaje-exito').innerText = '✅ Reporte guardado con éxito. Folio asignado: #' + Math.floor(Math.random() * 100000);
-                this.reset();
-            } else {
-                alert('Por favor complete los campos requeridos.');
-            }
-        });
-    </script>
+      <label for="observaciones">Observaciones:</label>
+      <textarea id="observaciones" name="observaciones" placeholder="Detalles adicionales..."></textarea>
+
+      <button type="submit" class="boton-verde">Guardar Reporte</button>
+    </form>
+  </div>
+
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ff00" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#00ff00",
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable: true, speed: 2 }
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "repulse" }
+        }
+      },
+      retina_detect: true
+    });
+  </script>
 </body>
 </html>
