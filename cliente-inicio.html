@@ -3,69 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cliente - Inicio</title>
+  <title>Cliente – Inicio</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body class="registro-cliente">
   <!-- Fondo animado -->
   <div id="particles-js"></div>
 
-  <!-- Encabezado con logo -->
-  <div class="encabezado">
+  <!-- Encabezado -->
+  <header class="encabezado">
     <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
-  </div>
+  </header>
 
-  <!-- Panel de información del usuario -->
-  <div class="info-usuario">
-    <h2 id="titulo-bienvenida">Bienvenido, Usuario</h2>
-    <p><strong>Nombre:</strong> <span id="nombre-usuario">Juan Pérez</span></p>
-    <p><strong>Correo:</strong> <span id="correo-usuario">juan.perez@email.com</span></p>
-    <p><strong>Contrato:</strong> 123456789</p>
-  </div>
+  <!-- Tarjeta con datos del usuario -->
+  <section class="info-usuario">
+    <h2 id="bienvenida">Bienvenido</h2>
 
-  <!-- Botones de opciones -->
-  <div class="menu-opciones">
+    <p><strong>Nombre:</strong>   <span id="nombreComp">—</span></p>
+    <p><strong>Correo:</strong>   <span id="correoComp">—</span></p>
+    <p><strong>Contrato:</strong> <span id="contratoComp">—</span></p>
+  </section>
+
+  <!-- Menú lateral -->
+  <nav class="menu-opciones">
     <a href="cliente-informacion.html"><span>📋</span> Información General</a>
     <a href="cliente-modificar.html"><span>🛠️</span> Modificar Datos</a>
     <a href="cliente-reporte.html"><span>⚡</span> Reporte de Fallas</a>
     <a href="#" onclick="cerrarSesion()"><span>🏛️</span> Cerrar Sesión</a>
-  </div>
+  </nav>
 
+  <!-- Partículas -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
     particlesJS("particles-js", {
       particles: {
-        number: { value: 80 },
-        color: { value: "#00ff00" },
-        shape: { type: "circle" },
+        number:  { value: 80 },
+        color:   { value: "#00ff00" },
+        shape:   { type: "circle" },
         opacity: { value: 0.5 },
-        size: { value: 3 },
+        size:    { value: 3 },
         line_linked: {
-          enable: true,
-          distance: 150,
-          color: "#00ff00",
-          opacity: 0.4,
-          width: 1
+          enable: true, distance: 150, color: "#00ff00",
+          opacity: 0.4, width: 1
         },
         move: { enable: true, speed: 2 }
       },
       interactivity: {
-        events: {
-          onhover: { enable: true, mode: "repulse" }
-        }
+        events: { onhover: { enable: true, mode: "repulse" } }
       },
       retina_detect: true
     });
   </script>
 
+  <!-- Cargar datos del usuario -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const usuario = JSON.parse(localStorage.getItem("usuario"));
-      if (usuario) {
-        document.getElementById("titulo-bienvenida").textContent = `Bienvenido, ${usuario.nombre}`;
-        document.getElementById("nombre-usuario").textContent = `${usuario.nombre} ${usuario.apellidos}`;
-        document.getElementById("correo-usuario").textContent = usuario.correo;
+      if (!usuario) {
+        window.location.href = "index.html";
+        return;
       }
+
+      const nombreCompleto = `${usuario.nombre} ${usuario.apellidos ?? ""}`.trim();
+
+      document.getElementById("bienvenida").textContent = `Bienvenido, ${usuario.nombre}`;
+      document.getElementById("nombreComp").textContent = nombreCompleto;
+      document.getElementById("correoComp").textContent = usuario.correo ?? "—";
+      /* primero intenta mostrar el número de contrato amigable;
+         si no existe, cae en id_servicio y, en última instancia, “—” */
+      document.getElementById("contratoComp").textContent =
+        usuario.numero_contrato ?? usuario.id_servicio ?? "—";
     });
 
     function cerrarSesion() {
