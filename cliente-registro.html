@@ -3,63 +3,96 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro de Cliente</title>
+  <title>Registro de Cliente – CFE</title>
+
   <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body class="registro-cliente">
+  <!-- Fondo animado -->
   <div id="background"></div>
 
+  <!-- Encabezado -->
   <header class="encabezado">
     <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
   </header>
 
+  <!-- Formulario registro -->
   <main class="form-container">
     <h1>Registro de Cliente</h1>
 
-    <!--  IMPORTANTÍSIMO: action y method -->
-    <form id="formRegistroCliente" action="php/registro.php" method="POST">
-
+    <form id="form-registro">
+      <!-- ── Nombre completo ── -->
       <h3>Nombre completo</h3>
-      <input type="text" name="nombre"          placeholder="Nombre"           required />
-      <input type="text" name="apellidoPaterno" placeholder="Apellido paterno" required />
-      <input type="text" name="apellidoMaterno" placeholder="Apellido materno" required />
+      <input id="nombre"    name="nombre"    type="text" placeholder="Nombre"    required />
+      <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos" required />
 
+      <!-- ── Dirección ── -->
       <h3>Dirección</h3>
-      <input type="text" name="calle"   placeholder="Calle"   required />
-      <input type="text" name="numero"  placeholder="Número"  required />
-      <input type="text" name="colonia" placeholder="Colonia" required />
-      <input type="text" name="ciudad"  placeholder="Ciudad"  required />
-      <input type="text" name="cp"      placeholder="Código Postal" required />
+      <input name="calle"         type="text" placeholder="Calle"          required />
+      <input name="numero"        type="text" placeholder="Número"         required />
+      <input name="colonia"       type="text" placeholder="Colonia"        required />
+      <input name="municipio"     type="text" placeholder="Municipio"      required />
+      <input name="codigo_postal" type="text" placeholder="Código Postal"  required />
 
       <label for="estado">Estado:</label>
-      <select name="estado" id="estado" required>
+      <select id="estado" name="estado" required>
         <option value="">--Selecciona un estado--</option>
-        <option>CDMX</option>
+        <option>Aguascalientes</option>
+        <option>Baja&nbsp;California</option>
+        <option>Baja&nbsp;California&nbsp;Sur</option>
+        <option>Campeche</option>
+        <option>Chiapas</option>
+        <option>Chihuahua</option>
+        <option>Ciudad&nbsp;de&nbsp;México</option>
+        <option>Coahuila</option>
+        <option>Colima</option>
+        <option>Durango</option>
+        <option>Guanajuato</option>
+        <option>Guerrero</option>
+        <option>Hidalgo</option>
         <option>Jalisco</option>
-        <option>Nuevo León</option>
+        <option>México&nbsp;(Edo.)</option>
+        <option>Michoacán</option>
+        <option>Morelos</option>
+        <option>Nayarit</option>
+        <option>Nuevo&nbsp;León</option>
+        <option>Oaxaca</option>
+        <option>Puebla</option>
+        <option>Querétaro</option>
+        <option>Quintana&nbsp;Roo</option>
+        <option>San&nbsp;Luis&nbsp;Potosí</option>
+        <option>Sinaloa</option>
+        <option>Sonora</option>
+        <option>Tabasco</option>
+        <option>Tamaulipas</option>
+        <option>Tlaxcala</option>
         <option>Veracruz</option>
         <option>Yucatán</option>
+        <option>Zacatecas</option>
       </select>
 
+      <!-- ── Datos de cuenta y personales ── -->
       <label for="curp">CURP:</label>
-      <input type="text" name="curp" id="curp" required />
+      <input id="curp" name="curp" type="text" required />
 
       <label for="telefono">Teléfono:</label>
-      <input type="text" name="telefono" id="telefono" required />
+      <input id="telefono" name="telefono" type="text" required />
 
       <label for="correo">Correo electrónico:</label>
-      <input type="email" name="correo" id="correo" required />
+      <input id="correo" name="correo" type="email" required />
 
-      <label for="password">Contraseña:</label>
-      <input type="password" name="password" id="password" required />
+      <label for="contrasena">Contraseña:</label>
+      <input id="contrasena" name="contrasena" type="password" required />
 
       <label for="confirmar">Confirma tu contraseña:</label>
-      <input type="password" name="confirmar" id="confirmar" required />
+      <input id="confirmar" name="confirmar" type="password" required />
 
+      <!-- ── Fecha de nacimiento ── -->
       <h3>Fecha de nacimiento</h3>
-      <input type="number" name="dia"  placeholder="Día"  min="1"  max="31"  required />
-      <input type="number" name="mes"  placeholder="Mes"  min="1"  max="12"  required />
-      <input type="number" name="anio" placeholder="Año"  min="1900" max="2025" required />
+      <input name="dia"  type="number" placeholder="Día"  min="1"  max="31"  required />
+      <input name="mes"  type="number" placeholder="Mes"  min="1"  max="12"  required />
+      <input name="anio" type="number" placeholder="Año"  min="1900" max="2025" required />
 
       <button type="submit" class="btn">Registrarse</button>
     </form>
@@ -69,19 +102,25 @@
     <p>© 2025 Sistema CFE | Todos los derechos reservados</p>
   </footer>
 
-  <!-- Fondo animado (opcional) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+  <!-- Vanta Net -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
     VANTA.NET({
       el: "#background",
-      mouseControls: true, touchControls: true,
-      minHeight: 200, minWidth: 200,
-      color: 0x00ff99, backgroundColor: 0x000000,
-      points: 12, maxDistance: 20, spacing: 16
+      mouseControls: true,
+      touchControls: true,
+      minHeight: 200,
+      minWidth: 200,
+      color: 0x00ff99,
+      backgroundColor: 0x000000,
+      points: 12,
+      maxDistance: 20,
+      spacing: 16
     });
   </script>
 
-  <!--  Se ELIMINA el JavaScript que usaba localStorage -->
+  <!-- Lógica del frontend -->
+  <script src="main.js"></script>
 </body>
 </html>
