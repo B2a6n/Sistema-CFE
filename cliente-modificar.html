@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modificar Datos</title>
+  <title>Modificar Datos – CFE</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="registro-cliente">
   <!-- Fondo animado -->
   <div id="particles-js"></div>
 
-  <!-- Encabezado con logo -->
+  <!-- Encabezado -->
   <header class="encabezado">
     <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
   </header>
@@ -24,7 +24,7 @@
   <div class="form-container" style="background:#1e1e1e; margin-top:140px;">
     <h2>Modificar Datos del Usuario</h2>
 
-    <form id="form-modificar" action="php/actualizar_usuario.php" method="POST">
+    <form id="form-modificar">
       <label>Nuevo Correo Electrónico:</label>
       <input type="email" name="correo" id="correo" required />
 
@@ -41,28 +41,80 @@
     </form>
   </div>
 
-  <!-- Fondo animado -->
+  <!-- Partículas -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
-    particlesJS("particles-js",{particles:{number:{value:80},color:{value:"#00ff00"},
-    shape:{type:"circle"},opacity:{value:0.5},size:{value:3},
-    line_linked:{enable:true,distance:150,color:"#00ff00",opacity:0.4,width:1},
-    move:{enable:true,speed:2}},interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
-    retina_detect:true});
+    particlesJS("particles-js",{
+      particles:{number:{value:80},color:{value:"#00ff00"},shape:{type:"circle"},
+      opacity:{value:.5},size:{value:3},
+      line_linked:{enable:true,distance:150,color:"#00ff00",opacity:.4,width:1},
+      move:{enable:true,speed:2}},
+      interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
+      retina_detect:true
+    });
+  </script>
 
-    // Cargar datos actuales vía fetch
-    fetch("php/consultar_datos_usuario.php")
-      .then(r=>r.json())
-      .then(u=>{
-        if(u.error){ alert(u.error); return; }
-        correo.value   = u.correo;
-        telefono.value = u.telefono ?? '';
-      });
+  <!-- Script de funcionalidad -->
+  <script>
+    const API = 'http://localhost:3000/api';
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-    // Validar contraseñas iguales
-    form-modificar.addEventListener("submit", e => {
-      if(password.value !== confirmar.value){
-        alert("Las contraseñas no coinciden"); e.preventDefault();
+    if (!usuario) {
+      alert("No hay sesión. Inicia nuevamente.");
+      location.href = "index.html";
+    }
+
+    const form_modificar = document.getElementById("form-modificar");
+    const correo = document.getElementById("correo");
+    const telefono = document.getElementById("telefono");
+    const password = document.getElementById("password");
+    const confirmar = document.getElementById("confirmar");
+
+    // Prellenar campos
+    correo.value = usuario.correo;
+    telefono.value = usuario.telefono ?? "";
+
+    form_modificar.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      if (password.value !== confirmar.value) {
+        alert("Las contraseñas no coinciden");
+        return;
+      }
+
+      const body = {
+        correo: correo.value.trim(),
+        contrasena: password.value.trim(),
+        telefono: telefono.value.trim()
+      };
+
+      // Limpiar campos vacíos
+      Object.keys(body).forEach(k => !body[k] && delete body[k]);
+
+      try {
+        const res = await fetch(`${API}/usuario/${usuario.id_usuario}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          // Actualizar localStorage
+          localStorage.setItem('usuario', JSON.stringify({
+            ...usuario,
+            ...data.usuario
+          }));
+
+          alert("Datos actualizados correctamente");
+          location.href = "cliente-inicio.html";
+        } else {
+          alert(data.error || "No se pudo actualizar");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Servidor no disponible");
       }
     });
   </script>
