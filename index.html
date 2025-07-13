@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iniciar Sesión - CFE</title>
+  <title>Iniciar Sesión – CFE</title>
+
   <link rel="stylesheet" href="css/styles.css" />
+
   <style>
-    #vanta-bg{
-      width:100%;height:100%;
-      position:fixed;top:0;left:0;z-index:-1;
-    }
+    #vanta-bg{position:fixed; inset:0; width:100%; height:100%; z-index:-1;}
     body{overflow:hidden;}
   </style>
 </head>
 <body>
+  <!-- Fondo animado -->
   <div id="vanta-bg"></div>
 
+  <!-- Encabezado -->
   <header class="encabezado">
     <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
   </header>
@@ -24,10 +25,9 @@
   <main class="login-container">
     <h2>Iniciar Sesión</h2>
 
-    <!--  IMPORTANTÍSIMO: action y method  -->
-    <form id="formLogin" action="php/login.php" method="POST">
-      <input type="email" name="correo"    placeholder="Correo electrónico" required />
-      <input type="password" name="contrasena" placeholder="Contraseña" required />
+    <form id="form-login">
+      <input id="correo"     name="correo"     type="email"    placeholder="Correo electrónico" required />
+      <input id="contrasena" name="contrasena" type="password" placeholder="Contraseña"         required />
       <button type="submit" class="btn">Entrar</button>
     </form>
 
@@ -46,18 +46,18 @@
   <script>
     VANTA.GLOBE({
       el:"#vanta-bg",
-      mouseControls:true, touchControls:true,
-      minHeight:200, minWidth:200,
-      color:0x00ff99, color2:0x003f2f,
-      backgroundColor:0x000000, size:1.2
+      mouseControls:true,
+      touchControls:true,
+      minHeight:200,
+      minWidth:200,
+      color:0x00ff99,
+      color2:0x003f2f,
+      backgroundColor:0x000000,
+      size:1.2
     });
   </script>
-  <script>
-  // Mostrar alerta si llega ?error=1
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("error") === "1") {
-    alert("Correo o contraseña incorrectos.");
-  }
-</script>
+
+  <!-- Lógica de frontend -->
+  <script src="main.js"></script>
 </body>
 </html>
