@@ -3,111 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Generar Reporte de Falla</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <title>Generar Reporte de Falla – CFE</title>
+  <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body class="registro-cliente">
-
   <!-- Fondo animado -->
   <div id="particles-js"></div>
 
-  <!-- Línea superior con logo -->
-  <div class="encabezado">
+  <!-- Encabezado -->
+  <header class="encabezado">
     <img src="img/logo.png" alt="Logo CFE" class="logo-cfe"/>
-  </div>
+  </header>
 
-  <!-- Botones de navegación -->
-  <div class="top-buttons">
-    <a href="cliente-inicio.html" class="boton-volver">🔙 Regresar a Inicio</a>
+  <!-- Botones navegación -->
+  <div style="position:absolute;top:90px;right:40px;z-index:2;display:flex;gap:12px;">
+    <a href="cliente-inicio.html"       class="boton-volver">🔙 Regresar a Inicio</a>
     <a href="cliente-consulta-rep.html" class="boton-volver">📋 Consultar Reporte de Falla</a>
   </div>
 
-  <!-- Panel principal -->
-  <div class="formulario-panel">
+  <!-- Panel reporte -->
+  <div class="form-container" style="background:#1e1e1e;margin-top:140px;max-width:520px;">
     <h2>Generar Reporte de Falla</h2>
 
-   <form id="form-reporte" action="php/guardar_reporte.php" method="POST">
+    <form id="form-reporte">
       <label for="tipo">Tipo de Falla:</label>
-      <select id="tipo" name="tipo" required>
+      <select id="tipo" required>
         <option value="">Seleccione</option>
-        <option value="Apagón">Apagón</option>
-        <option value="Variación de voltaje">Variación de voltaje</option>
-        <option value="Corto circuito">Corto circuito</option>
+        <option>Apagón</option>
+        <option>Variación de voltaje</option>
+        <option>Corto circuito</option>
       </select>
 
       <label for="ubicacion">Ubicación de la Falla:</label>
-      <input type="text" id="ubicacion" name="ubicacion" placeholder="Calle, número, colonia..." required>
+      <input id="ubicacion" type="text" placeholder="Calle, número, colonia..." required/>
 
-      <label for="observaciones">Observaciones:</label>
-      <textarea id="observaciones" name="observaciones" placeholder="Detalles adicionales..." required></textarea>
+      <label for="descripcion">Descripción u Observaciones:</label>
+      <textarea id="descripcion" placeholder="Detalles adicionales..." required></textarea>
 
-      <button type="submit" class="boton-verde">Guardar Reporte</button>
+      <button class="btn" style="margin-top:20px;">Guardar Reporte</button>
     </form>
 
-    <p id="mensaje-exito" style="display: none;">✅ Reporte guardado correctamente.</p>
+    <p id="mensaje-exito"
+       style="display:none;color:#0f0;margin-top:15px;font-weight:bold;">
+      ✅ Reporte guardado correctamente.
+    </p>
   </div>
 
-  <!-- Particles.js -->
+  <!-- Partículas -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
-    particlesJS("particles-js", {
-      particles: {
-        number: { value: 80 },
-        color: { value: "#00ff00" },
-        shape: { type: "circle" },
-        opacity: { value: 0.5 },
-        size: { value: 3 },
-        line_linked: {
-          enable: true,
-          distance: 150,
-          color: "#00ff00",
-          opacity: 0.4,
-          width: 1
-        },
-        move: { enable: true, speed: 2 }
-      },
-      interactivity: {
-        events: {
-          onhover: { enable: true, mode: "repulse" }
-        }
-      },
-      retina_detect: true
+    particlesJS("particles-js",{
+      particles:{number:{value:80},color:{value:"#00ff00"},shape:{type:"circle"},
+      opacity:{value:.5},size:{value:3},
+      line_linked:{enable:true,distance:150,color:"#00ff00",opacity:.4,width:1},
+      move:{enable:true,speed:2}},
+      interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
+      retina_detect:true
     });
   </script>
 
-<!-- Script para guardar el reporte -->
-<<!-- Script para guardar el reporte vía fetch -->
-<script>
-document.getElementById("form-reporte").addEventListener("submit", async function(e){
-  e.preventDefault();      // evitamos envío tradicional
+  <!-- Lógica de reporte -->
+  <script>
+    const API     = "http://localhost:3000/api";
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-  const tipo  = document.getElementById("tipo").value.trim();
-  const ubic  = document.getElementById("ubicacion").value.trim();
-  const obs   = document.getElementById("observaciones").value.trim();
-
-  if (!tipo || !ubic || !obs) {
-    alert("Completa todos los campos");
-    return;
-  }
-
-  const fd = new FormData();
-  fd.append("tipo",          tipo);
-  fd.append("ubicacion",     ubic);
-  fd.append("observaciones", obs);
-
-  try {
-    const r = await fetch("php/guardar_reporte.php", { method:"POST", body:fd });
-    const d = await r.json();
-
-    if (d.ok) {
-      // Guardamos folio y redirigimos
-      localStorage.setItem("id_reporte", d.id_reporte);
-      location.href = "cliente-consulta-rep.html";
-    } else {
-      alert("Error: " + d.error);
+    /* -------- redirigir si no hay sesión -------- */
+    if (!usuario){
+      alert("No hay sesión. Inicia nuevamente.");
+      location.href = "index.html";
     }
-  } catch(err) {
-    alert("Fallo de red: " + err);
-  }
-});
-</script>
+
+    /* -------- referencias DOM -------- */
+    const form   = document.getElementById("form-reporte");
+    const tipo   = document.getElementById("tipo");
+    const ubic   = document.getElementById("ubicacion");
+    const desc   = document.getElementById("descripcion");
+    const msgOK  = document.getElementById("mensaje-exito");
+
+    /* -------- envío -------- */
+    form.addEventListener("submit", async e=>{
+      e.preventDefault();
+
+      if (!tipo.value || !ubic.value.trim() || !desc.value.trim()){
+        alert("Completa todos los campos"); return;
+      }
+
+      try{
+        const res = await fetch(`${API}/reportes`,{
+          method : "POST",
+          headers: { "Content-Type":"application/json" },
+          body   : JSON.stringify({
+            /* clave foránea */
+            id_servicio : usuario.id_servicio,
+            /* datos de la tabla */
+            tipo_falla  : tipo.value,
+            ubicacion   : ubic.value.trim(),
+            descripcion : desc.value.trim()
+          })
+        });
+        const data = await res.json();
+
+        if (res.ok){
+          msgOK.style.display = "block";
+          /* guardamos el id del reporte para la pantalla de consulta */
+          localStorage.setItem("id_reporte", data.id_reporte);
+          setTimeout(()=> location.href = "cliente-consulta-rep.html", 1400);
+        }else{
+          alert(data.error || "No se pudo guardar el reporte");
+        }
+      }catch(err){
+        console.error(err);
+        alert("Servidor no disponible");
+      }
+    });
+  </script>
+</body>
+</html>
