@@ -2,117 +2,122 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Consulta de Reporte</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Seguimiento del Reporte – CFE</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="registro-cliente">
-  <!-- Fondo animado -->
+
+  <!-- Fondo animado ----------------------------------------------------->
   <div id="particles-js"></div>
 
-  <!-- Encabezado -->
-  <div class="encabezado">
+  <!-- Encabezado -------------------------------------------------------->
+  <header class="encabezado">
     <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
-  </div>
+  </header>
 
-  <!-- Botón regresar -->
+  <!-- Botón volver ------------------------------------------------------>
   <a href="cliente-inicio.html" class="btn-regresar">Regresar a Inicio</a>
 
-  <!-- Seguimiento del reporte -->
-  <div class="progreso-reporte" style="position: relative; z-index: 2; color: white;">
-    <h2 style="text-align: center;">Seguimiento del Reporte</h2>
+  <!-- Panel ------------------------------------------------------------->
+  <section class="progreso-reporte" style="position:relative;z-index:2;color:#fff">
+    <h2 style="text-align:center">Seguimiento del Reporte</h2>
 
-    <div class="estado" id="estado-envio">
+    <article id="estado-envio">
       <h3>Reporte Enviado</h3>
       <small id="fecha-envio"></small>
       <p>Tu reporte fue enviado correctamente y está esperando revisión.</p>
 
-      <!-- Aviso permanente del estado -->
-      <div id="aviso-estatus"></div>
-    </div>
+      <div id="aviso-estatus" style="padding:6px 10px;border-radius:6px"></div>
+    </article>
 
-    <hr style="border-color: #00ff00; margin: 30px 0;" />
+    <hr style="border-color:#0f0;margin:30px 0" />
 
-    <h3 style="color: #00ff00;">Detalles del Reporte</h3>
-    <ul id="detalle-reporte"></ul>
-  </div>
+    <h3 style="color:#0f0">Detalles del Reporte</h3>
+    <ul id="detalle-reporte" style="line-height:1.6"></ul>
+  </section>
 
-  <!-- Partículas -->
+  <!-- Partículas -------------------------------------------------------->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
-    particlesJS("particles-js", {
+    particlesJS("particles-js",{
       particles:{number:{value:80},color:{value:"#00ff00"},shape:{type:"circle"},
       opacity:{value:0.5},size:{value:3},
       line_linked:{enable:true,distance:150,color:"#00ff00",opacity:0.4,width:1},
       move:{enable:true,speed:2}},
       interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
-      retina_detect:true});
+      retina_detect:true
+    });
   </script>
 
+  <!-- Lógica ------------------------------------------------------------>
   <script>
-  document.addEventListener("DOMContentLoaded", async () => {
-    const id = localStorage.getItem("id_reporte");
-    const detalle   = document.getElementById("detalle-reporte");
-    const fechaTxt  = document.getElementById("fecha-envio");
-    const avisoBox  = document.getElementById("aviso-estatus");
+  (async ()=>{
+    /* ---------- Config ---------- */
+    const API      = "http://localhost:3000/api";
+    const idReporte= localStorage.getItem("id_reporte");   // lo guardamos al crear
+    const detalle  = document.getElementById("detalle-reporte");
+    const fechaTxt = document.getElementById("fecha-envio");
+    const avisoBox = document.getElementById("aviso-estatus");
 
-    if (!id){
-      detalle.innerHTML = "<li>No hay folio guardado.</li>";
+    if(!idReporte){
+      detalle.innerHTML = "<li>No se encontró ningún folio en el navegador.</li>";
       return;
     }
 
-    try{
-      const r = await fetch(`php/consultar_reporte.php?id=${id}`);
-      const d = await r.json();
-
-      if (d.error){
-        detalle.innerHTML = `<li>Error: ${d.error}</li>`;
-        return;
-      }
-
-      // Imprimir datos iniciales
-      fechaTxt.textContent = `📅 ${d.fecha_reporte}`;
+    /* ---------- función que pinta todo ---------- */
+    function pinta(data){
+      fechaTxt.textContent = `📅 ${ new Date(data.fecha_reporte)
+                                   .toLocaleString('es-MX',{dateStyle:'medium',
+                                                             timeStyle:'short'}) }`;
       detalle.innerHTML = `
-        <li><strong>Tipo de Falla:</strong> ${d.tipo_falla}</li>
-        <li><strong>Ubicación:</strong> ${d.ubicacion}</li>
-        <li><strong>Observaciones:</strong> ${d.descripcion}</li>
-        <li><strong>Estado Actual:</strong> <span id="estado-actual">${d.estatus}</span></li>`;
-
-      // ---------- Aviso fijo ----------
-      avisoBox.textContent = `Estado actual: ${d.estatus}`;
-      setColor(avisoBox, d.estatus);
-
-      // ---------- Monitoreo ----------
-      const idReporte = id;
-      let ultimoEstatus = d.estatus;
-
-      setInterval(() => {
-        fetch(`php/estado_reporte.php?id=${idReporte}`)
-          .then(r => r.json())
-          .then(d2 => {
-            if (d2.error) return;
-            if (d2.estatus !== ultimoEstatus){
-              ultimoEstatus = d2.estatus;
-              document.getElementById("estado-actual").textContent = d2.estatus;
-              avisoBox.textContent = `Estado actual: ${d2.estatus}`;
-              setColor(avisoBox, d2.estatus);
-            }
-          })
-          .catch(()=>{});
-      }, 30000);              // cada 30 s
-
-    }catch(err){
-      detalle.innerHTML = `<li>Error de red: ${err}</li>`;
+        <li><strong>Tipo de Falla:</strong> ${data.tipo_falla}</li>
+        <li><strong>Ubicación:</strong> ${data.ubicacion}</li>
+        <li><strong>Observaciones:</strong> ${data.descripcion}</li>
+        <li><strong>Estado Actual:</strong> <span id="estado-actual">${data.estatus}</span></li>`;
+      avisoBox.textContent = `Estado actual: ${data.estatus}`;
+      setColor(avisoBox, data.estatus);
     }
-  });
 
-  // Cambiar color según el estatus
-  function setColor(el, estatus){
-    let color = "#00ff00";                 // verde normal
-    if (estatus === "Pendiente")  color = "#ffaa00"; // ámbar
-    if (estatus === "Finalizado") color = "#00cc66"; // verde oscuro
-    el.style.background = color;
-  }
+    /* ---------- obtener datos iniciales ---------- */
+    async function cargaInicial(){
+      const r = await fetch(`${API}/reportes/${idReporte}`);
+      if(!r.ok) throw new Error("Reporte no encontrado");
+      const d = await r.json();
+      pinta(d);
+      return d.estatus;          // devolvemos estatus para comparar después
+    }
+
+    /* ---------- monitoreo de cambios ---------- */
+    let ultimoEstatus;
+    try{ ultimoEstatus = await cargaInicial(); }
+    catch(err){ detalle.innerHTML = `<li>Error: ${err}</li>`; return; }
+
+    setInterval(async ()=>{
+      try{
+        const r  = await fetch(`${API}/reportes/${idReporte}/estatus`);
+        if(!r.ok) return;                      // si falla, lo ignoramos
+        const d2 = await r.json();
+        if(d2.estatus !== ultimoEstatus){
+          ultimoEstatus = d2.estatus;
+          document.getElementById("estado-actual").textContent = d2.estatus;
+          avisoBox.textContent = `Estado actual: ${d2.estatus}`;
+          setColor(avisoBox, d2.estatus);
+        }
+      }catch{}
+    }, 30000);      // cada 30 s
+
+    /* ---------- color helper ---------- */
+    function setColor(el, est){
+      const colores = {
+        "Pendiente":  "#ffaa00",
+        "En revisión":"#ff7300",
+        "Atendiendo": "#0099ff",
+        "Finalizado": "#00cc66"
+      };
+      el.style.background = colores[est] || "#00ff00";
+    }
+  })();
   </script>
 </body>
 </html>
