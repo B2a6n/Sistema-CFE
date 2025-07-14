@@ -37,8 +37,8 @@
       <label for="ubicacion">Ubicación de la Falla:</label>
       <input id="ubicacion" type="text" placeholder="Calle, número, colonia..." required/>
 
-      <label for="descripcion">Descripción u Observaciones:</label>
-      <textarea id="descripcion" placeholder="Detalles adicionales..." required></textarea>
+      <label for="observaciones">Descripción u Observaciones:</label>
+      <textarea id="observaciones" placeholder="Detalles adicionales..." required></textarea>
 
       <button class="btn" style="margin-top:20px;">Guardar Reporte</button>
     </form>
@@ -67,25 +67,26 @@
     const API     = "http://localhost:3000/api";
     const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-    /* -------- redirigir si no hay sesión -------- */
+    /* --- Redirigir si no hay sesión --- */
     if (!usuario){
       alert("No hay sesión. Inicia nuevamente.");
       location.href = "index.html";
     }
 
-    /* -------- referencias DOM -------- */
-    const form   = document.getElementById("form-reporte");
-    const tipo   = document.getElementById("tipo");
-    const ubic   = document.getElementById("ubicacion");
-    const desc   = document.getElementById("descripcion");
-    const msgOK  = document.getElementById("mensaje-exito");
+    /* --- Referencias DOM --- */
+    const form  = document.getElementById("form-reporte");
+    const tipo  = document.getElementById("tipo");
+    const ubic  = document.getElementById("ubicacion");
+    const obs   = document.getElementById("observaciones");
+    const msgOK = document.getElementById("mensaje-exito");
 
-    /* -------- envío -------- */
+    /* --- Envío del reporte --- */
     form.addEventListener("submit", async e=>{
       e.preventDefault();
 
-      if (!tipo.value || !ubic.value.trim() || !desc.value.trim()){
-        alert("Completa todos los campos"); return;
+      if (!tipo.value || !ubic.value.trim() || !obs.value.trim()){
+        alert("Completa todos los campos");
+        return;
       }
 
       try{
@@ -93,20 +94,23 @@
           method : "POST",
           headers: { "Content-Type":"application/json" },
           body   : JSON.stringify({
-            /* clave foránea */
-            id_servicio : usuario.id_servicio,
-            /* datos de la tabla */
-            tipo_falla  : tipo.value,
-            ubicacion   : ubic.value.trim(),
-            descripcion : desc.value.trim()
+            id_usuario    : usuario.id_usuario,     // se corrige clave
+            tipo_falla    : tipo.value,
+            ubicacion     : ubic.value.trim(),
+            observaciones : obs.value.trim()        // se corrige nombre
           })
         });
-        const data = await res.json();
+
+        /* Si el backend responde 204 No Content, no hay JSON */
+        let data = {};
+        if (res.status !== 204) data = await res.json();
 
         if (res.ok){
           msgOK.style.display = "block";
           /* guardamos el id del reporte para la pantalla de consulta */
-          localStorage.setItem("id_reporte", data.id_reporte);
+          if (data.id_reporte) {
+            localStorage.setItem("id_reporte", data.id_reporte);
+          }
           setTimeout(()=> location.href = "cliente-consulta-rep.html", 1400);
         }else{
           alert(data.error || "No se pudo guardar el reporte");
