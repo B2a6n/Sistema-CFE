@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restablecer Contraseña – CFE</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .card-reset {
+      position: relative;
+      z-index: 2;
+      width: 320px;
+      margin: 120px auto 0;
+      padding: 35px 28px 32px;
+      border-radius: 14px;
+      background: rgba(18, 18, 18, 0.96);
+      box-shadow: 0 0 14px rgba(0, 255, 0, 0.18);
+      color: #fff;
+      text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .card-reset h2 {
+      margin: 0 0 1.4rem;
+      font-size: 1.35rem;
+      color: #fff;
+    }
+    .card-reset label {
+      display: block;
+      text-align: left;
+      font-size: .88rem;
+      margin: .65rem 0 .25rem;
+    }
+    .card-reset input {
+      width: 100%;
+      padding: .55rem .75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #1a1a1a;
+      color: #fff;
+      outline: none;
+    }
+    .campo-password {
+      position: relative;
+    }
+    .campo-password button {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .icono-ojo {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+    .card-reset .aviso {
+      color: orange;
+      font-size: .78rem;
+      text-align: left;
+      margin-top: .2rem;
+    }
+    .card-reset button[type="submit"] {
+      width: 100%;
+      margin-top: 1.4rem;
+      padding: .7rem 0;
+      border: none;
+      border-radius: 6px;
+      background: #07b407;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .25s;
+    }
+    .card-reset button[type="submit"]:hover { background: #05d105; }
+    .card-reset small {
+      display: block;
+      margin-top: 1rem;
+      font-size: .8rem;
+    }
+    .card-reset a { color: #00e6ff; text-decoration: none; }
+    .card-reset a:hover { text-decoration: underline; }
+    #msg-reset {
+      margin-top: .8rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body class="registro-cliente">
+  <div id="particles-js"></div>
+
+  <header class="encabezado">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe">
+  </header>
+
+  <section class="card-reset">
+    <h2>Restablecer Contraseña</h2>
+
+    <form id="form-reset">
+      <label for="num_servicio">Número de servicio</label>
+      <input id="num_servicio" name="num_servicio" required>
+
+      <label for="pass1">Nueva contraseña</label>
+      <div class="campo-password">
+        <input id="pass1" type="password" required>
+        <button type="button" onclick="togglePassword('pass1', this)" aria-label="Mostrar/Ocultar">
+          <svg class="icono-ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+            <circle cx="12" cy="12" r="2.5"/>
+          </svg>
+        </button>
+      </div>
+      <div id="aviso-pass1" class="aviso"></div>
+
+      <label for="pass2">Confirmar contraseña</label>
+      <div class="campo-password">
+        <input id="pass2" type="password" required>
+        <button type="button" onclick="togglePassword('pass2', this)" aria-label="Mostrar/Ocultar">
+          <svg class="icono-ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+            <circle cx="12" cy="12" r="2.5"/>
+          </svg>
+        </button>
+      </div>
+
+      <button type="submit">Actualizar contraseña</button>
+    </form>
+
+    <div id="msg-reset"></div>
+
+    <small>¿Recordaste tu contraseña? <a href="index.html">Iniciar sesión</a></small>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ff00" },
+        shape: { type: "circle" },
+        opacity: { value: .5 },
+        size: { value: 3 },
+        line_linked: { enable: true, distance: 150, color: "#00ff00", opacity: .4, width: 1 },
+        move: { enable: true, speed: 2 }
+      },
+      interactivity: { events: { onhover: { enable: true, mode: "repulse" } } },
+      retina_detect: true
+    });
+  </script>
+
+  <script>
+    const inputPass1 = document.getElementById('pass1');
+    const aviso = document.getElementById('aviso-pass1');
+
+    inputPass1.addEventListener('input', () => {
+      aviso.textContent = inputPass1.value.length < 6 ? "La contraseña debe tener al menos 6 caracteres" : "";
+    });
+
+    document.getElementById('form-reset').addEventListener('submit', async e => {
+      e.preventDefault();
+      const num = num_servicio.value.trim();
+      const p1 = pass1.value.trim();
+      const p2 = pass2.value.trim();
+      const msg = document.getElementById('msg-reset');
+
+      if (!num || !p1 || !p2) {
+        msg.textContent = 'Completa todos los campos';
+        msg.style.color = 'red';
+        return;
+      }
+      if (p1.length < 6) {
+        msg.textContent = 'La contraseña debe tener al menos 6 caracteres';
+        msg.style.color = 'orange';
+        return;
+      }
+      if (p1 !== p2) {
+        msg.textContent = 'Las contraseñas no coinciden';
+        msg.style.color = 'red';
+        return;
+      }
+
+      try {
+        const r = await fetch('http://localhost:3000/api/restablecer-contrasena', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ num_servicio: num, nueva: p1 })
+        });
+        const d = await r.json();
+        msg.textContent = d.mensaje || 'Contraseña actualizada';
+        msg.style.color = r.ok ? 'lime' : 'yellow';
+
+        if (r.ok) {
+          setTimeout(() => window.location.href = 'index.html', 1500);
+        }
+      } catch (err) {
+        msg.textContent = 'Error del servidor';
+        msg.style.color = 'red';
+      }
+    });
+
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      const svg = btn.querySelector("svg");
+      if (input.type === "password") {
+        input.type = "text";
+        svg.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><circle cx="12" cy="12" r="2.5"/>`;
+      } else {
+        input.type = "password";
+        svg.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/><path d="M2 2l20 20"/>`;
+      }
+    }
+  </script>
+</body>
+</html>
