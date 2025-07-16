@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Modificar Datos – CFE</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .invalido {
+      border: 1px solid red !important;
+    }
+    .icono-ojo {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+  </style>
 </head>
 <body class="registro-cliente">
   <!-- Fondo animado -->
@@ -28,11 +38,32 @@
       <label>Nuevo Correo Electrónico:</label>
       <input type="email" name="correo" id="correo" required />
 
+      <!-- Campo: Nueva Contraseña -->
       <label>Nueva Contraseña:</label>
-      <input type="password" name="password" id="password" required />
+      <div style="position: relative;">
+        <input type="password" name="password" id="password" required />
+        <button type="button" onclick="togglePassword('password', this)"
+          style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;" aria-label="Mostrar/Ocultar">
+          <svg class="icono-ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+            <circle cx="12" cy="12" r="2.5"/>
+          </svg>
+        </button>
+      </div>
+      <div id="aviso-password" style="color:orange; font-size:0.85rem; margin-top:0.3rem;"></div>
 
+      <!-- Campo: Confirmar contraseña -->
       <label>Confirmar Nueva Contraseña:</label>
-      <input type="password" id="confirmar" required />
+      <div style="position: relative;">
+        <input type="password" id="confirmar" required />
+        <button type="button" onclick="togglePassword('confirmar', this)"
+          style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;" aria-label="Mostrar/Ocultar">
+          <svg class="icono-ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+            <circle cx="12" cy="12" r="2.5"/>
+          </svg>
+        </button>
+      </div>
 
       <label>Número de Teléfono:</label>
       <input type="text" name="telefono" id="telefono" required />
@@ -44,13 +75,18 @@
   <!-- Partículas -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
-    particlesJS("particles-js",{
-      particles:{number:{value:80},color:{value:"#00ff00"},shape:{type:"circle"},
-      opacity:{value:.5},size:{value:3},
-      line_linked:{enable:true,distance:150,color:"#00ff00",opacity:.4,width:1},
-      move:{enable:true,speed:2}},
-      interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
-      retina_detect:true
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ff00" },
+        shape: { type: "circle" },
+        opacity: { value: .5 },
+        size: { value: 3 },
+        line_linked: { enable: true, distance: 150, color: "#00ff00", opacity: .4, width: 1 },
+        move: { enable: true, speed: 2 }
+      },
+      interactivity: { events: { onhover: { enable: true, mode: "repulse" } } },
+      retina_detect: true
     });
   </script>
 
@@ -69,13 +105,30 @@
     const telefono = document.getElementById("telefono");
     const password = document.getElementById("password");
     const confirmar = document.getElementById("confirmar");
+    const avisoPassword = document.getElementById("aviso-password");
 
     // Prellenar campos
     correo.value = usuario.correo;
     telefono.value = usuario.telefono ?? "";
 
+    // Validación en vivo para contraseña mínima
+    password.addEventListener("input", () => {
+      if (password.value.length > 0 && password.value.length < 6) {
+        avisoPassword.textContent = "La contraseña debe tener al menos 6 caracteres";
+        password.classList.add("invalido");
+      } else {
+        avisoPassword.textContent = "";
+        password.classList.remove("invalido");
+      }
+    });
+
     form_modificar.addEventListener('submit', async e => {
       e.preventDefault();
+
+      if (password.value && password.value.length < 6) {
+        alert("La contraseña debe tener al menos 6 caracteres");
+        return;
+      }
 
       if (password.value !== confirmar.value) {
         alert("Las contraseñas no coinciden");
@@ -101,12 +154,10 @@
         const data = await res.json();
 
         if (res.ok) {
-          // Actualizar localStorage
           localStorage.setItem('usuario', JSON.stringify({
             ...usuario,
             ...data.usuario
           }));
-
           alert("Datos actualizados correctamente");
           location.href = "cliente-inicio.html";
         } else {
@@ -117,6 +168,19 @@
         alert("Servidor no disponible");
       }
     });
+
+    // Función mostrar/ocultar contraseña con cambio de SVG
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      const svg = btn.querySelector("svg");
+      if (input.type === "password") {
+        input.type = "text";
+        svg.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><circle cx="12" cy="12" r="2.5"/>`;
+      } else {
+        input.type = "password";
+        svg.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/><path d="M2 2l20 20"/>`;
+      }
+    }
   </script>
 </body>
 </html>
