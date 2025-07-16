@@ -35,6 +35,12 @@
       height: 20px;
       fill: white;
     }
+    .mensaje-error {
+      font-size: 0.85rem;
+      color: orange;
+      margin-top: 0.3rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -63,10 +69,11 @@
         </button>
       </div>
 
+      <div id="mensaje-error" class="mensaje-error"></div>
+
       <button type="submit" class="btn">Entrar</button>
     </form>
 
-    <!-- Enlace olvidar contraseña -->
     <div class="link-recuperar">
       <a href="recuperar-contrasena.html">¿Olvidaste tu contraseña?</a>
     </div>
@@ -112,7 +119,46 @@
     }
   </script>
 
-  <!-- Lógica de frontend -->
-  <script src="main.js"></script>
+  <!-- Validación login -->
+  <script>
+    document.getElementById("form-login").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const correo = document.getElementById("correo").value.trim();
+      const contrasena = document.getElementById("contrasena").value.trim();
+      const msg = document.getElementById("mensaje-error");
+
+      msg.textContent = "";
+
+      if (!correo || !contrasena) {
+        msg.textContent = "Completa todos los campos.";
+        return;
+      }
+
+      const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!regexCorreo.test(correo)) {
+        msg.textContent = "Correo electrónico inválido";
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:3000/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ correo, contrasena })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem("usuario", JSON.stringify(data.usuario));
+          window.location.href = "cliente-inicio.html";
+        } else {
+          msg.textContent = data.mensaje || "Correo o contraseña incorrectos";
+        }
+      } catch (err) {
+        console.error(err);
+        msg.textContent = "Servidor no disponible";
+      }
+    });
+  </script>
 </body>
 </html>
