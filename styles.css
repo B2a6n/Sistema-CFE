@@ -600,3 +600,102 @@ footer {
   font-weight:bold;
   display:inline-block;
 }
+
+.olvide-contrasena {
+  text-align: center;
+  margin-top: 1rem;
+}
+.olvide-contrasena a {
+  color: #00ff00;
+  text-decoration: underline;
+}
+
+/* Botón principal de login (ejemplo) */
+.btn-login{
+  width:100%;
+  padding:.9rem 0;
+  background:#009900;        /* verde CFE */
+  border:none;
+  border-radius:6px;
+  color:#fff;
+  font-weight:bold;
+  font-size:1.05rem;
+  cursor:pointer;
+  transition:background .3s;
+}
+.btn-login:hover{ background:#00b300; }
+
+/* Contenedor del enlace */
+.link-recuperar{
+  margin-top:1rem;           /* <-- separación respecto al botón */
+  text-align:center;
+}
+
+/* Estilo del enlace */
+.link-recuperar a{
+  color:#00e676;             /* verde claro */
+  text-decoration:none;
+  font-size:.95rem;
+  transition:color .25s;
+}
+.link-recuperar a:hover{
+  color:#00ff99;
+  text-decoration:underline;
+}
+
+/* ——— Recuperar contraseña ——— */
+.formulario-recuperar{
+  position:relative;
+  z-index:2;                 /* por encima del fondo animado   */
+  max-width:420px;
+  margin:140px auto 0;       /* la empuja hacia el centro      */
+  padding:40px 30px;
+  background:rgba(30,30,30,.95);
+  border-radius:18px;
+  box-shadow:0 0 15px rgba(0,255,0,.15);
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.formulario-recuperar h2{
+  margin-top:0;
+  text-align:center;
+  color:#00e676;
+}
+.formulario-recuperar label{
+  display:block;
+  margin:.8rem 0 .3rem;
+}
+.formulario-recuperar input{
+  width:100%;
+  padding:.6rem .8rem;
+  border:none;
+  border-radius:6px;
+  background:#111;
+  color:#fff;
+}
+.formulario-recuperar button{
+  width:100%;
+  margin-top:1.4rem;
+  padding:.8rem 0;
+  border:none;
+  border-radius:6px;
+  background:#009900;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+  transition:background .25s;
+}
+.formulario-recuperar button:hover{
+  background:#00b300;
+}
+#mensaje-recuperacion{
+  margin-top:1rem;
+  text-align:center;
+  font-weight:bold;
+}
+
+.aviso-pass {
+  font-size: 0.85rem;
+  color: #ff4444;
+  margin-top: 0.3rem;
+}
