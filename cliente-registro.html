@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro de Cliente – CFE</title>
-
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 
@@ -22,29 +21,29 @@
     <h1>Registro de Cliente</h1>
 
     <form id="form-registro">
-      <!-- ── Nombre completo ── -->
+      <!-- Nombre completo -->
       <h3>Nombre completo</h3>
-      <input id="nombre"    name="nombre"    type="text" placeholder="Nombre"    required />
+      <input id="nombre" name="nombre" type="text" placeholder="Nombre" required />
       <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos" required />
 
-      <!-- ── Dirección ── -->
+      <!-- Dirección -->
       <h3>Dirección</h3>
-      <input name="calle"         type="text" placeholder="Calle"          required />
-      <input name="numero"        type="text" placeholder="Número"         required />
-      <input name="colonia"       type="text" placeholder="Colonia"        required />
-      <input name="municipio"     type="text" placeholder="Municipio"      required />
-      <input name="codigo_postal" type="text" placeholder="Código Postal"  required />
+      <input name="calle" type="text" placeholder="Calle" required />
+      <input name="numero" type="text" placeholder="Número" required />
+      <input name="colonia" type="text" placeholder="Colonia" required />
+      <input name="municipio" type="text" placeholder="Municipio" required />
+      <input name="codigo_postal" type="text" placeholder="Código Postal" required />
 
       <label for="estado">Estado:</label>
       <select id="estado" name="estado" required>
         <option value="">--Selecciona un estado--</option>
         <option>Aguascalientes</option>
-        <option>Baja&nbsp;California</option>
-        <option>Baja&nbsp;California&nbsp;Sur</option>
+        <option>Baja California</option>
+        <option>Baja California Sur</option>
         <option>Campeche</option>
         <option>Chiapas</option>
         <option>Chihuahua</option>
-        <option>Ciudad&nbsp;de&nbsp;México</option>
+        <option>Ciudad de México</option>
         <option>Coahuila</option>
         <option>Colima</option>
         <option>Durango</option>
@@ -52,16 +51,16 @@
         <option>Guerrero</option>
         <option>Hidalgo</option>
         <option>Jalisco</option>
-        <option>México&nbsp;(Edo.)</option>
+        <option>México (Edo.)</option>
         <option>Michoacán</option>
         <option>Morelos</option>
         <option>Nayarit</option>
-        <option>Nuevo&nbsp;León</option>
+        <option>Nuevo León</option>
         <option>Oaxaca</option>
         <option>Puebla</option>
         <option>Querétaro</option>
-        <option>Quintana&nbsp;Roo</option>
-        <option>San&nbsp;Luis&nbsp;Potosí</option>
+        <option>Quintana Roo</option>
+        <option>San Luis Potosí</option>
         <option>Sinaloa</option>
         <option>Sonora</option>
         <option>Tabasco</option>
@@ -72,7 +71,7 @@
         <option>Zacatecas</option>
       </select>
 
-      <!-- ── Datos de cuenta y personales ── -->
+      <!-- Datos personales -->
       <label for="curp">CURP:</label>
       <input id="curp" name="curp" type="text" required />
 
@@ -83,15 +82,27 @@
       <input id="correo" name="correo" type="email" required />
 
       <label for="contrasena">Contraseña:</label>
-      <input id="contrasena" name="contrasena" type="password" required />
+      <div style="position: relative;">
+        <input id="contrasena" name="contrasena" type="password" required />
+        <button type="button" onclick="togglePassword('contrasena', this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;" aria-label="Mostrar/Ocultar">
+          <svg id="icono-contrasena" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="#ffffff"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/><circle cx="12" cy="12" r="2.5"/></svg>
+        </button>
+      </div>
+      <div id="msg-pass-length" class="aviso-pass" style="color: orange; font-size: 0.9rem;"></div>
 
       <label for="confirmar">Confirma tu contraseña:</label>
-      <input id="confirmar" name="confirmar" type="password" required />
+      <div style="position: relative;">
+        <input id="confirmar" name="confirmar" type="password" required />
+        <button type="button" onclick="togglePassword('confirmar', this)" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;" aria-label="Mostrar/Ocultar">
+          <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="#ffffff"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/><circle cx="12" cy="12" r="2.5"/></svg>
+        </button>
+      </div>
 
-      <!-- ── NUEVOS CAMPOS DE SERVICIO ── -->
+      <!-- Datos del Servicio -->
       <h3>Datos del Servicio</h3>
       <label for="medidor">Número de Medidor:</label>
       <input id="medidor" name="medidor" type="text" required />
+      <div id="aviso-medidor" style="color: red; font-size: 0.85rem;"></div>
 
       <label for="num_contrato">Número de Contrato:</label>
       <input id="num_contrato" name="num_contrato" type="text" required />
@@ -99,11 +110,11 @@
       <label for="num_servicio">Número de Servicio:</label>
       <input id="num_servicio" name="num_servicio" type="text" required />
 
-      <!-- ── Fecha de nacimiento ── -->
+      <!-- Fecha de nacimiento -->
       <h3>Fecha de nacimiento</h3>
-      <input name="dia"  type="number" placeholder="Día"  min="1"  max="31"  required />
-      <input name="mes"  type="number" placeholder="Mes"  min="1"  max="12"  required />
-      <input name="anio" type="number" placeholder="Año"  min="1900" max="2025" required />
+      <input name="dia" type="number" placeholder="Día" min="1" max="31" required />
+      <input name="mes" type="number" placeholder="Mes" min="1" max="12" required />
+      <input name="anio" type="number" placeholder="Año" min="1900" max="2025" required />
 
       <button type="submit" class="btn">Registrarse</button>
     </form>
@@ -129,6 +140,21 @@
       maxDistance: 20,
       spacing: 16
     });
+  </script>
+
+  <!-- Mostrar/ocultar contraseña con SVG -->
+  <script>
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      const svg = btn.querySelector("svg");
+      if (input.type === "password") {
+        input.type = "text";
+        svg.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/><circle cx="12" cy="12" r="2.5"/>`; // eye open
+      } else {
+        input.type = "password";
+        svg.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/><path d="M2 2l20 20"/>`; // eye closed (basic)
+      }
+    }
   </script>
 
   <!-- Lógica del frontend -->
