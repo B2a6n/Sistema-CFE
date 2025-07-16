@@ -20,9 +20,11 @@
   <section class="info-usuario">
     <h2 id="bienvenida">Bienvenido</h2>
 
-    <p><strong>Nombre:</strong>   <span id="nombreComp">—</span></p>
-    <p><strong>Correo:</strong>   <span id="correoComp">—</span></p>
-    <p><strong>Contrato:</strong> <span id="contratoComp">—</span></p>
+    <p><strong>Nombre:</strong>         <span id="nombreComp">—</span></p>
+    <p><strong>Correo:</strong>         <span id="correoComp">—</span></p>
+    <p><strong>No. Contrato:</strong>   <span id="contratoComp">—</span></p>
+    <p><strong>No. Servicio:</strong>   <span id="servicioComp">—</span></p>
+    <p><strong>No. Medidor:</strong>    <span id="medidorComp">—</span></p>
   </section>
 
   <!-- Menú lateral -->
@@ -37,48 +39,40 @@
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
     particlesJS("particles-js", {
-      particles: {
-        number:  { value: 80 },
-        color:   { value: "#00ff00" },
-        shape:   { type: "circle" },
-        opacity: { value: 0.5 },
-        size:    { value: 3 },
-        line_linked: {
-          enable: true, distance: 150, color: "#00ff00",
-          opacity: 0.4, width: 1
-        },
-        move: { enable: true, speed: 2 }
+      particles:{
+        number:{ value:80 }, color:{ value:"#00ff00" }, shape:{ type:"circle" },
+        opacity:{ value:.5 }, size:{ value:3 },
+        line_linked:{ enable:true, distance:150, color:"#00ff00", opacity:.4, width:1 },
+        move:{ enable:true, speed:2 }
       },
-      interactivity: {
-        events: { onhover: { enable: true, mode: "repulse" } }
-      },
-      retina_detect: true
+      interactivity:{ events:{ onhover:{ enable:true, mode:"repulse" } } },
+      retina_detect:true
     });
   </script>
 
-  <!-- Cargar datos del usuario -->
+  <!-- Lógica de carga de datos -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const usuario = JSON.parse(localStorage.getItem("usuario"));
-      if (!usuario) {
-        window.location.href = "index.html";
-        return;
-      }
+      if (!usuario) { location.href = "index.html"; return; }
 
+      /* Nombre y correo */
       const nombreCompleto = `${usuario.nombre} ${usuario.apellidos ?? ""}`.trim();
+      bienvenida  .textContent = `Bienvenido, ${usuario.nombre}`;
+      nombreComp  .textContent = nombreCompleto;
+      correoComp  .textContent = usuario.correo ?? "—";
 
-      document.getElementById("bienvenida").textContent = `Bienvenido, ${usuario.nombre}`;
-      document.getElementById("nombreComp").textContent = nombreCompleto;
-      document.getElementById("correoComp").textContent = usuario.correo ?? "—";
-      /* primero intenta mostrar el número de contrato amigable;
-         si no existe, cae en id_servicio y, en última instancia, “—” */
-      document.getElementById("contratoComp").textContent =
-        usuario.numero_contrato ?? usuario.id_servicio ?? "—";
+      /* Números (contrato/servicio/medidor) */
+      contratoComp.textContent = usuario.num_contrato  ??
+                                 usuario.numero_contrato ?? "—";
+
+      servicioComp.textContent = usuario.num_servicio  ?? "—";
+      medidorComp .textContent = usuario.num_medidor   ?? "—";
     });
 
-    function cerrarSesion() {
+    function cerrarSesion () {
       localStorage.removeItem("usuario");
-      window.location.href = "index.html";
+      location.href = "index.html";
     }
   </script>
 </body>
