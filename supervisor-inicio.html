@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Supervisor – Inicio</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="registro-cliente">
+  <div id="particles-js"></div>
+
+  <!-- Encabezado -->
+  <div class="encabezado">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
+  </div>
+
+  <!-- Botón cerrar sesión -->
+  <a href="index.html" class="btn-logout" title="Cerrar sesión">
+    <i data-lucide="log-out"></i> Cerrar sesión
+  </a>
+
+  <!-- Título -->
+  <h2 class="titulo-supervisor">¡Bienvenido, Supervisor Juan!</h2>
+
+  <!-- Menú de botones -->
+  <div class="supervisor-menu">
+    <a href="supervisor-asignarT.html" class="sup-btn">
+      <i data-lucide="user-check"></i> Asignación de técnico
+    </a>
+    <a href="supervisor-modificarT.html" class="sup-btn">
+      <i data-lucide="user-cog"></i> Modificar técnico
+    </a>
+    <a href="supervisor-consulta.html" class="sup-btn">
+      <i data-lucide="file-search"></i> Consultar reportes en proceso
+    </a>
+    <a href="supervisor-verificar.html" class="sup-btn">
+      <i data-lucide="check-circle"></i> Validar reporte
+    </a>
+  </div>
+
+  <!-- Partículas -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js",{particles:{number:{value:80},color:{value:"#00ff00"},
+    shape:{type:"circle"},opacity:{value:0.5},size:{value:3},
+    line_linked:{enable:true,distance:150,color:"#00ff00",opacity:0.4,width:1},
+    move:{enable:true,speed:2}},interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
+    retina_detect:true});
+  </script>
+
+  <!-- Activar íconos -->
+  <script>lucide.createIcons();</script>
+</body>
+</html>

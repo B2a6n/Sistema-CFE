@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verificar Reportes Finalizados – Supervisor</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="registro-cliente">
+  <div id="particles-js"></div>
+
+  <!-- Barra blanca -->
+  <div class="encabezado">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
+  </div>
+
+  <h2 class="titulo-supervisor">Reportes finalizados – Verificación</h2>
+
+  <!-- Botón regresar -->
+  <a href="supervisor-inicio.html" class="regresar-inicio">Regresar a inicio</a>
+
+  <!-- Panel tabla -->
+  <div class="contenedor-modif">
+    <table class="tabla-reportes">
+      <thead>
+        <tr>
+          <th>Folio</th><th>Técnico</th><th>Fecha cierre</th><th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Ejemplo de fila -->
+        <tr data-folio="R-1502" data-detalle='{
+          "ubicacion":"Calle 9 #88, Guadalajara",
+          "tipo":"Corte programado",
+          "descripcion":"Restablecido en tiempo",
+          "fecha":"2025-07-10 15:30",
+          "evidencia":"img/evidencia1.jpg"
+        }'>
+          <td>R-1502</td><td>Ana Ruiz</td><td>10/07/2025 15:30</td>
+          <td class="acciones">
+            <button class="btn-ver">Ver</button>
+            <button class="btn-finalizar">Finalizar</button>
+          </td>
+        </tr>
+
+        <tr data-folio="R-1505" data-detalle='{
+          "ubicacion":"Av. Central 120, CDMX",
+          "tipo":"Falla transformador",
+          "descripcion":"Transformador sustituido",
+          "fecha":"2025-07-11 09:45",
+          "evidencia":"img/evidencia2.jpg"
+        }'>
+          <td>R-1505</td><td>Carlos Gómez</td><td>11/07/2025 09:45</td>
+          <td class="acciones">
+            <button class="btn-ver">Ver</button>
+            <button class="btn-finalizar">Finalizar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Panel detalle -->
+  <div id="panel-detalle" class="panel-detalle hidden">
+    <h3>Detalle del reporte</h3>
+    <ul id="detalle-contenido"></ul>
+    <img id="img-evidencia" src="" alt="Evidencia" style="width:100%;border-radius:10px;margin-top:10px;display:none;">
+    <button id="btn-cerrar-detalle">Cerrar</button>
+  </div>
+
+  <!-- Partículas + Iconos -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js",{particles:{number:{value:80},color:{value:"#00ff00"},
+    shape:{type:"circle"},opacity:{value:0.5},size:{value:3},
+    line_linked:{enable:true,distance:150,color:"#00ff00",opacity:0.4,width:1},
+    move:{enable:true,speed:2}},interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
+    retina_detect:true}); lucide.createIcons();
+  </script>
+
+  <!-- JS -->
+  <script>
+    // Mostrar detalle
+    document.querySelectorAll('.btn-ver').forEach(btn=>{
+      btn.onclick=()=>{
+        const tr=btn.closest('tr');
+        const data=JSON.parse(tr.dataset.detalle);
+        const ul=document.getElementById('detalle-contenido');
+        ul.innerHTML=`
+          <li><strong>Folio:</strong> ${tr.dataset.folio}</li>
+          <li><strong>Técnico:</strong> ${tr.children[1].textContent}</li>
+          <li><strong>Ubicación:</strong> ${data.ubicacion}</li>
+          <li><strong>Tipo de falla:</strong> ${data.tipo}</li>
+          <li><strong>Descripción:</strong> ${data.descripcion}</li>
+          <li><strong>Fecha cierre:</strong> ${data.fecha}</li>
+        `;
+        // Evidencia
+        const img=document.getElementById('img-evidencia');
+        img.src=data.evidencia;
+        img.style.display='block';
+        document.getElementById('panel-detalle').classList.remove('hidden');
+      };
+    });
+    // Cerrar
+    document.getElementById('btn-cerrar-detalle').onclick=
+      ()=>document.getElementById('panel-detalle').classList.add('hidden');
+
+    // Finalizar
+    document.querySelectorAll('.btn-finalizar').forEach(btn=>{
+      btn.onclick=()=>{
+        const tr=btn.closest('tr');
+        if(!confirm('¿Confirmar que el reporte '+tr.dataset.folio+' está verificado y finalizado?'))return;
+        // Aquí fetch/AJAX a PHP para actualizar estado en BD
+        alert('Reporte '+tr.dataset.folio+' marcado como finalizado y visible al cliente.');
+        tr.remove(); // opcional: quitar fila de tabla
+      };
+    });
+  </script>
+</body>
+</html>

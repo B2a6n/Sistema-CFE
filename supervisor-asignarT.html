@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asignar Técnicos a Reportes</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="registro-cliente">
+  <div id="particles-js"></div>
+
+  <!-- Barra blanca con logo -->
+  <div class="encabezado">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
+  </div>
+
+  <!-- Título y botón regresar bajo la barra -->
+  <h2 class="titulo-supervisor">Asignación de Técnicos</h2>
+  <a href="supervisor-inicio.html" class="btn-regresar-top">Regresar</a>
+
+  <!-- Panel principal (más arriba) -->
+  <div class="contenedor-asignacion centrado-flex">
+    <h3>Reportes pendientes</h3>
+
+    <table class="tabla-reportes">
+      <thead>
+        <tr>
+          <th>Folio</th><th>N° Contrato</th><th>Dirección</th>
+          <th>Tipo de Falla</th><th>Descripción</th>
+          <th>Técnico</th><th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-folio="R-1021">
+          <td>R-1021</td><td>CT-554433</td><td>Calle Reforma 123, CDMX</td>
+          <td>Apagón</td><td>Zona completa sin luz</td>
+          <td class="tecnico-asignado">—</td>
+          <td><button class="btn-asignar">Asignar</button></td>
+        </tr>
+        <tr data-folio="R-1022">
+          <td>R-1022</td><td>CT-998877</td><td>Av. Juárez 50, Puebla</td>
+          <td>Cable caído</td><td>Cable primario en calle</td>
+          <td class="tecnico-asignado">—</td>
+          <td><button class="btn-asignar">Asignar</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Solo botón guardar -->
+    <div class="botones-final">
+      <button class="btn-guardar">Guardar cambios</button>
+    </div>
+  </div>
+
+  <!-- Modal selección técnico -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <h3>Seleccionar técnico</h3>
+      <select id="lista-tecnicos" class="select-tecnico" style="width:100%;margin-bottom:20px;">
+        <option value="">-- Seleccionar técnico --</option>
+        <option value="1">Juan Pérez</option>
+        <option value="2">María López</option>
+        <option value="3">Carlos Gómez</option>
+      </select>
+      <div style="text-align:right;">
+        <button id="btn-modal-cancelar" class="btn-regresar" style="margin-right:10px;">Cerrar</button>
+        <button id="btn-modal-asignar" class="btn-guardar">Asignar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Partículas -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js",{particles:{number:{value:80},color:{value:"#00ff00"},
+    shape:{type:"circle"},opacity:{value:0.5},size:{value:3},
+    line_linked:{enable:true,distance:150,color:"#00ff00",opacity:0.4,width:1},
+    move:{enable:true,speed:2}},interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
+    retina_detect:true});
+  </script>
+
+  <!-- JS asignación -->
+  <script>
+    let filaSeleccionada=null;
+    document.querySelectorAll('.btn-asignar').forEach(btn=>{
+      btn.onclick=()=>{filaSeleccionada=btn.closest('tr');
+        document.getElementById('lista-tecnicos').value='';
+        document.getElementById('modal-overlay').classList.remove('hidden');};
+    });
+    document.getElementById('btn-modal-cancelar').onclick=()=>{
+      document.getElementById('modal-overlay').classList.add('hidden');};
+    document.getElementById('btn-modal-asignar').onclick=()=>{
+      const sel=document.getElementById('lista-tecnicos');
+      if(!sel.value){alert('Seleccione un técnico');return;}
+      filaSeleccionada.querySelector('.tecnico-asignado').innerText=sel.options[sel.selectedIndex].text;
+      filaSeleccionada.classList.add('asignado');
+      filaSeleccionada.dataset.tecnico=sel.value;
+      document.getElementById('modal-overlay').classList.add('hidden');};
+    document.querySelector('.btn-guardar').onclick=()=>{
+      const datos=[];
+      document.querySelectorAll('tbody tr').forEach(tr=>{
+        if(tr.dataset.tecnico) datos.push({folio:tr.dataset.folio,tecnico:tr.dataset.tecnico});
+      });
+      alert('Enviar a BD: '+JSON.stringify(datos));};
+  </script>
+</body>
+</html>

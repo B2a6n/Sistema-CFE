@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modificar Técnico – Supervisor</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="registro-cliente">
+  <div id="particles-js"></div>
+
+  <!-- Barra Blanca -->
+  <div class="encabezado">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
+  </div>
+
+  <!-- Título -->
+  <h2 class="titulo-supervisor">Modificar técnico</h2>
+
+  <!-- Botón regresar a inicio -->
+  <a href="supervisor-inicio.html" class="sup-nav-btn regresar-inicio">Regresar a inicio</a>
+
+  <!-- ===== Apartado 1: Agregar técnicos ===== -->
+  <section class="contenedor-modif">
+    <h3><i data-lucide="user-plus"></i> Problema complejo (agregar técnicos)</h3>
+    <table class="tabla-reportes">
+      <thead>
+        <tr><th>Folio</th><th>Técnico actual</th><th>Descripción</th><th>Acción</th></tr>
+      </thead>
+      <tbody>
+        <tr data-folio="R-1101">
+          <td>R-1101</td><td>Juan Pérez</td>
+          <td>Red subterránea requiere más personal</td>
+          <td class="accion">
+            <button class="btn-editar"   data-modo="agregar">Editar</button>
+            <button class="btn-guardar"  disabled>Guardar</button>
+            <button class="btn-cancelar" disabled>Cancelar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== Apartado 2: Reasignar reporte ===== -->
+  <section class="contenedor-modif">
+    <h3><i data-lucide="user-x"></i> Reasignar reporte a otro técnico</h3>
+    <table class="tabla-reportes">
+      <thead>
+        <tr><th>Folio</th><th>Técnico actual</th><th>Descripción</th><th>Acción</th></tr>
+      </thead>
+      <tbody>
+        <tr data-folio="R-1203">
+          <td>R-1203</td><td>María López</td>
+          <td>Equipamiento especial requerido</td>
+          <td class="accion">
+            <button class="btn-editar"   data-modo="reasignar">Editar</button>
+            <button class="btn-guardar"  disabled>Guardar</button>
+            <button class="btn-cancelar" disabled>Cancelar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== Modal seleccionar técnico(s) ===== -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <h3 id="modal-titulo">Seleccionar técnico</h3>
+      <select id="lista-tecnicos" class="select-tecnico" multiple size="4" style="width:100%;margin-bottom:20px;">
+        <option value="1">Juan Pérez</option><option value="2">María López</option>
+        <option value="3">Carlos Gómez</option><option value="4">Ana Ruiz</option>
+      </select>
+      <div style="text-align:right;">
+        <button id="btn-modal-cancelar" class="sup-nav-btn gris">Cancelar</button>
+        <button id="btn-modal-aceptar"  class="sup-nav-btn verde">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts partículas & iconos -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js",{particles:{number:{value:80},color:{value:"#00ff00"},
+    shape:{type:"circle"},opacity:{value:0.5},size:{value:3},
+    line_linked:{enable:true,distance:150,color:"#00ff00",opacity:0.4,width:1},
+    move:{enable:true,speed:2}},interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
+    retina_detect:true}); lucide.createIcons();
+  </script>
+
+  <!-- JS lógica -->
+  <script>
+    let filaSeleccionada=null;
+    let modoEdicion='';
+
+    // Abrir modal y activar botones Guardar / Cancelar
+    document.querySelectorAll('.btn-editar').forEach(btn=>{
+      btn.onclick=()=>{
+        filaSeleccionada=btn.closest('tr');
+        modoEdicion=btn.dataset.modo;
+        filaSeleccionada.querySelector('.btn-guardar').disabled=false;
+        filaSeleccionada.querySelector('.btn-cancelar').disabled=false;
+        document.getElementById('modal-titulo').textContent=
+          (modoEdicion==="agregar")?"Agregar técnico de apoyo":"Reasignar a otro técnico";
+        document.getElementById('lista-tecnicos').value='';
+        document.getElementById('modal-overlay').classList.remove('hidden');
+      };
+    });
+
+    // Cancelar modal
+    document.getElementById('btn-modal-cancelar').onclick=
+      ()=>document.getElementById('modal-overlay').classList.add('hidden');
+
+    // Aceptar modal (marca fila y almacena)
+    document.getElementById('btn-modal-aceptar').onclick=()=>{
+      const sel=document.getElementById('lista-tecnicos');
+      const nombres=Array.from(sel.selectedOptions).map(o=>o.text);
+      if(nombres.length===0){ alert("Seleccione al menos un técnico"); return; }
+      filaSeleccionada.dataset.tecnicojson=JSON.stringify(nombres);
+      filaSeleccionada.classList.add('marcada');
+      document.getElementById('modal-overlay').classList.add('hidden');
+    };
+
+    // Guardar por fila
+    document.querySelectorAll('.btn-guardar').forEach(btn=>{
+      btn.onclick=()=>{
+        const tr=btn.closest('tr');
+        if(!tr.dataset.tecnicojson){ alert("Debe seleccionar técnico(s) antes"); return; }
+        alert("Guardado OK para folio "+tr.dataset.folio+": "+tr.dataset.tecnicojson);
+        tr.classList.remove('marcada');
+        btn.disabled=true;
+        tr.querySelector('.btn-cancelar').disabled=true;
+        // Aquí fetch/AJAX -> PHP -> DB
+      };
+    });
+
+    // Cancelar por fila
+    document.querySelectorAll('.btn-cancelar').forEach(btn=>{
+      btn.onclick=()=>{
+        const tr=btn.closest('tr');
+        delete tr.dataset.tecnicojson;
+        tr.classList.remove('marcada');
+        tr.querySelector('.btn-guardar').disabled=true;
+        btn.disabled=true;
+      };
+    });
+  </script>
+</body>
+</html>

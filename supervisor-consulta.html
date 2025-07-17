@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consulta de Reportes en Proceso – Supervisor</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="registro-cliente">
+  <div id="particles-js"></div>
+
+  <!-- Barra blanca -->
+  <div class="encabezado">
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
+  </div>
+
+  <h2 class="titulo-supervisor">Reportes en proceso</h2>
+
+  <!-- Botón regresar a inicio -->
+  <a href="supervisor-inicio.html" class="sup-nav-btn regresar-inicio">Regresar a inicio</a>
+
+  <!-- Tabla de reportes -->
+  <div class="contenedor-modif" style="margin-top:140px;">
+    <table class="tabla-reportes">
+      <thead>
+        <tr><th>Folio</th><th>Técnico asignado</th><th>Acción</th></tr>
+      </thead>
+      <tbody>
+        <tr data-folio="R-1305" data-detalle='{"ubicacion":"Calle 20 #45, CDMX","descripcion":"Poste dañado","tipo":"Apagón parcial","estado":"En proceso"}'>
+          <td>R-1305</td><td>Ana Ruiz</td>
+          <td><button class="btn-ver">Ver</button></td>
+        </tr>
+        <tr data-folio="R-1310" data-detalle='{"ubicacion":"Av. López 112, Puebla","descripcion":"Transformador quemado","tipo":"Falla equipo","estado":"En proceso"}'>
+          <td>R-1310</td><td>Carlos Gómez</td>
+          <td><button class="btn-ver">Ver</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== Panel detalle ===== -->
+  <div id="panel-detalle" class="panel-detalle hidden">
+    <h3>Detalle del reporte</h3>
+    <ul id="detalle-contenido"></ul>
+    <button id="btn-cerrar-detalle" class="sup-nav-btn gris" style="margin-top:15px;">Cerrar</button>
+  </div>
+
+  <!-- Partículas -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js",{particles:{number:{value:80},color:{value:"#00ff00"},
+    shape:{type:"circle"},opacity:{value:0.5},size:{value:3},
+    line_linked:{enable:true,distance:150,color:"#00ff00",opacity:0.4,width:1},
+    move:{enable:true,speed:2}},interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
+    retina_detect:true}); lucide.createIcons();
+  </script>
+
+  <!-- JS -->
+  <script>
+    // Ver detalle
+    document.querySelectorAll('.btn-ver').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const tr = btn.closest('tr');
+        const folio = tr.dataset.folio;
+        const data  = JSON.parse(tr.dataset.detalle);
+        const ul    = document.getElementById('detalle-contenido');
+        ul.innerHTML = `
+          <li><strong>Folio:</strong> ${folio}</li>
+          <li><strong>Técnico:</strong> ${tr.children[1].textContent}</li>
+          <li><strong>Ubicación:</strong> ${data.ubicacion}</li>
+          <li><strong>Tipo de falla:</strong> ${data.tipo}</li>
+          <li><strong>Descripción:</strong> ${data.descripcion}</li>
+          <li><strong>Estado:</strong> ${data.estado}</li>
+        `;
+        document.getElementById('panel-detalle').classList.remove('hidden');
+      });
+    });
+    // Cerrar
+    document.getElementById('btn-cerrar-detalle').onclick=
+      ()=>document.getElementById('panel-detalle').classList.add('hidden');
+  </script>
+</body>
+</html>
