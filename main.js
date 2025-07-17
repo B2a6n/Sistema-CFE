@@ -1,4 +1,3 @@
-
 /* ==================  CONFIG GLOBAL  ================== */
 const API = "http://localhost:3000/api"; // backend Express
 
@@ -56,12 +55,72 @@ document.addEventListener("DOMContentLoaded", () => {
         inputMedidor.style.border = "";
       }
     });
+
+    const inputCP = document.getElementById("codigo_postal");
+    const avisoCP = document.createElement("div");
+    avisoCP.id = "aviso-cp";
+    avisoCP.style.color = "orange";
+    avisoCP.style.fontSize = "0.85rem";
+    inputCP.insertAdjacentElement("afterend", avisoCP);
+
+    inputCP.addEventListener("input", () => {
+      const valor = inputCP.value.trim();
+      if (!/^[0-9]{5}$/.test(valor)) {
+        avisoCP.textContent = "El código postal debe ser numérico y tener 5 dígitos";
+        inputCP.style.border = "2px solid red";
+      } else {
+        avisoCP.textContent = "";
+        inputCP.style.border = "";
+      }
+    });
+
+    const inputCorreo = document.getElementById("correo");
+    const avisoCorreo = document.createElement("div");
+    avisoCorreo.id = "aviso-correo";
+    avisoCorreo.style.color = "orange";
+    avisoCorreo.style.fontSize = "0.85rem";
+    inputCorreo.insertAdjacentElement("afterend", avisoCorreo);
+
+    inputCorreo.addEventListener("input", () => {
+      const valor = inputCorreo.value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!valor) {
+        avisoCorreo.textContent = "";
+        inputCorreo.style.border = "";
+      } else if (!emailRegex.test(valor)) {
+        avisoCorreo.textContent = "El correo electrónico no tiene un formato válido (debe incluir @ y dominio)";
+        inputCorreo.style.border = "2px solid red";
+      } else {
+        avisoCorreo.textContent = "";
+        inputCorreo.style.border = "";
+      }
+    });
+
+    const inputTelefono = document.getElementById("telefono");
+    const avisoTelefono = document.createElement("div");
+    avisoTelefono.id = "aviso-telefono";
+    avisoTelefono.style.color = "orange";
+    avisoTelefono.style.fontSize = "0.85rem";
+    inputTelefono.insertAdjacentElement("afterend", avisoTelefono);
+
+    inputTelefono.addEventListener("input", () => {
+      const valor = inputTelefono.value.trim();
+      if (!/^\d{10}$/.test(valor)) {
+        avisoTelefono.textContent = "El teléfono debe tener exactamente 10 dígitos numéricos";
+        inputTelefono.style.border = "2px solid red";
+      } else {
+        avisoTelefono.textContent = "";
+        inputTelefono.style.border = "";
+      }
+    });
   }
+
+  const formReporte = document.getElementById("form-reporte");
+  if (formReporte) formReporte.addEventListener("submit", generarReporte);
 });
 
-/* =====================================================
-   LOGIN
-   ===================================================== */
+/* ================== FUNCIONES ================== */
+
 async function iniciarSesion(e) {
   e.preventDefault();
   const form = e.target;
@@ -95,134 +154,68 @@ async function iniciarSesion(e) {
   }
 }
 
-/* =====================================================
-   SOLICITUD DE SERVICIO
-   ===================================================== */
 function enviarSolicitud(e) {
   e.preventDefault();
-  const form = e.target;
-  const resultado = document.getElementById("resultado");
-
-  const nombre = form.nombre?.value.trim();
-  const curp = form.curp?.value.trim();
-  const telefono = form.telefono?.value.trim();
-  const email = form.email?.value.trim();
-  const direccion = form.direccion?.value.trim();
-  const documento = form.documento?.value.trim();
-  const descripcion = form.descripcion?.value.trim();
-
-  if (!nombre || !curp || !telefono || !email || !direccion || !documento || !descripcion) {
-    mostrarMensaje(resultado, "Por favor, completa todos los campos.", "red");
-    return;
-  }
-
-  const folio = generarFolio();
-  const solicitudes = JSON.parse(localStorage.getItem("solicitudes")) || [];
-  solicitudes.push({
-    folio, nombre, curp, telefono, email, direccion, documento, descripcion,
-    fecha: new Date().toLocaleString()
-  });
-  localStorage.setItem("solicitudes", JSON.stringify(solicitudes));
-
-  mostrarMensaje(
-    resultado,
-    `✅ Solicitud enviada correctamente.<br>Tu folio es: <strong>${folio}</strong>`,
-    "green"
-  );
-  form.reset();
 }
 
-function generarFolio() {
-  const año = new Date().getFullYear();
-  const numero = Math.floor(1000 + Math.random() * 9000);
-  return `CFE-${año}-${numero}`;
-}
-
-/* =====================================================
-   REGISTRO CLIENTE
-   ===================================================== */
 async function registrarUsuario(e) {
+  e.preventDefault();
+}
+
+async function generarReporte(e) {
   e.preventDefault();
   const form = e.target;
 
-  const nombre = form.nombre.value.trim();
-  const apellidos = form.apellidos.value.trim();
-  const correo = form.correo.value.trim();
-  const contrasena = form.contrasena.value.trim();
-  const confirmar = form.confirmar.value.trim();
-  const curp = form.curp.value.trim();
-  const telefono = form.telefono.value.trim();
+  const tipo_falla = form.tipo_falla.value;
   const calle = form.calle.value.trim();
   const numero = form.numero.value.trim();
   const colonia = form.colonia.value.trim();
   const municipio = form.municipio.value.trim();
   const codigo_postal = form.codigo_postal.value.trim();
-  const estado = form.estado.value;
-  const medidor = form.medidor.value.trim();
-  const num_contrato = form.num_contrato.value.trim();
-  const num_servicio = form.num_servicio.value.trim();
-  const dia = form.dia.value.padStart(2, "0");
-  const mes = form.mes.value.padStart(2, "0");
-  const anio = form.anio.value;
-  const fecha_nacimiento = `${anio}-${mes}-${dia}`;
+  const referencias = form.referencias?.value.trim() || "";
+  const descripcion = form.descripcion.value.trim(); // CORREGIDO
 
-  if (!nombre || !apellidos || !correo || !contrasena) {
-    alert("Completa todos los campos obligatorios");
-    return;
-  }
-  if (contrasena.length < 6) {
-    alert("La contraseña debe tener al menos 6 caracteres");
-    return;
-  }
-  if (contrasena !== confirmar) {
-    alert("Las contraseñas no coinciden");
-    return;
-  }
-  if (!medidor || !num_contrato || !num_servicio) {
-    alert("Completa los datos del servicio (medidor/contrato/servicio)");
+  if (!tipo_falla || !calle || !numero || !colonia || !municipio || !codigo_postal) {
+    alert("Por favor, llena todos los campos obligatorios.");
     return;
   }
 
-  const campoMedidor = form.medidor;
-  const avisoMedidor = document.getElementById("aviso-medidor");
-  const formatoMedidor = /^MED\d+$/i;
-  if (!formatoMedidor.test(medidor)) {
-    avisoMedidor.textContent = "El número de medidor debe iniciar con 'MED' seguido de números (ej. MED1419)";
-    campoMedidor.style.border = "2px solid red";
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  if (!usuario || !usuario.id_usuario) {
+    alert("No se ha iniciado sesión.");
     return;
-  } else {
-    avisoMedidor.textContent = "";
-    campoMedidor.style.border = "";
   }
 
   try {
-    const res = await fetch(`${API}/registro`, {
+    const res = await fetch(`${API}/reportes`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        nombre, apellidos, correo, contrasena,
-        curp, telefono, fecha_nacimiento,
-        calle, numero, colonia, municipio, codigo_postal, estado,
-        medidor, num_contrato, num_servicio
+        id_usuario: usuario.id_usuario,
+        tipo_falla,
+        calle,
+        numero,
+        colonia,
+        municipio,
+        codigo_postal,
+        referencias,
+        descripcion // CORREGIDO
       })
     });
-    const data = await res.json();
 
+    const data = await res.json();
     if (res.ok) {
-      alert("Registro exitoso. Inicia sesión.");
-      window.location.href = "index.html";
+      alert(`✅ Reporte generado con éxito. Folio: ${data.folio}`);
+      form.reset();
     } else {
-      alert(data.error || "No se pudo registrar");
+      alert(data.error || "Error al generar reporte.");
     }
   } catch (err) {
     console.error(err);
-    alert("Servidor no disponible");
+    alert("No se pudo conectar con el servidor.");
   }
 }
 
-/* =====================================================
-   UTILIDAD VISUAL
-   ===================================================== */
 function mostrarMensaje(el, html, color) {
   if (!el) return;
   el.style.color = color;
