@@ -2,122 +2,216 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Generar Reporte de Falla – CFE</title>
-  <link rel="stylesheet" href="css/styles.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporte de Falla – CFE</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .formulario-reporte {
+      max-width: 500px;
+      background-color: rgba(20, 20, 20, 0.95);
+      padding: 40px;
+      border-radius: 20px;
+      margin: 80px auto;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+      color: #fff;
+      z-index: 2;
+      position: relative;
+    }
+    .formulario-reporte h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .formulario-reporte label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .formulario-reporte input,
+    .formulario-reporte select,
+    .formulario-reporte textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 5px;
+      background-color: #1a1a1a;
+      color: #fff;
+    }
+    .formulario-reporte input::placeholder,
+    .formulario-reporte textarea::placeholder {
+      color: #aaa;
+    }
+    .btn-guardar {
+      background-color: #00cc00;
+      color: #fff;
+      padding: 12px;
+      width: 100%;
+      margin-top: 30px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .btn-guardar:hover {
+      background-color: #009900;
+    }
+    .btn-back,
+    .btn-consulta {
+      position: absolute;
+      top: 90px;
+      right: 30px;
+      background: #2d2d2d;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+      z-index: 3;
+    }
+    .btn-consulta {
+      right: 210px;
+    }
+    .btn-back:hover,
+    .btn-consulta:hover {
+      background: #1a1a1a;
+    }
+  </style>
 </head>
+
 <body class="registro-cliente">
   <!-- Fondo animado -->
   <div id="particles-js"></div>
 
   <!-- Encabezado -->
   <header class="encabezado">
-    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe"/>
+    <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
   </header>
 
-  <!-- Botones navegación -->
-  <div style="position:absolute;top:90px;right:40px;z-index:2;display:flex;gap:12px;">
-    <a href="cliente-inicio.html"       class="boton-volver">🔙 Regresar a Inicio</a>
-    <a href="cliente-consulta-rep.html" class="boton-volver">📋 Consultar Reporte de Falla</a>
-  </div>
+  <!-- Botones -->
+  <a href="cliente-inicio.html" class="btn-back">⬅️ Regresar a Inicio</a>
+  <a href="cliente-consulta-rep.html" class="btn-consulta">📋 Consultar Reporte de Falla</a>
 
-  <!-- Panel reporte -->
-  <div class="form-container" style="background:#1e1e1e;margin-top:140px;max-width:520px;">
+  <!-- Formulario -->
+  <form id="form-reporte" class="formulario-reporte">
     <h2>Generar Reporte de Falla</h2>
 
-    <form id="form-reporte">
-      <label for="tipo">Tipo de Falla:</label>
-      <select id="tipo" required>
-        <option value="">Seleccione</option>
-        <option>Apagón</option>
-        <option>Variación de voltaje</option>
-        <option>Corto circuito</option>
-      </select>
+    <label for="tipo_falla">Tipo de Falla:</label>
+    <select name="tipo_falla" id="tipo_falla" required>
+      <option value="Apagón">Apagón</option>
+      <option value="Variación de voltaje">Variación de voltaje</option>
+      <option value="Corto circuito">Corto circuito</option>
+    </select>
 
-      <label for="ubicacion">Ubicación de la Falla:</label>
-      <input id="ubicacion" type="text" placeholder="Calle, número, colonia..." required/>
+    <label for="calle">Calle:</label>
+    <input type="text" id="calle" name="calle" placeholder="Ej. Benito Juárez" required />
 
-      <label for="observaciones">Descripción u Observaciones:</label>
-      <textarea id="observaciones" placeholder="Detalles adicionales..." required></textarea>
+    <label for="numero">Número:</label>
+    <input type="text" id="numero" name="numero" placeholder="Ej. 18A" required />
 
-      <button class="btn" style="margin-top:20px;">Guardar Reporte</button>
-    </form>
+    <label for="colonia">Colonia:</label>
+    <input type="text" id="colonia" name="colonia" placeholder="Ej. Centro" required />
 
-    <p id="mensaje-exito"
-       style="display:none;color:#0f0;margin-top:15px;font-weight:bold;">
-      ✅ Reporte guardado correctamente.
-    </p>
-  </div>
+    <label for="municipio">Municipio:</label>
+    <input type="text" id="municipio" name="municipio" placeholder="Ej. Xalapa" required />
 
-  <!-- Partículas -->
+    <label for="codigo_postal">Código Postal:</label>
+    <input type="text" id="codigo_postal" name="codigo_postal" placeholder="Ej. 91000" required />
+
+    <label for="referencias">Referencias Adicionales:</label>
+    <input type="text" id="referencias" name="referencias" placeholder="Frente a parque, cerca de tienda..." />
+
+    <label for="descripcion">Descripción u Observaciones:</label>
+    <textarea id="descripcion" name="descripcion" placeholder="Detalles adicionales..." rows="4"></textarea>
+
+    <button type="submit" class="btn-guardar">Guardar Reporte</button>
+  </form>
+
+  <!-- Fondo animado -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
-    particlesJS("particles-js",{
-      particles:{number:{value:80},color:{value:"#00ff00"},shape:{type:"circle"},
-      opacity:{value:.5},size:{value:3},
-      line_linked:{enable:true,distance:150,color:"#00ff00",opacity:.4,width:1},
-      move:{enable:true,speed:2}},
-      interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
-      retina_detect:true
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ff00" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#00ff00",
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable: true, speed: 2 }
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "repulse" }
+        }
+      },
+      retina_detect: true
     });
   </script>
 
-  <!-- Lógica de reporte -->
+  <!-- JS para enviar reporte -->
   <script>
-    const API     = "http://localhost:3000/api";
-    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    const API = "http://localhost:3000/api";
 
-    /* --- Redirigir si no hay sesión --- */
-    if (!usuario){
-      alert("No hay sesión. Inicia nuevamente.");
-      location.href = "index.html";
-    }
-
-    /* --- Referencias DOM --- */
-    const form  = document.getElementById("form-reporte");
-    const tipo  = document.getElementById("tipo");
-    const ubic  = document.getElementById("ubicacion");
-    const obs   = document.getElementById("observaciones");
-    const msgOK = document.getElementById("mensaje-exito");
-
-    /* --- Envío del reporte --- */
-    form.addEventListener("submit", async e=>{
+    document.getElementById("form-reporte").addEventListener("submit", async function (e) {
       e.preventDefault();
+      const form = e.target;
 
-      if (!tipo.value || !ubic.value.trim() || !obs.value.trim()){
-        alert("Completa todos los campos");
+      const tipo_falla = form.tipo_falla.value;
+      const calle = form.calle.value.trim();
+      const numero = form.numero.value.trim();
+      const colonia = form.colonia.value.trim();
+      const municipio = form.municipio.value.trim();
+      const codigo_postal = form.codigo_postal.value.trim();
+      const referencias = form.referencias.value.trim();
+      const descripcion = form.descripcion.value.trim();
+
+      if (!tipo_falla || !calle || !numero || !colonia || !municipio || !codigo_postal) {
+        alert("Por favor, llena todos los campos obligatorios.");
         return;
       }
 
-      try{
-        const res = await fetch(`${API}/reportes`,{
-          method : "POST",
-          headers: { "Content-Type":"application/json" },
-          body   : JSON.stringify({
-            id_usuario    : usuario.id_usuario,     // se corrige clave
-            tipo_falla    : tipo.value,
-            ubicacion     : ubic.value.trim(),
-            observaciones : obs.value.trim()        // se corrige nombre
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      if (!usuario || !usuario.id_usuario) {
+        alert("No se ha iniciado sesión.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API}/reportes`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_usuario: usuario.id_usuario,
+            tipo_falla,
+            calle,
+            numero,
+            colonia,
+            municipio,
+            codigo_postal,
+            referencias,
+            descripcion
           })
         });
 
-        /* Si el backend responde 204 No Content, no hay JSON */
-        let data = {};
-        if (res.status !== 204) data = await res.json();
-
-        if (res.ok){
-          msgOK.style.display = "block";
-          /* guardamos el id del reporte para la pantalla de consulta */
-          if (data.id_reporte) {
-            localStorage.setItem("id_reporte", data.id_reporte);
-          }
-          setTimeout(()=> location.href = "cliente-consulta-rep.html", 1400);
-        }else{
-          alert(data.error || "No se pudo guardar el reporte");
+        const data = await res.json();
+        if (res.ok) {
+          alert(`✅ Reporte generado con éxito. Folio: ${data.folio}`);
+          form.reset();
+        } else {
+          alert(data.error || "Error al generar reporte.");
         }
-      }catch(err){
+      } catch (err) {
         console.error(err);
-        alert("Servidor no disponible");
+        alert("No se pudo conectar con el servidor.");
       }
     });
   </script>
