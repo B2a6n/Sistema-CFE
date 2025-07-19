@@ -1,61 +1,48 @@
-// backend/routes/reportes.js
+// backend/routes/supervisor.js
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
 
-router.post("/reportes", (req, res) => {
-  console.log("Cuerpo recibido:", req.body);
-
+// Ruta para asignar técnico y guardar en reporte_proceso
+router.post("/asignar-tecnico", (req, res) => {
   const {
-    id_usuario,
-    tipo_falla,
-    calle,
-    numero,
-    colonia,
-    municipio,
-    codigo_postal,
-    referencias,
-    descripcion
+    folio, id_usuario, tipo_falla, fecha_reporte, descripcion,
+    calle, numero, colonia, municipio, codigo_postal, referencias,
+    id_tecnico, nombre_tecnico, especialidad_tecnico
   } = req.body;
 
-  if (!id_usuario || !tipo_falla || !calle || !numero || !colonia || !municipio || !codigo_postal) {
-    return res.status(400).json({ error: "Datos incompletos" });
-  }
+  const estatus = "En Proceso";
+  const fecha_asignacion = new Date(); // Guarda la hora actual
 
-  const estatus = "Pendiente";
-
-  const sqlInsert = `
-    INSERT INTO reportes
-      (id_usuario, tipo_falla, descripcion, fecha_reporte, estatus,
-       calle, numero, colonia, municipio, codigo_postal, referencias)
-    VALUES (?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?)
+  const sqlInsertProceso = `
+    INSERT INTO reporte_proceso (
+      folio, id_usuario, tipo_falla, fecha_reporte, descripcion,
+      estatus, fecha_asignacion, calle, numero, colonia, municipio,
+      codigo_postal, referencias, id_tecnico, nombre_tecnico, especialidad_tecnico
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const values = [
-    id_usuario,
-    tipo_falla,
-    descripcion || '',
-    estatus,
-    calle,
-    numero,
-    colonia,
-    municipio,
-    codigo_postal,
-    referencias || ''
+    folio, id_usuario, tipo_falla, fecha_reporte, descripcion,
+    estatus, fecha_asignacion, calle, numero, colonia, municipio,
+    codigo_postal, referencias, id_tecnico, nombre_tecnico, especialidad_tecnico
   ];
 
-  db.query(sqlInsert, values, (err, result) => {
+  db.query(sqlInsertProceso, values, (err, result) => {
     if (err) {
-      console.error("Error al insertar:", err);
-      return res.status(500).json({ error: "Error al guardar el reporte" });
+      console.error("Error al insertar en reporte_proceso:", err);
+      return res.status(500).json({ error: "Error al asignar técnico" });
     }
 
-    const folio = result.insertId; // Ahora 'folio' es la PK autoincremental
+    // Actualiza también el estado del reporte original
+    const sqlUpdateReporte = `UPDATE reportes SET estatus = ? WHERE folio = ?`;
+    db.query(sqlUpdateReporte, [estatus, folio], (err2) => {
+      if (err2) {
+        console.error("Error al actualizar estado en reportes:", err2);
+        return res.status(500).json({ error: "Error al actualizar estado" });
+      }
 
-    res.json({
-      ok: true,
-      folio,
-      estatus
+      res.json({ ok: true, message: "Técnico asignado con éxito" });
     });
   });
 });
