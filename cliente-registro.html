@@ -12,8 +12,11 @@
   <div id="background"></div>
 
   <!-- Encabezado -->
-  <header class="encabezado">
+  <header class="encabezado" style="display: flex; justify-content: space-between; align-items: center; padding: 0 2rem;">
     <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
+    <a href="index.html" class="btn-regresar" style="padding: 0.5rem 1rem; background-color: #008000; color: white; border-radius: 5px; text-decoration: none; font-weight: bold;">
+      Regresar al Inicio
+    </a>
   </header>
 
   <!-- Formulario registro -->
@@ -26,13 +29,20 @@
       <input id="nombre" name="nombre" type="text" placeholder="Nombre" required />
       <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos" required />
 
+      <!-- Fecha de nacimiento -->
+      <h3>Fecha de nacimiento</h3>
+      <input id="dia" name="dia" type="number" placeholder="Día" min="1" max="31" required />
+      <input id="mes" name="mes" type="number" placeholder="Mes" min="1" max="12" required />
+      <input id="anio" name="anio" type="number" placeholder="Año" min="1900" max="2025" required />
+
       <!-- Dirección -->
       <h3>Dirección</h3>
       <input name="calle" type="text" placeholder="Calle" required />
-      <input name="numero" type="text" placeholder="Número" required />
+      <input name="numero" type="text" placeholder="Número y Letra " required />
       <input name="colonia" type="text" placeholder="Colonia" required />
       <input name="municipio" type="text" placeholder="Municipio" required />
-      <input name="codigo_postal" type="text" placeholder="Código Postal" required />
+      <input name="codigo_postal" id="codigo_postal" type="text" placeholder="Código Postal" required />
+      <div id="aviso-cp" style="color: red; font-size: 0.85rem;"></div>
 
       <label for="estado">Estado:</label>
       <select id="estado" name="estado" required>
@@ -80,6 +90,7 @@
 
       <label for="correo">Correo electrónico:</label>
       <input id="correo" name="correo" type="email" required />
+      <div id="aviso-correo" style="color: red; font-size: 0.85rem;"></div>
 
       <label for="contrasena">Contraseña:</label>
       <div style="position: relative;">
@@ -106,15 +117,6 @@
 
       <label for="num_contrato">Número de Contrato:</label>
       <input id="num_contrato" name="num_contrato" type="text" required />
-
-      <label for="num_servicio">Número de Servicio:</label>
-      <input id="num_servicio" name="num_servicio" type="text" required />
-
-      <!-- Fecha de nacimiento -->
-      <h3>Fecha de nacimiento</h3>
-      <input name="dia" type="number" placeholder="Día" min="1" max="31" required />
-      <input name="mes" type="number" placeholder="Mes" min="1" max="12" required />
-      <input name="anio" type="number" placeholder="Año" min="1900" max="2025" required />
 
       <button type="submit" class="btn">Registrarse</button>
     </form>
@@ -152,7 +154,7 @@
         svg.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/><circle cx="12" cy="12" r="2.5"/>`; // eye open
       } else {
         input.type = "password";
-        svg.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/><path d="M2 2l20 20"/>`; // eye closed (basic)
+        svg.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/><path d="M2 2l20 20"/>`; // eye closed
       }
     }
   </script>
