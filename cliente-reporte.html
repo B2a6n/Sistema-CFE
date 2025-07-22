@@ -82,21 +82,22 @@
 </head>
 
 <body class="registro-cliente">
-  <!-- Fondo animado -->
   <div id="particles-js"></div>
 
-  <!-- Encabezado -->
   <header class="encabezado">
     <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
   </header>
 
-  <!-- Botones -->
   <a href="cliente-inicio.html" class="btn-back">⬅️ Regresar a Inicio</a>
   <a href="cliente-consulta-rep.html" class="btn-consulta">📋 Consultar Reporte de Falla</a>
 
-  <!-- Formulario -->
   <form id="form-reporte" class="formulario-reporte">
     <h2>Generar Reporte de Falla</h2>
+
+    <div style="margin-bottom: 20px;">
+      <label><input type="radio" name="direccion_opcion" value="registrada" checked /> Usar mi domicilio registrado</label><br />
+      <label><input type="radio" name="direccion_opcion" value="otra" /> Usar otra dirección</label>
+    </div>
 
     <label for="tipo_falla">Tipo de Falla:</label>
     <select name="tipo_falla" id="tipo_falla" required>
@@ -105,23 +106,25 @@
       <option value="Corto circuito">Corto circuito</option>
     </select>
 
-    <label for="calle">Calle:</label>
-    <input type="text" id="calle" name="calle" placeholder="Ej. Benito Juárez" required />
+    <div id="campos-direccion" style="display: none;">
+      <label for="calle">Calle:</label>
+      <input type="text" id="calle" name="calle" placeholder="Ej. Benito Juárez" />
 
-    <label for="numero">Número:</label>
-    <input type="text" id="numero" name="numero" placeholder="Ej. 18A" required />
+      <label for="numero">Número:</label>
+      <input type="text" id="numero" name="numero" placeholder="Ej. 18A" />
 
-    <label for="colonia">Colonia:</label>
-    <input type="text" id="colonia" name="colonia" placeholder="Ej. Centro" required />
+      <label for="colonia">Colonia:</label>
+      <input type="text" id="colonia" name="colonia" placeholder="Ej. Centro" />
 
-    <label for="municipio">Municipio:</label>
-    <input type="text" id="municipio" name="municipio" placeholder="Ej. Xalapa" required />
+      <label for="municipio">Municipio:</label>
+      <input type="text" id="municipio" name="municipio" placeholder="Ej. Xalapa" />
 
-    <label for="codigo_postal">Código Postal:</label>
-    <input type="text" id="codigo_postal" name="codigo_postal" placeholder="Ej. 91000" required />
+      <label for="codigo_postal">Código Postal:</label>
+      <input type="text" id="codigo_postal" name="codigo_postal" placeholder="Ej. 91000" />
 
-    <label for="referencias">Referencias Adicionales:</label>
-    <input type="text" id="referencias" name="referencias" placeholder="Frente a parque, cerca de tienda..." />
+      <label for="referencias">Referencias Adicionales:</label>
+      <input type="text" id="referencias" name="referencias" placeholder="Frente a parque, cerca de tienda..." />
+    </div>
 
     <label for="descripcion">Descripción u Observaciones:</label>
     <textarea id="descripcion" name="descripcion" placeholder="Detalles adicionales..." rows="4"></textarea>
@@ -129,7 +132,6 @@
     <button type="submit" class="btn-guardar">Guardar Reporte</button>
   </form>
 
-  <!-- Fondo animado -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
     particlesJS("particles-js", {
@@ -157,32 +159,66 @@
     });
   </script>
 
-  <!-- JS para enviar reporte -->
   <script>
     const API = "http://localhost:3000/api";
+
+    document.querySelectorAll('input[name="direccion_opcion"]').forEach(radio => {
+      radio.addEventListener("change", function () {
+        const mostrar = this.value === "otra";
+        document.getElementById("campos-direccion").style.display = mostrar ? "block" : "none";
+      });
+    });
 
     document.getElementById("form-reporte").addEventListener("submit", async function (e) {
       e.preventDefault();
       const form = e.target;
 
       const tipo_falla = form.tipo_falla.value;
-      const calle = form.calle.value.trim();
-      const numero = form.numero.value.trim();
-      const colonia = form.colonia.value.trim();
-      const municipio = form.municipio.value.trim();
-      const codigo_postal = form.codigo_postal.value.trim();
-      const referencias = form.referencias.value.trim();
       const descripcion = form.descripcion.value.trim();
-
-      if (!tipo_falla || !calle || !numero || !colonia || !municipio || !codigo_postal) {
-        alert("Por favor, llena todos los campos obligatorios.");
-        return;
-      }
 
       const usuario = JSON.parse(localStorage.getItem("usuario"));
       if (!usuario || !usuario.id_usuario) {
         alert("No se ha iniciado sesión.");
         return;
+      }
+
+      const direccionOpcion = document.querySelector('input[name="direccion_opcion"]:checked').value;
+
+      let calle, numero, colonia, municipio, codigo_postal, referencias;
+
+      if (direccionOpcion === "otra") {
+        calle = form.calle.value.trim();
+        numero = form.numero.value.trim();
+        colonia = form.colonia.value.trim();
+        municipio = form.municipio.value.trim();
+        codigo_postal = form.codigo_postal.value.trim();
+        referencias = form.referencias.value.trim();
+
+        if (!calle || !numero || !colonia || !municipio || !codigo_postal) {
+          alert("Por favor, llena todos los campos obligatorios.");
+          return;
+        }
+      } else {
+        try {
+          const direccionRes = await fetch(`${API}/usuario/${usuario.id_usuario}/direccion`);
+          const direccionData = await direccionRes.json();
+
+          if (!direccionRes.ok) {
+            alert("No se pudo obtener la dirección registrada.");
+            return;
+          }
+
+          calle = direccionData.calle;
+          numero = direccionData.numero;
+          colonia = direccionData.colonia;
+          municipio = direccionData.municipio;
+          codigo_postal = direccionData.codigo_postal;
+          referencias = direccionData.referencias || '';
+        } catch (error) {
+          console.error("Error al obtener dirección:", error);
+          alert("Ocurrió un error al obtener la dirección registrada.");
+          return;
+        }
       }
 
       try {
@@ -206,6 +242,7 @@
         if (res.ok) {
           alert(`✅ Reporte generado con éxito. Folio: ${data.folio}`);
           form.reset();
+          window.location.href = "cliente-consulta-rep.html";
         } else {
           alert(data.error || "Error al generar reporte.");
         }
