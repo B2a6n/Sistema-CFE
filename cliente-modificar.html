@@ -17,62 +17,77 @@
   </style>
 </head>
 <body class="registro-cliente">
-  <!-- Fondo animado -->
   <div id="particles-js"></div>
 
-  <!-- Encabezado -->
   <header class="encabezado">
     <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
   </header>
 
-  <!-- Botón regresar -->
   <div style="position:absolute; top:90px; right:40px; z-index:2;">
     <a href="cliente-inicio.html" class="boton-volver">← Regresar a Inicio</a>
   </div>
 
-  <!-- Panel -->
   <div class="form-container" style="background:#1e1e1e; margin-top:140px;">
     <h2>Modificar Datos del Usuario</h2>
 
     <form id="form-modificar">
-      <label>Nuevo Correo Electrónico:</label>
-      <input type="email" name="correo" id="correo" required />
-
-      <!-- Campo: Nueva Contraseña -->
-      <label>Nueva Contraseña:</label>
-      <div style="position: relative;">
-        <input type="password" name="password" id="password" required />
-        <button type="button" onclick="togglePassword('password', this)"
-          style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;" aria-label="Mostrar/Ocultar">
-          <svg class="icono-ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
-            <circle cx="12" cy="12" r="2.5"/>
-          </svg>
-        </button>
-      </div>
-      <div id="aviso-password" style="color:orange; font-size:0.85rem; margin-top:0.3rem;"></div>
-
-      <!-- Campo: Confirmar contraseña -->
-      <label>Confirmar Nueva Contraseña:</label>
-      <div style="position: relative;">
-        <input type="password" id="confirmar" required />
-        <button type="button" onclick="togglePassword('confirmar', this)"
-          style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;" aria-label="Mostrar/Ocultar">
-          <svg class="icono-ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
-            <circle cx="12" cy="12" r="2.5"/>
-          </svg>
-        </button>
+      <label>¿Qué deseas modificar?</label>
+      <div id="opciones-modificacion">
+        <label><input type="checkbox" value="correo" onchange="mostrarCampo(this)"> Correo electrónico</label><br>
+        <label><input type="checkbox" value="contrasena" onchange="mostrarCampo(this)"> Contraseña</label><br>
+        <label><input type="checkbox" value="telefono" onchange="mostrarCampo(this)"> Teléfono</label>
       </div>
 
-      <label>Número de Teléfono:</label>
-      <input type="text" name="telefono" id="telefono" required />
+      <!-- CORREO -->
+      <div id="campo-correo" style="display:none; margin-top: 1rem;">
+        <label>Nuevo Correo Electrónico:</label>
+        <input type="email" id="correo" />
+
+        <label>Confirmar Correo Electrónico:</label>
+        <input type="email" id="confirmar-correo" />
+      </div>
+
+      <!-- CONTRASEÑA -->
+      <div id="campo-contrasena" style="display:none; margin-top: 1rem;">
+        <label>Nueva Contraseña:</label>
+        <div style="position: relative;">
+          <input type="password" id="password" />
+          <button type="button" onclick="togglePassword('password', this)"
+            style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;" aria-label="Mostrar/Ocultar">
+            <svg class="icono-ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+              <circle cx="12" cy="12" r="2.5"/>
+            </svg>
+          </button>
+        </div>
+
+        <label>Confirmar Nueva Contraseña:</label>
+        <div style="position: relative;">
+          <input type="password" id="confirmar" />
+          <button type="button" onclick="togglePassword('confirmar', this)"
+            style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;" aria-label="Mostrar/Ocultar">
+            <svg class="icono-ojo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+              <circle cx="12" cy="12" r="2.5"/>
+            </svg>
+          </button>
+        </div>
+        <div id="aviso-password" style="color:orange; font-size:0.85rem; margin-top:0.3rem;"></div>
+      </div>
+
+      <!-- TELÉFONO -->
+      <div id="campo-telefono" style="display:none; margin-top: 1rem;">
+        <label>Nuevo Número de Teléfono:</label>
+        <input type="text" id="telefono" />
+
+        <label>Confirmar Teléfono:</label>
+        <input type="text" id="confirmar-telefono" />
+      </div>
 
       <button type="submit" class="btn" style="margin-top:20px;">Guardar Cambios</button>
     </form>
   </div>
 
-  <!-- Partículas -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
     particlesJS("particles-js", {
@@ -90,7 +105,6 @@
     });
   </script>
 
-  <!-- Script de funcionalidad -->
   <script>
     const API = 'http://localhost:3000/api';
     const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -100,18 +114,17 @@
       location.href = "index.html";
     }
 
-    const form_modificar = document.getElementById("form-modificar");
+    const form = document.getElementById("form-modificar");
     const correo = document.getElementById("correo");
+    const confirmarCorreo = document.getElementById("confirmar-correo");
+
     const telefono = document.getElementById("telefono");
+    const confirmarTelefono = document.getElementById("confirmar-telefono");
+
     const password = document.getElementById("password");
     const confirmar = document.getElementById("confirmar");
     const avisoPassword = document.getElementById("aviso-password");
 
-    // Prellenar campos
-    correo.value = usuario.correo;
-    telefono.value = usuario.telefono ?? "";
-
-    // Validación en vivo para contraseña mínima
     password.addEventListener("input", () => {
       if (password.value.length > 0 && password.value.length < 6) {
         avisoPassword.textContent = "La contraseña debe tener al menos 6 caracteres";
@@ -122,27 +135,45 @@
       }
     });
 
-    form_modificar.addEventListener('submit', async e => {
+    form.addEventListener('submit', async e => {
       e.preventDefault();
+      const body = {};
 
-      if (password.value && password.value.length < 6) {
-        alert("La contraseña debe tener al menos 6 caracteres");
-        return;
+      // Correo
+      if (document.getElementById("campo-correo").style.display === "block") {
+        if (correo.value.trim() !== confirmarCorreo.value.trim()) {
+          alert("Los correos no coinciden");
+          return;
+        }
+        body.correo = correo.value.trim();
       }
 
-      if (password.value !== confirmar.value) {
-        alert("Las contraseñas no coinciden");
-        return;
+      // Contraseña
+      if (document.getElementById("campo-contrasena").style.display === "block") {
+        if (password.value.length < 6) {
+          alert("La contraseña debe tener al menos 6 caracteres");
+          return;
+        }
+        if (password.value !== confirmar.value) {
+          alert("Las contraseñas no coinciden");
+          return;
+        }
+        body.contrasena = password.value.trim();
       }
 
-      const body = {
-        correo: correo.value.trim(),
-        contrasena: password.value.trim(),
-        telefono: telefono.value.trim()
-      };
+      // Teléfono
+      if (document.getElementById("campo-telefono").style.display === "block") {
+        if (telefono.value.trim() !== confirmarTelefono.value.trim()) {
+          alert("Los teléfonos no coinciden");
+          return;
+        }
+        body.telefono = telefono.value.trim();
+      }
 
-      // Limpiar campos vacíos
-      Object.keys(body).forEach(k => !body[k] && delete body[k]);
+      if (Object.keys(body).length === 0) {
+        alert("Selecciona al menos un campo a modificar");
+        return;
+      }
 
       try {
         const res = await fetch(`${API}/usuario/${usuario.id_usuario}`, {
@@ -169,7 +200,6 @@
       }
     });
 
-    // Función mostrar/ocultar contraseña con cambio de SVG
     function togglePassword(id, btn) {
       const input = document.getElementById(id);
       const svg = btn.querySelector("svg");
@@ -179,6 +209,21 @@
       } else {
         input.type = "password";
         svg.innerHTML = `<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/><path d="M2 2l20 20"/>`;
+      }
+    }
+
+    function mostrarCampo(checkbox) {
+      const id = `campo-${checkbox.value}`;
+      const campo = document.getElementById(id);
+      campo.style.display = checkbox.checked ? "block" : "none";
+
+      if (!checkbox.checked) {
+        if (checkbox.value === "correo") correo.value = confirmarCorreo.value = "";
+        if (checkbox.value === "contrasena") {
+          password.value = confirmar.value = "";
+          avisoPassword.textContent = "";
+        }
+        if (checkbox.value === "telefono") telefono.value = confirmarTelefono.value = "";
       }
     }
   </script>
