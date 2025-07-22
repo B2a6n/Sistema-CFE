@@ -23,7 +23,6 @@
     <p><strong>Nombre:</strong>         <span id="nombreComp">—</span></p>
     <p><strong>Correo:</strong>         <span id="correoComp">—</span></p>
     <p><strong>No. Contrato:</strong>   <span id="contratoComp">—</span></p>
-    <p><strong>No. Servicio:</strong>   <span id="servicioComp">—</span></p>
     <p><strong>No. Medidor:</strong>    <span id="medidorComp">—</span></p>
   </section>
 
@@ -31,7 +30,7 @@
   <nav class="menu-opciones">
     <a href="cliente-informacion.html"><span>📋</span> Información General</a>
     <a href="cliente-modificar.html"><span>🛠️</span> Modificar Datos</a>
-    <a href="cliente-reporte.html"><span>⚡</span> Reporte de Fallas</a>
+    <a href="cliente-reporte.html"><span>⚡</span> Fallas</a>
     <a href="#" onclick="cerrarSesion()"><span>🏛️</span> Cerrar Sesión</a>
   </nav>
 
@@ -51,29 +50,32 @@
   </script>
 
   <!-- Lógica de carga de datos -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const usuario = JSON.parse(localStorage.getItem("usuario"));
-      if (!usuario) { location.href = "index.html"; return; }
+  <!-- ... todo igual hasta aquí ... -->
 
-      /* Nombre y correo */
-      const nombreCompleto = `${usuario.nombre} ${usuario.apellidos ?? ""}`.trim();
-      bienvenida  .textContent = `Bienvenido, ${usuario.nombre}`;
-      nombreComp  .textContent = nombreCompleto;
-      correoComp  .textContent = usuario.correo ?? "—";
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const usuario = JSON.parse(localStorage.getItem("usuario"));
+    if (!usuario) { location.href = "index.html"; return; }
 
-      /* Números (contrato/servicio/medidor) */
-      contratoComp.textContent = usuario.num_contrato  ??
-                                 usuario.numero_contrato ?? "—";
+    /* Nombre y correo */
+    const nombreCompleto = `${usuario.nombre} ${usuario.apellidos ?? ""}`.trim();
+    document.getElementById("bienvenida").textContent = `Bienvenido, ${usuario.nombre}`;
+    document.getElementById("nombreComp").textContent = nombreCompleto;
+    document.getElementById("correoComp").textContent = usuario.correo ?? "—";
 
-      servicioComp.textContent = usuario.num_servicio  ?? "—";
-      medidorComp .textContent = usuario.num_medidor   ?? "—";
-    });
+    /* Contrato y medidor */
+    const contrato = usuario.num_contrato ?? usuario.numero_contrato ?? "—";
+    const medidor  = usuario.num_medidor  ?? usuario.medidor         ?? "—";
 
-    function cerrarSesion () {
-      localStorage.removeItem("usuario");
-      location.href = "index.html";
-    }
-  </script>
+    document.getElementById("contratoComp").textContent = contrato || "—";
+    document.getElementById("medidorComp").textContent  = medidor  || "—";
+  });
+
+  function cerrarSesion () {
+    localStorage.removeItem("usuario");
+    location.href = "index.html";
+  }
+</script>
+
 </body>
 </html>
