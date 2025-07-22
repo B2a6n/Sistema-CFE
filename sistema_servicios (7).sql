@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 21-07-2025 a las 19:17:39
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Host: 127.0.0.1:3307
+-- Generation Time: Jul 22, 2025 at 04:15 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,41 +18,43 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `sistema_servicios`
+-- Database: `sistema_servicios`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `direccion`
+-- Table structure for table `direccion`
 --
 
 CREATE TABLE `direccion` (
   `id_direccion` int(11) NOT NULL,
   `calle` varchar(100) NOT NULL,
-  `numero` varchar(10) NOT NULL,
+  `numero` varchar(20) NOT NULL,
   `colonia` varchar(100) NOT NULL,
-  `codigo_postal` varchar(10) NOT NULL,
   `municipio` varchar(100) NOT NULL,
-  `estado` varchar(100) NOT NULL
+  `codigo_postal` varchar(10) NOT NULL,
+  `estado` varchar(100) NOT NULL,
+  `referencias` text DEFAULT NULL,
+  `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `direccion`
+-- Dumping data for table `direccion`
 --
 
-INSERT INTO `direccion` (`id_direccion`, `calle`, `numero`, `colonia`, `codigo_postal`, `municipio`, `estado`) VALUES
-(24, 'Arroyo', '4B', 'La Cima', '91637', 'Xalapa', 'Veracruz');
+INSERT INTO `direccion` (`id_direccion`, `calle`, `numero`, `colonia`, `municipio`, `codigo_postal`, `estado`, `referencias`, `id_usuario`) VALUES
+(1, 'Arroyo', '4B', 'La Cima', 'Xalapa', '91637', 'Veracruz', 'Frente al oxxo', 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `reportes`
+-- Table structure for table `reportes`
 --
 
 CREATE TABLE `reportes` (
   `folio` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
   `tipo_falla` varchar(100) DEFAULT NULL,
   `fecha_reporte` date NOT NULL,
   `descripcion` text NOT NULL,
@@ -67,228 +69,184 @@ CREATE TABLE `reportes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `reportes`
+-- Dumping data for table `reportes`
 --
 
 INSERT INTO `reportes` (`folio`, `id_usuario`, `tipo_falla`, `fecha_reporte`, `descripcion`, `estatus`, `fecha_atencion`, `calle`, `numero`, `colonia`, `municipio`, `codigo_postal`, `referencias`) VALUES
-(14, 35, 'Apagón', '2025-07-17', 'ninguna', 'Pendiente', NULL, 'Arroyo', '4B', 'La Cima', 'Xalapa', '91637', 'Entre Colina y La Cima'),
-(15, 35, 'Apagón', '2025-07-17', 'ninguna', 'Pendiente', NULL, 'Arroyo', '5b', 'La Cima', 'Xalapa', '23167', 'Entre Colina y La Cima'),
-(16, 35, 'Apagón', '2025-07-17', 'se fue la luz', 'Pendiente', NULL, 'Gustavo Diaz Ordaz', '12', 'El castillo', 'xalapa', '91667', 'frente al salon del pueblo');
+(1, 1, 'Variación de voltaje', '2025-07-21', 'en frente de la cima', 'Pendiente', NULL, 'Arroyo', '4B', 'La Cima', 'Xalapa', '91637', 'Entre Colina y La Cima'),
+(2, 1, 'Apagón', '2025-07-21', 'apagon', 'Pendiente', NULL, 'Arroyo', '4B', 'La Cima', 'Xalapa', '91637', 'Frente al oxxo');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `reporte_proceso`
---
-
-CREATE TABLE `reporte_proceso` (
-  `id` int(11) NOT NULL,
-  `folio` int(11) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
-  `tipo_falla` varchar(100) DEFAULT NULL,
-  `fecha_reporte` date DEFAULT NULL,
-  `descripcion` text DEFAULT NULL,
-  `estatus` varchar(50) DEFAULT 'En Proceso',
-  `fecha_asignacion` datetime DEFAULT NULL,
-  `calle` varchar(100) DEFAULT NULL,
-  `numero` varchar(20) DEFAULT NULL,
-  `colonia` varchar(100) DEFAULT NULL,
-  `municipio` varchar(100) DEFAULT NULL,
-  `codigo_postal` varchar(10) DEFAULT NULL,
-  `referencias` text DEFAULT NULL,
-  `id_tecnico` int(11) DEFAULT NULL,
-  `nombre_tecnico` varchar(100) DEFAULT NULL,
-  `especialidad_tecnico` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `servicios`
+-- Table structure for table `servicios`
 --
 
 CREATE TABLE `servicios` (
   `id_servicio` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `num_contrato` varchar(25) NOT NULL,
-  `id_direccion` int(11) NOT NULL,
-  `tipo_servicio` varchar(100) DEFAULT 'Residencial',
-  `estatus` varchar(50) DEFAULT 'Activo',
-  `num_medidor` varchar(25) NOT NULL
+  `nombre_servicio` varchar(100) DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `id_direccion` int(11) DEFAULT NULL,
+  `num_servicio` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `servicios`
---
-
-INSERT INTO `servicios` (`id_servicio`, `id_usuario`, `num_contrato`, `id_direccion`, `tipo_servicio`, `estatus`, `num_medidor`) VALUES
-(25, 35, '763871', 24, 'Residencial', 'Activo', 'MED28379');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `supervisor`
+-- Table structure for table `supervisor`
 --
 
 CREATE TABLE `supervisor` (
   `id_supervisor` int(11) NOT NULL,
-  `supervisor` varchar(100) NOT NULL
+  `supervisor` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tecnico`
+-- Table structure for table `tecnico`
 --
 
 CREATE TABLE `tecnico` (
   `id_tecnico` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `especialidad` varchar(100) NOT NULL,
-  `estatus` varchar(15) DEFAULT NULL
+  `nombre` varchar(100) DEFAULT NULL,
+  `especialidad` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `tecnico`
---
-
-INSERT INTO `tecnico` (`id_tecnico`, `nombre`, `especialidad`, `estatus`) VALUES
-(9892, 'Manuel Rivera', 'Reconexion de redes', 'Disponible'),
-(98546, 'Luis Navas', 'Cableado estructural', 'Indispuesto');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuarios`
+-- Table structure for table `usuarios`
 --
 
 CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `apellidos` varchar(100) NOT NULL,
-  `curp` varchar(18) NOT NULL,
-  `telefono` varchar(15) NOT NULL,
+  `fecha_nacimiento` date NOT NULL,
   `correo` varchar(100) NOT NULL,
-  `contrasena` varchar(255) NOT NULL,
-  `fecha_nacimiento` date NOT NULL
+  `contrasena` varchar(100) NOT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `curp` varchar(18) NOT NULL,
+  `num_contrato` varchar(50) NOT NULL,
+  `medidor` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `usuarios`
+-- Dumping data for table `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellidos`, `curp`, `telefono`, `correo`, `contrasena`, `fecha_nacimiento`) VALUES
-(35, 'Jaciel', 'Martinez Benitez', 'MABJ041117HVZRNCA1', '9212075738', 'martineztoby118@gmail.com', '137980', '2004-11-17');
+INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellidos`, `fecha_nacimiento`, `correo`, `contrasena`, `telefono`, `curp`, `num_contrato`, `medidor`) VALUES
+(1, 'Jaciel', 'Martinez Benitez', '2004-11-17', 'axel@gmail.com', '150150', '9211198830', 'MABJ041117HVZRNCA1', '763871', 'MED6969');
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `direccion`
+-- Indexes for table `direccion`
 --
 ALTER TABLE `direccion`
-  ADD PRIMARY KEY (`id_direccion`);
+  ADD PRIMARY KEY (`id_direccion`),
+  ADD KEY `id_usuario` (`id_usuario`);
 
 --
--- Indices de la tabla `reportes`
+-- Indexes for table `reportes`
 --
 ALTER TABLE `reportes`
-  ADD PRIMARY KEY (`folio`);
+  ADD PRIMARY KEY (`folio`),
+  ADD KEY `id_usuario` (`id_usuario`);
 
 --
--- Indices de la tabla `reporte_proceso`
---
-ALTER TABLE `reporte_proceso`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `servicios`
+-- Indexes for table `servicios`
 --
 ALTER TABLE `servicios`
   ADD PRIMARY KEY (`id_servicio`),
-  ADD UNIQUE KEY `numero_contrato` (`num_contrato`),
-  ADD UNIQUE KEY `numero_contrato_2` (`num_contrato`),
-  ADD UNIQUE KEY `uq_num_contrato` (`num_contrato`),
-  ADD UNIQUE KEY `uq_num_medidor` (`num_medidor`),
-  ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `id_direccion` (`id_direccion`);
+  ADD KEY `fk_usuario` (`id_usuario`),
+  ADD KEY `fk_direccion` (`id_direccion`);
 
 --
--- Indices de la tabla `supervisor`
+-- Indexes for table `supervisor`
 --
 ALTER TABLE `supervisor`
   ADD PRIMARY KEY (`id_supervisor`);
 
 --
--- Indices de la tabla `tecnico`
+-- Indexes for table `tecnico`
 --
 ALTER TABLE `tecnico`
   ADD PRIMARY KEY (`id_tecnico`);
 
 --
--- Indices de la tabla `usuarios`
+-- Indexes for table `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`),
   ADD UNIQUE KEY `correo` (`correo`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `direccion`
+-- AUTO_INCREMENT for table `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `id_direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de la tabla `reportes`
+-- AUTO_INCREMENT for table `reportes`
 --
 ALTER TABLE `reportes`
-  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `folio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `reporte_proceso`
---
-ALTER TABLE `reporte_proceso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `servicios`
+-- AUTO_INCREMENT for table `servicios`
 --
 ALTER TABLE `servicios`
-  MODIFY `id_servicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_servicio` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `supervisor`
+-- AUTO_INCREMENT for table `supervisor`
 --
 ALTER TABLE `supervisor`
   MODIFY `id_supervisor` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `tecnico`
+-- AUTO_INCREMENT for table `tecnico`
 --
 ALTER TABLE `tecnico`
-  MODIFY `id_tecnico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98547;
+  MODIFY `id_tecnico` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `usuarios`
+-- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- Restricciones para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `servicios`
+-- Constraints for table `direccion`
+--
+ALTER TABLE `direccion`
+  ADD CONSTRAINT `direccion_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `reportes`
+--
+ALTER TABLE `reportes`
+  ADD CONSTRAINT `reportes_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
+
+--
+-- Constraints for table `servicios`
 --
 ALTER TABLE `servicios`
-  ADD CONSTRAINT `servicios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
-  ADD CONSTRAINT `servicios_ibfk_2` FOREIGN KEY (`id_direccion`) REFERENCES `direccion` (`id_direccion`);
+  ADD CONSTRAINT `fk_direccion` FOREIGN KEY (`id_direccion`) REFERENCES `direccion` (`id_direccion`),
+  ADD CONSTRAINT `fk_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
