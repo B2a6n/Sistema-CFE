@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jul 22, 2025 at 04:15 AM
+-- Generation Time: Jul 22, 2025 at 06:27 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,23 +58,16 @@ CREATE TABLE `reportes` (
   `tipo_falla` varchar(100) DEFAULT NULL,
   `fecha_reporte` date NOT NULL,
   `descripcion` text NOT NULL,
-  `estatus` varchar(50) DEFAULT 'Pendiente',
+  `estatus` enum('Pendiente','En Revisión','Finalizado') DEFAULT 'Pendiente',
   `fecha_atencion` date DEFAULT NULL,
   `calle` varchar(100) DEFAULT NULL,
   `numero` varchar(20) DEFAULT NULL,
   `colonia` varchar(100) DEFAULT NULL,
   `municipio` varchar(100) DEFAULT NULL,
   `codigo_postal` varchar(10) DEFAULT NULL,
-  `referencias` text DEFAULT NULL
+  `referencias` text DEFAULT NULL,
+  `id_tecnico` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `reportes`
---
-
-INSERT INTO `reportes` (`folio`, `id_usuario`, `tipo_falla`, `fecha_reporte`, `descripcion`, `estatus`, `fecha_atencion`, `calle`, `numero`, `colonia`, `municipio`, `codigo_postal`, `referencias`) VALUES
-(1, 1, 'Variación de voltaje', '2025-07-21', 'en frente de la cima', 'Pendiente', NULL, 'Arroyo', '4B', 'La Cima', 'Xalapa', '91637', 'Entre Colina y La Cima'),
-(2, 1, 'Apagón', '2025-07-21', 'apagon', 'Pendiente', NULL, 'Arroyo', '4B', 'La Cima', 'Xalapa', '91637', 'Frente al oxxo');
 
 -- --------------------------------------------------------
 
@@ -99,8 +92,18 @@ CREATE TABLE `servicios` (
 
 CREATE TABLE `supervisor` (
   `id_supervisor` int(11) NOT NULL,
-  `supervisor` varchar(100) DEFAULT NULL
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellidos` varchar(100) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `contrasena` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `supervisor`
+--
+
+INSERT INTO `supervisor` (`id_supervisor`, `nombre`, `apellidos`, `correo`, `contrasena`) VALUES
+(1, 'Juan', 'Pérez Lopez', 'juanperezg2.supervisor@cfe.mx', '137980');
 
 -- --------------------------------------------------------
 
@@ -111,8 +114,18 @@ CREATE TABLE `supervisor` (
 CREATE TABLE `tecnico` (
   `id_tecnico` int(11) NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
-  `especialidad` varchar(100) DEFAULT NULL
+  `especialidad` varchar(100) DEFAULT NULL,
+  `estatus` enum('Disponible','Ocupado') DEFAULT 'Disponible'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tecnico`
+--
+
+INSERT INTO `tecnico` (`id_tecnico`, `nombre`, `especialidad`, `estatus`) VALUES
+(1, 'Carlos Pérez', 'Líneas eléctricas', 'Ocupado'),
+(2, 'Laura Gómez', 'Transformadores', 'Ocupado'),
+(3, 'Mario Ruiz', 'Corte y reconexión', 'Disponible');
 
 -- --------------------------------------------------------
 
@@ -156,7 +169,8 @@ ALTER TABLE `direccion`
 --
 ALTER TABLE `reportes`
   ADD PRIMARY KEY (`folio`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `fk_tecnico` (`id_tecnico`);
 
 --
 -- Indexes for table `servicios`
@@ -170,7 +184,8 @@ ALTER TABLE `servicios`
 -- Indexes for table `supervisor`
 --
 ALTER TABLE `supervisor`
-  ADD PRIMARY KEY (`id_supervisor`);
+  ADD PRIMARY KEY (`id_supervisor`),
+  ADD UNIQUE KEY `correo` (`correo`);
 
 --
 -- Indexes for table `tecnico`
@@ -211,13 +226,13 @@ ALTER TABLE `servicios`
 -- AUTO_INCREMENT for table `supervisor`
 --
 ALTER TABLE `supervisor`
-  MODIFY `id_supervisor` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_supervisor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tecnico`
 --
 ALTER TABLE `tecnico`
-  MODIFY `id_tecnico` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tecnico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `usuarios`
@@ -239,6 +254,7 @@ ALTER TABLE `direccion`
 -- Constraints for table `reportes`
 --
 ALTER TABLE `reportes`
+  ADD CONSTRAINT `fk_tecnico` FOREIGN KEY (`id_tecnico`) REFERENCES `tecnico` (`id_tecnico`),
   ADD CONSTRAINT `reportes_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
 
 --
