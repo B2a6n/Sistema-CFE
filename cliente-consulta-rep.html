@@ -2,122 +2,159 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Seguimiento del Reporte – CFE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consulta de Reporte – CFE</title>
   <link rel="stylesheet" href="css/styles.css" />
-</head>
-<body class="registro-cliente">
+  <style>
+    #particles-js {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
 
-  <!-- Fondo animado ----------------------------------------------------->
+    .consulta-container {
+      max-width: 800px;
+      margin: 80px auto;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 10px;
+      color: #fff;
+      box-shadow: 0 0 10px #00ff99;
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: #00ff99;
+    }
+
+    .estado {
+      border-left: 4px solid #00ff99;
+      padding-left: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-regresar {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background-color: #00ff99;
+      color: #000;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .error-icon {
+      color: red;
+    }
+
+    .warning-icon {
+      color: orange;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      color: #aaa;
+      font-size: 0.9rem;
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body class="consulta-reporte">
+  <!-- Fondo animado -->
   <div id="particles-js"></div>
 
-  <!-- Encabezado -------------------------------------------------------->
+  <!-- Encabezado -->
   <header class="encabezado">
     <img src="img/logo.png" alt="Logo CFE" class="logo-cfe" />
+    <a href="cliente-inicio.html" class="btn-regresar">Regresar a Inicio</a>
   </header>
 
-  <!-- Botón volver ------------------------------------------------------>
-  <a href="cliente-inicio.html" class="btn-regresar">Regresar a Inicio</a>
+  <!-- Contenido principal -->
+  <main class="consulta-container">
+    <h2>Seguimiento del Reporte</h2>
 
-  <!-- Panel ------------------------------------------------------------->
-  <section class="progreso-reporte" style="position:relative;z-index:2;color:#fff">
-    <h2 style="text-align:center">Seguimiento del Reporte</h2>
+    <section id="reporte-enviado">
+      <!-- Mensaje del usuario autenticado -->
+    </section>
 
-    <article id="estado-envio">
-      <h3>Reporte Enviado</h3>
-      <small id="fecha-envio"></small>
-      <p>Tu reporte fue enviado correctamente y está esperando revisión.</p>
+    <hr style="border-color: #00ff00" />
 
-      <div id="aviso-estatus" style="padding:6px 10px;border-radius:6px"></div>
-    </article>
+    <section id="detalle-reporte">
+      <!-- Detalles de todos los reportes -->
+    </section>
+  </main>
 
-    <hr style="border-color:#0f0;margin:30px 0" />
+  <footer>
+    <p>© 2025 Sistema CFE</p>
+  </footer>
 
-    <h3 style="color:#0f0">Detalles del Reporte</h3>
-    <ul id="detalle-reporte" style="line-height:1.6"></ul>
-  </section>
-
-  <!-- Partículas -------------------------------------------------------->
-  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <!-- Partículas -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
-    particlesJS("particles-js",{
-      particles:{number:{value:80},color:{value:"#00ff00"},shape:{type:"circle"},
-      opacity:{value:0.5},size:{value:3},
-      line_linked:{enable:true,distance:150,color:"#00ff00",opacity:0.4,width:1},
-      move:{enable:true,speed:2}},
-      interactivity:{events:{onhover:{enable:true,mode:"repulse"}}},
-      retina_detect:true
+    particlesJS.load("particles-js", "js/particles-config.json", function () {
+      console.log("Fondo cargado");
     });
   </script>
 
-  <!-- Lógica ------------------------------------------------------------>
+  <!-- Lógica para mostrar reportes -->
   <script>
-  (async ()=>{
-    /* ---------- Config ---------- */
-    const API      = "http://localhost:3000/api";
-    const idReporte= localStorage.getItem("id_reporte");   // lo guardamos al crear
-    const detalle  = document.getElementById("detalle-reporte");
-    const fechaTxt = document.getElementById("fecha-envio");
-    const avisoBox = document.getElementById("aviso-estatus");
+    document.addEventListener("DOMContentLoaded", async () => {
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      const contenedorEstado = document.getElementById("reporte-enviado");
+      const contenedorDetalle = document.getElementById("detalle-reporte");
 
-    if(!idReporte){
-      detalle.innerHTML = "<li>No se encontró ningún folio en el navegador.</li>";
-      return;
-    }
+      if (!usuario || !usuario.id_usuario) {
+        contenedorDetalle.innerHTML = `
+          <p><span class="warning-icon">⚠️</span> No has iniciado sesión.</p>
+        `;
+        return;
+      }
 
-    /* ---------- función que pinta todo ---------- */
-    function pinta(data){
-      fechaTxt.textContent = `📅 ${ new Date(data.fecha_reporte)
-                                   .toLocaleString('es-MX',{dateStyle:'medium',
-                                                             timeStyle:'short'}) }`;
-      detalle.innerHTML = `
-        <li><strong>Tipo de Falla:</strong> ${data.tipo_falla}</li>
-        <li><strong>Ubicación:</strong> ${data.ubicacion}</li>
-        <li><strong>Observaciones:</strong> ${data.descripcion}</li>
-        <li><strong>Estado Actual:</strong> <span id="estado-actual">${data.estatus}</span></li>`;
-      avisoBox.textContent = `Estado actual: ${data.estatus}`;
-      setColor(avisoBox, data.estatus);
-    }
+      try {
+        const res = await fetch(`http://localhost:3000/api/reportes/usuario/${usuario.id_usuario}`);
+        const reportes = await res.json();
 
-    /* ---------- obtener datos iniciales ---------- */
-    async function cargaInicial(){
-      const r = await fetch(`${API}/reportes/${idReporte}`);
-      if(!r.ok) throw new Error("Reporte no encontrado");
-      const d = await r.json();
-      pinta(d);
-      return d.estatus;          // devolvemos estatus para comparar después
-    }
-
-    /* ---------- monitoreo de cambios ---------- */
-    let ultimoEstatus;
-    try{ ultimoEstatus = await cargaInicial(); }
-    catch(err){ detalle.innerHTML = `<li>Error: ${err}</li>`; return; }
-
-    setInterval(async ()=>{
-      try{
-        const r  = await fetch(`${API}/reportes/${idReporte}/estatus`);
-        if(!r.ok) return;                      // si falla, lo ignoramos
-        const d2 = await r.json();
-        if(d2.estatus !== ultimoEstatus){
-          ultimoEstatus = d2.estatus;
-          document.getElementById("estado-actual").textContent = d2.estatus;
-          avisoBox.textContent = `Estado actual: ${d2.estatus}`;
-          setColor(avisoBox, d2.estatus);
+        if (!Array.isArray(reportes) || reportes.length === 0) {
+          contenedorDetalle.innerHTML = `
+            <p><span class="error-icon">❌</span> No se encontraron reportes registrados.</p>
+          `;
+          return;
         }
-      }catch{}
-    }, 30000);      // cada 30 s
 
-    /* ---------- color helper ---------- */
-    function setColor(el, est){
-      const colores = {
-        "Pendiente":  "#ffaa00",
-        "En revisión":"#ff7300",
-        "Atendiendo": "#0099ff",
-        "Finalizado": "#00cc66"
-      };
-      el.style.background = colores[est] || "#00ff00";
-    }
-  })();
+        contenedorEstado.innerHTML = `
+          <h3>Reportes Enviados</h3>
+          <p>Hola <strong>${usuario.nombre}</strong>, estos son tus reportes registrados en el sistema.</p>
+        `;
+
+        contenedorDetalle.innerHTML = reportes.map(reporte => {
+          const fechaSolo = new Date(reporte.fecha_reporte).toLocaleDateString('es-MX');
+          const referencias = reporte.referencias || 'N/A';
+
+          return `
+            <div class="estado">
+              <p><strong>Folio:</strong> ${reporte.folio}</p>
+              <p><strong>Tipo de Falla:</strong> ${reporte.tipo_falla}</p>
+              <p><strong>Descripción:</strong> ${reporte.descripcion}</p>
+              <p><strong>Dirección:</strong> ${reporte.calle}, ${reporte.numero}, ${reporte.colonia}, ${reporte.municipio}, CP ${reporte.codigo_postal}</p>
+              <p><strong>Referencias:</strong> ${referencias}</p>
+              <p><strong>Fecha:</strong> ${fechaSolo}</p>
+              <p><strong>Estatus:</strong> ${reporte.estatus}</p>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error(err);
+        contenedorDetalle.innerHTML = `
+          <p><span class="error-icon">❌</span> Error al obtener los datos del reporte.</p>
+        `;
+      }
+    });
   </script>
 </body>
 </html>
