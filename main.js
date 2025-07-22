@@ -1,9 +1,5 @@
-/* ==================  CONFIG GLOBAL  ================== */
 const API = "http://localhost:3000/api"; // backend Express
 
-/* =====================================================
-   CARGA DE EVENTOS
-   ===================================================== */
 document.addEventListener("DOMContentLoaded", () => {
   const formSolicitud = document.getElementById("solicitudForm");
   if (formSolicitud) formSolicitud.addEventListener("submit", enviarSolicitud);
@@ -119,7 +115,88 @@ document.addEventListener("DOMContentLoaded", () => {
   if (formReporte) formReporte.addEventListener("submit", generarReporte);
 });
 
-/* ================== FUNCIONES ================== */
+/* ========== FUNCIONES ========== */
+async function registrarUsuario(e) {
+  e.preventDefault();
+  const form = e.target;
+
+  const nombre = form.nombre.value.trim();
+  const apellidos = form.apellidos.value.trim();
+  const dia = form.dia.value.trim();
+  const mes = form.mes.value.trim();
+  const anio = form.anio.value.trim();
+  const fecha_nacimiento = `${anio}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`;
+
+  const calle = form.calle.value.trim();
+  const numero = form.numero.value.trim();
+  const colonia = form.colonia.value.trim();
+  const municipio = form.municipio.value.trim();
+  const codigo_postal = form.codigo_postal.value.trim();
+  const estado = form.estado.value.trim();
+  const referencias = form.referencias?.value.trim() || "";
+
+  const curp = form.curp.value.trim();
+  const telefono = form.telefono.value.trim();
+  const correo = form.correo.value.trim();
+  const contrasena = form.contrasena.value.trim();
+  const confirmar = form.confirmar.value.trim();
+
+  const medidor = form.medidor.value.trim();
+  const num_contrato = form.num_contrato.value.trim();
+
+  if (!nombre || !apellidos || !fecha_nacimiento || !calle || !numero || !colonia || !municipio || !codigo_postal || !estado || !curp || !telefono || !correo || !contrasena || !confirmar || !medidor || !num_contrato) {
+    alert("Por favor, llena todos los campos obligatorios.");
+    return;
+  }
+
+  if (contrasena.length < 6) {
+    alert("La contraseña debe tener al menos 6 caracteres.");
+    return;
+  }
+
+  if (contrasena !== confirmar) {
+    alert("Las contraseñas no coinciden.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/usuario`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    nombre,
+    apellidos,
+    fecha_nacimiento,
+    calle,
+    numero,
+    colonia,
+    municipio,
+    codigo_postal,
+    estado,
+    referencias,
+    curp,
+    telefono,
+    correo,
+    contrasena,
+    medidor,
+    num_contrato
+  })
+});
+
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("✅ Registro exitoso. Ahora puedes iniciar sesión.");
+      window.location.href = "index.html";
+    } else {
+      alert(data.error || "Error al registrar.");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error al conectar con el servidor.");
+  }
+}
 
 async function iniciarSesion(e) {
   e.preventDefault();
@@ -154,14 +231,6 @@ async function iniciarSesion(e) {
   }
 }
 
-function enviarSolicitud(e) {
-  e.preventDefault();
-}
-
-async function registrarUsuario(e) {
-  e.preventDefault();
-}
-
 async function generarReporte(e) {
   e.preventDefault();
   const form = e.target;
@@ -173,7 +242,7 @@ async function generarReporte(e) {
   const municipio = form.municipio.value.trim();
   const codigo_postal = form.codigo_postal.value.trim();
   const referencias = form.referencias?.value.trim() || "";
-  const descripcion = form.descripcion.value.trim(); // CORREGIDO
+  const descripcion = form.descripcion.value.trim();
 
   if (!tipo_falla || !calle || !numero || !colonia || !municipio || !codigo_postal) {
     alert("Por favor, llena todos los campos obligatorios.");
@@ -199,14 +268,16 @@ async function generarReporte(e) {
         municipio,
         codigo_postal,
         referencias,
-        descripcion // CORREGIDO
+        descripcion
       })
     });
 
     const data = await res.json();
     if (res.ok) {
       alert(`✅ Reporte generado con éxito. Folio: ${data.folio}`);
+      localStorage.setItem("id_reporte", data.folio);
       form.reset();
+      window.location.href = "cliente-consulta-rep.html";
     } else {
       alert(data.error || "Error al generar reporte.");
     }
@@ -214,6 +285,10 @@ async function generarReporte(e) {
     console.error(err);
     alert("No se pudo conectar con el servidor.");
   }
+}
+
+function enviarSolicitud(e) {
+  e.preventDefault();
 }
 
 function mostrarMensaje(el, html, color) {
